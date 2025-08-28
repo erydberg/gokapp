@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Kontroller</title>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function confirmDelete(formId) {
+            if (confirm("Vill du ta bort kontrollen?")) {
+                document.getElementById(formId).submit();
+            }
+            return false;
+        }
+        /*]]>*/
+    </script>
+</head>
+<body>
+<div class="nav-box">
+    <h1>Klasser</h1>
+    <a th:href="@{/admin/station/new}">Lägg till ny kontroll</a> |
+    <a th:href="@{/admin}">Tillbaka</a>
+</div>
+
+<!-- Include messages -->
+<div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+
+<div class="notepad">
+    <ul class="list">
+        <li th:each="station,iterStat : ${stations}">
+            <a th:href="@{/admin/station/{id}(id=${station.id})}"
+               th:text="${station.stationName}">Kontrollens namn</a>
+
+            <!-- Delete form -->
+            <form th:id="'deleteForm-' + ${iterStat.index}"
+                  th:action="@{/admin/station/{id}/delete(id=${station.id})}"
+                  method="post" style="display:inline;">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <a href="#"
+                   class="del"
+                   th:onclick="'return confirmDelete(\'deleteForm-' + ${iterStat.index} + '\');'">
+                    <img th:src="@{/css/delete.png}" alt="Radera"/>
+                </a>
+            </form>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

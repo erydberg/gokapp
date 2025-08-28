@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="metadata">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="apple-touch-icon" th:href="@{/css/apple-touch-icon.png}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="shortcut icon" th:href="@{/css/active.png}" />
+    <link rel="icon" th:href="@{/css/active.png}" />
+    <script th:inline="javascript">
+        if (('standalone' in window.navigator) && window.navigator.standalone) {
+            var noddy, remotes = false;
+            document.addEventListener('click', function(event) {
+                noddy = event.target;
+                while (noddy.nodeName !== "A" && noddy.nodeName !== "HTML") {
+                    noddy = noddy.parentNode;
+                }
+                if ('href' in noddy && noddy.href.indexOf('http') !== -1 &&
+                    (noddy.href.indexOf(document.location.host) !== -1 || remotes)) {
+                    event.preventDefault();
+                    document.location.href = noddy.href;
+                }
+            }, false);
+        }
+    </script>
+</th:block>
+
+<body>
+<!-- Message fragment -->
+<div th:fragment="messages(errormsg, confirmmsg)">
+    <div th:if="${errormsg != null}" class="ingress_background">
+        <div class="ingress"><div class="errorblock" th:text="${errormsg}"></div></div>
+    </div>
+    <div th:if="${confirmmsg != null}" class="ingress_background">
+        <div class="ingress"><div class="confirmblock" th:text="${confirmmsg}"></div></div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="${config.name}">App</title>
+    <th:block th:replace="~{fragments :: metadata}"></th:block>
+</head>
+<body>
+<div class="nav-box">
+
+    <!-- Include messages -->
+    <div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+
+    <div class="page-head">
+        <h1 th:text="${config.name}">App name</h1>
+    </div>
+
+    <ul>
+        <li class="nav-item"><a th:href="@{/score/}">Rapportera poäng</a></li>
+        <li class="nav-item"><a th:href="@{/correctscore}">Ändra poäng</a></li>
+        <li class="nav-item"><a th:href="@{/reports/patrols}">Patruller</a></li>
+        <li class="nav-item"><a th:href="@{/reports/bytrack}">Resultat per klass</a></li>
+
+        <!-- Show only for ADMIN or STARTFINISH -->
+        <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_STARTFINISH')">
+            <a th:href="@{/startfinish}">Start- och måladministration</a>
+        </li>
+
+        <!-- Show only for ADMIN -->
+        <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+            <a th:href="@{/admin/}">Administration</a>
+        </li>
+
+        <!-- Logout -->
+        <form th:action="@{/logout}" method="post" id="logout">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        </form>
+        <li class="nav-item">
+            <a href="#" onclick="document.getElementById('logout').submit();">Logga ut</a>
+        </li>
+    </ul>
+
+    <!-- Optional phone -->
+    <div th:if="${config.phone != null}">
+        Telefon till start/mål:
+        <a th:href="'tel:' + ${config.phone}" th:text="${config.phone}"></a><br>
+    </div>
+
+</div>
+</body>
+</html>

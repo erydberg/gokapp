@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title th:text="${station.id} != null ? 'Redigera kontroll - ' + ${station.stationName} : 'Ny kontroll'">
+        Kontroll</title>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<div class="nav-box">
+    <h1 th:text="${station.id} != null ? 'Redigera kontroll' : 'Ny kontroll'">Kontroll</h1>
+
+    <form th:action="@{/admin/station}" th:object="${station}" method="post" class="form-general">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="form-box">
+            <fieldset>
+                <div class="text size-3">
+                    <label for="stationNumber">Kontrollens nummer:</label>
+                    <input type="number" th:field="*{stationNumber}" id="stationNumber"/>
+
+                    <label for="stationName">Namn:</label>
+                    <input type="text" th:field="*{stationName}" id="stationName"/>
+
+                    <p>
+                        <label for="waypoint">Milstolpe</label>
+                        <span>För kontroller där patrullen bara anmäler sig och inte får några poäng, t.ex. lunch, övernattning etc.</span>
+                        <input type="checkbox" th:field="*{waypoint}" id="waypoint"/>
+                    </p>
+
+                    <label for="minScore">Minsta poäng:</label>
+                    <input type="number" th:field="*{minScore}" id="minScore"/>
+
+                    <label for="maxScore">Max poäng:</label>
+                    <input type="number" th:field="*{maxScore}" id="maxScore"/>
+
+                    <label for="minStyleScore">Minsta stilpoäng:</label>
+                    <input type="number" th:field="*{minStyleScore}" id="minStyleScore"/>
+
+                    <label for="maxStyleScore">Max stilpoäng:</label>
+                    <input type="number" th:field="*{maxStyleScore}" id="maxStyleScore"/>
+
+                    <label for="stationContact">Ansvarig på kontrollen:</label>
+                    <input type="text" th:field="*{stationContact}" id="stationContact"/>
+
+                    <label for="stationPhonenumber">Telefonnummer till ansvarig:</label>
+                    <input type="text" th:field="*{stationPhonenumber}" id="stationPhonenumber"/>
+
+                    <label for="stationUser">Användare som får lägga till poäng (utöver admin-konton):</label>
+                    <input type="text" th:field="*{stationUser}" id="stationUser"/>
+                </div>
+            </fieldset>
+
+            <div class="submit-area">
+                <button type="submit" name="saveStation">Spara</button>
+                | <a th:href="@{/admin/station}">Tillbaka</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="'Klass - ' + (${track.name} != null ? ${track.name} : 'Ny')">Klass</title>
+    <th:insert th:replace="fragments :: metadata"></th:insert>
+</head>
+<body>
+<div class="nav-box">
+    <h1>Klass</h1>
+
+    <!-- Include messages -->
+    <div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+
+    <!-- form works for both new and edit -->
+    <form th:action="@{/admin/track}" th:object="${track}" method="post" class="form-general">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="form-box">
+            <fieldset>
+                <div class="text size-3">
+                    <label for="name">Klass:</label>
+                    <input type="text" id="name" th:field="*{name}" required/>
+                </div>
+            </fieldset>
+
+            <div class="submit-area">
+                <input type="submit" value="Spara"/>
+                |
+                <a th:href="@{/admin/track}">Tillbaka</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
