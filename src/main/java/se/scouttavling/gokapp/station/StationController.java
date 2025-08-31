@@ -1,5 +1,6 @@
 package se.scouttavling.gokapp.station;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,11 +45,10 @@ public class StationController {
     }
 
     @PostMapping
-    public String save(@ModelAttribute("station") Station station, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+    public String save(@Valid @ModelAttribute("station") Station station, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
-        System.out.println("Sparar stations");
         if(bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("errormsg", "Fyll i alla obligatoriska uppgifter");
+            model.addAttribute("errormsg", "Fyll i alla obligatoriska uppgifter");
             model.addAttribute("station", station);
             return "station_edit";
         }

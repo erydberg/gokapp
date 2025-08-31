@@ -10,6 +10,9 @@
 <div class="nav-box">
     <h1 th:text="${station.id} != null ? 'Redigera kontroll' : 'Ny kontroll'">Kontroll</h1>
 
+    <!-- Include messages -->
+    <div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+
     <form th:action="@{/admin/station}" th:object="${station}" method="post" class="form-general">
         <input type="hidden" th:field="*{id}"/>
 
@@ -21,6 +24,7 @@
 
                     <label for="stationName">Namn:</label>
                     <input type="text" th:field="*{stationName}" id="stationName"/>
+                    <div class="errortext" th:errors="*{stationName}"></div>
 
                     <p>
                         <label for="waypoint">Milstolpe</label>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${patrol.patrolId != null} ? 'Patrull - ' + ${patrol.patrolName} : 'Ny patrull'">Patrull</title>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+</head>
+<body>
+
+<div class="nav-box">
+    <div class="page-head">
+        <h1 th:text="${patrol.patrolId != null} ? 'Patrull - ' + ${patrol.patrolName} : 'Ny patrull'"></h1>
+
+        <!-- Include messages -->
+        <div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+    </div>
+</div>
+
+<div class="form-box">
+    <form th:action="@{/admin/patrol}" th:object="${patrol}" method="post" class="form-general">
+        <input type="hidden" th:field="*{patrolId}"/>
+
+        <fieldset>
+            <div class="text size-3">
+                <label>Patrullens namn:</label>
+                <input type="text" th:field="*{patrolName}"/>
+                <div class="errortext" th:if="${#fields.hasErrors('patrolName')}" th:errors="*{patrolName}"></div>
+                <br>
+                <small th:if="${patrol.patrolId != null}" th:text="'Patrullnummer: ' + ${patrol.patrolId}"></small>
+            </div>
+
+            <div class="text size-3">
+                <label>Eventuellt externt id:</label>
+                <input type="text" th:field="*{externalId}"/>
+            </div>
+
+            <div class="text size-3">
+                <label>Klass:</label>
+                <select th:field="*{track}">
+                    <option value="">Välj en klass</option>
+                    <option th:each="track : ${tracks}" th:value="${track.id}" th:text="${track.name}"></option>
+                </select>
+            </div>
+
+            <div class="text size-3">
+                <label>Kår:</label>
+                <input type="text" th:field="*{troop}"/>
+            </div>
+
+            <div class="text size-3">
+                <label>Startar på kontroll:</label>
+                <select th:field="*{startStation}">
+                    <option value="">Välj kontroll</option>
+                    <option th:each="station : ${stations}" th:value="${station}"
+                            th:text="${station.stationName}"></option>
+                </select>
+            </div>
+
+            <div class="text size-3">
+                <label>Starttid:</label>
+                <input type="datetime-local" th:field="*{startTime}"/>
+            </div>
+
+            <div class="text size-3">
+                <label>Sluttid:</label>
+                <input type="datetime-local" th:field="*{endTime}"/>
+            </div>
+
+            <div class="text size-3">
+                <label>Medlemmar:</label>
+                <textarea th:field="*{members}" rows="7"></textarea>
+            </div>
+
+            <div class="text size-3">
+                <label>Ledare:</label>
+                <input type="text" th:field="*{leaderContact}"/>
+            </div>
+
+            <div class="text size-3">
+                <label>E-post till ledare:</label>
+                <input type="email" th:field="*{leaderContactMail}"/>
+            </div>
+
+            <div class="text size-3">
+                <label>Mobiltelefonnummer till ledare:</label>
+                <input type="text" th:field="*{leaderContactPhone}"/>
+            </div>
+
+            <div class="text size-3">
+                <label>Betalt:</label>
+                <input type="checkbox" th:field="*{paid}"/>
+            </div>
+
+            <div class="text size-3">
+                <label>Anteckning:</label>
+                <textarea th:field="*{note}" rows="7"></textarea>
+            </div>
+
+            <div class="text size-3">
+                <label>Status:</label>
+                <select th:field="*{status}">
+                    <option th:each="s : ${statuslist}" th:value="${s}" th:text="${s}"></option>
+                </select>
+            </div>
+        </fieldset>
+
+        <div class="submit-area">
+            <button type="submit">Spara</button>
+            |
+            <a th:href="@{/admin/patrol}">Avbryt</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

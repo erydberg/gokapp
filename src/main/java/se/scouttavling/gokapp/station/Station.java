@@ -20,12 +20,11 @@ public class Station {
     @SequenceGenerator(name = "station_seq", sequenceName = "STATION_SEQ", allocationSize = 5)
     private Integer id;
 
-
     @Column(name = "stationnumber", length = 4, nullable = false)
     private int stationNumber;
 
     @NotEmpty(message = "Fyll i ett namn på kontrollen")
-   @Column(name = "stationname", length = 100)
+    @Column(name = "stationname", length = 100)
     private String stationName;
 
     @Column(name = "minscore", length = 4)
