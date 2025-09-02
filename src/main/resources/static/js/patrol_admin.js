@@ -1,3 +1,6 @@
+const csrfToken = document.querySelector('meta[name="_csrf"]')?.content || "";
+const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.content || "X-CSRF-TOKEN";
+
 document.addEventListener("DOMContentLoaded", () => {
     // Event delegation on the table container
     const table = document.querySelector("table");
@@ -36,10 +39,4 @@ function togglePaid(element, id, markAsPaid) {
 }
 
 
-function confirmDelete(form) {
-    if (confirm("Är du säker på att du vill ta bort denna patrull?")) {
-       form.submit();
-    }
-       return false;
-    }
 

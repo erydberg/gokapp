@@ -2,18 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <meta name="_csrf" th:content="${_csrf?.token}">
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}">
+
     <title>Patruller</title>
     <script th:inline="javascript">
         /*<![CDATA[*/
-            // Base context path for URLs
-            var path = /*[[@{/}]]*/ '';
-
-            var csrfToken = /*[[${_csrf.token}]]*/ '';
-            var csrfHeader = /*[[${_csrf.headerName}]]*/ '';
+        var path = /*[[@{/}]]*/ '';
         /*]]>*/
     </script>
+
     <script th:inline="javascript">
-        console.log("JS is running");
+        /*<![CDATA[*/
+        function confirmDelete(formId) {
+            if (confirm("Vill du ta bort patrullen?")) {
+                document.getElementById(formId).submit();
+            }
+            return false;
+        }
+        /*]]>*/
     </script>
     <script th:src="@{/js/patrol_admin.js}" defer></script>
 </head>
@@ -57,20 +64,20 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th><a th:href="@{/patrol(sort='patrolName')}">Patrullnamn</a></th>
-            <th><a th:href="@{/patrol(sort='track')}">Klass</a></th>
-            <th><a th:href="@{/patrol(sort='troop')}">Scoutkår</a></th>
-            <th><a th:href="@{/patrol(sort='status')}">Status</a></th>
-            <th><a th:href="@{/patrol(sort='totalScore')}">Poäng</a></th>
+            <th><a th:href="@{/admin/patrol(sort='patrolName')}">Patrullnamn</a></th>
+            <th><a th:href="@{/admin/patrol(sort='track')}">Klass</a></th>
+            <th><a th:href="@{/admin/patrol(sort='troop')}">Scoutkår</a></th>
+            <th><a th:href="@{/admin/patrol(sort='status')}">Status</a></th>
+            <th><a th:href="@{/admin/patrol(sort='totalScore')}">Poäng</a></th>
             <th>Betald</th>
             <th>Åtgärder</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="patrol : ${patrols}">
+        <tr th:each="patrol,iterStat : ${patrols}">
             <td>
-              <a th:href="@{/admin/patrol/{id}(id=${patrol.patrolId})}"
-               th:text="${patrol.patrolName}">Patrullnamn</a>
+                <a th:href="@{/admin/patrol/{id}(id=${patrol.patrolId})}"
+                   th:text="${patrol.patrolName}">Patrullnamn</a>
             </td>
             <td th:text="${patrol.track.name}"></td>
             <td th:text="${patrol.troop}"></td>
@@ -78,24 +85,21 @@
             <td th:text="${patrol.totalScore}"></td>
             <td>
                 <span class="paid-action"
-                    th:data-id="${patrol.patrolId}"
-                    th:data-status="${patrol.paid ? 'paid' : 'notpaid'}"
-                    th:utext="${patrol.paid ? 'Ja' : 'Nej'}">
+                      th:data-id="${patrol.patrolId}"
+                      th:data-status="${patrol.paid ? 'paid' : 'notpaid'}"
+                      th:utext="${patrol.paid ? 'Ja' : 'Nej'}">
                 </span>
             </td>
 
             <td>
-                <a th:href="@{/patrol/view/{id}(id=${patrol.patrolId})}" class="btn btn-info btn-sm">Visa</a>
-                <a th:href="@{/admin/patrol/{id}(id=${patrol.patrolId})}"
-                   class="btn btn-warning btn-sm">Redigera</a>
-
-
-                <form th:action="@{/admin/patrol/{id}/delete(id=${patrol.patrolId})}"
+                <!-- Delete form -->
+                <form th:id="'deleteForm-' + ${iterStat.index}"
+                      th:action="@{/admin/patrol/{id}/delete(id=${patrol.patrolId})}"
                       method="post" style="display:inline;">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-
                     <a href="#"
-                       th:onclick="'return confirmDelete(this.form);'">
+                       class="del"
+                       th:onclick="'return confirmDelete(\'deleteForm-' + ${iterStat.index} + '\');'">
                         <img th:src="@{/css/delete.png}" alt="Radera"/>
                     </a>
                 </form>

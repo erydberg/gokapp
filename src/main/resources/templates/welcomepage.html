@@ -16,16 +16,16 @@
     <ul>
         <!-- Show register link only if registration is open -->
         <li class="nav-item" th:if="${registrationOpen}">
-            <a th:href="@{/register/}">Anmäl en patrull</a>
+            <a th:href="@{/public/register}">Anmäl en patrull</a>
         </li>
         <!-- Show results link if allowed -->
         <li class="nav-item" th:if="${config.allowPublicResult}">
-            <a th:href="@{/public/}">Se den aktuella poängställningen</a>
+            <a th:href="@{/public/score}">Se den aktuella poängställningen</a>
         </li>
 
         <!-- Always show login link -->
         <li class="nav-item">
-            <a th:href="@{/startmenu}">Logga in och rapportera poäng</a>
+            <a th:href="@{/controller/startmenu}">Logga in och rapportera poäng</a>
         </li>
         <li class="nav-item">
             <a th:href="@{/admin}">Dev - admin</a>

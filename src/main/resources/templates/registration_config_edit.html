@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Konfiguration</title>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+</head>
+<body>
+<div class="nav-box">
+    <div class="page-head">
+        <h1>Konfiguration för självregistrering</h1>
+    </div>
+
+    <!-- Include messages -->
+    <div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+</div>
+
+<form th:action="@{/admin/registrationconfig}" th:object="${registrationconfig}" method="post" class="form-general">
+    <input type="hidden" th:field="*{id}"/>
+
+    <div class="form-box">
+        <fieldset class="form-box">
+            <div>
+                <label th:for="*{allowPublicRegistration}">
+                    Aktivera publik registrering av patruller
+                </label>
+                <input type="checkbox" th:field="*{allowPublicRegistration}"/>
+            </div>
+
+            <div class="text size-3">
+                <label th:for="*{firstRegisterDay}">
+                    Första anmälningsdag (startar vid midnatt) (YYYY-MM-DD)
+                </label>
+                <input type="date" th:field="*{firstRegisterDay}"/>
+            </div>
+
+            <div class="text size-3">
+                <label th:for="*{lastRegisterDay}">
+                    Sista anmälningsdag (YYYY-MM-DD)
+                </label>
+                <input type="date" th:field="*{lastRegisterDay}"/>
+            </div>
+
+            <div class="text size-3">
+                <label th:for="*{maxPatrols}">Max antal patruller</label>
+                <input type="number" th:field="*{maxPatrols}"/>
+            </div>
+
+            <div class="text size-3">
+                <label th:for="*{registerInfo}">
+                    Informationstext på registreringssidan
+                </label>
+                <textarea th:field="*{registerInfo}" rows="7" cols="30"></textarea>
+            </div>
+
+            <div class="text size-3">
+                <label th:for="*{confirmMessage}">
+                    Text till sidan som visas när någon anmält en patrull
+                </label>
+                <textarea th:field="*{confirmMessage}" rows="7" cols="30"></textarea>
+            </div>
+
+            <div class="text size-3">
+                <label th:for="*{registrationNotOpen}">
+                    Text till sidan som visas när anmälan inte är öppen
+                </label>
+                <textarea th:field="*{registrationNotOpen}" rows="7" cols="30"></textarea>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="submit-area">
+        <input type="submit" value="Spara"/> |
+        <a th:href="@{/admin}">Tillbaka</a>
+    </div>
+</form>
+</body>
+</html>

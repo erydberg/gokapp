@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title>Anmäl patrull till [[${config.name}]]</title>
+</head>
+<body>
+<div class="nav-box">
+    <div class="page-head">
+        <h1>Anmäl patrull till [[${config.name}]]</h1>
+    </div>
+</div>
+
+
+<div class="ingress_background">
+    <div class="ingress">
+        <!-- Include messages -->
+        <div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+
+        <p th:text="${registrationconfig.registerInfo}"></p>
+
+        <div th:if="${registrationconfig.lastRegisterDay != null}">
+            Sista anmälningsdag: <span th:text="${registrationconfig.lastRegisterDay}"></span><br>
+        </div>
+        <div th:if="${registrationconfig.maxPatrols != null}">
+            Max antal patruller: <span th:text="${registrationconfig.maxPatrols}"></span> st<br>
+            Antal anmälda patruller just nu: <span th:text="${registeredpatrols}"></span> st
+        </div>
+    </div>
+</div>
+
+<form th:action="@{/public/register}" th:object="${patrolPublicDto}" method="post" class="form-general">
+
+    <div class="form-box">
+        <fieldset>
+            <div class="text size-3">
+                <label for="patrolName">Patrullens namn:</label>
+                <input type="text" th:field="*{patrolName}" id="patrolName"/>
+                <div class="errortext" th:errors="*{patrolName}"></div>
+            </div>
+
+            <div class="text size-3">
+                <label for="troop">Scoutkår</label>
+                <input type="text" th:field="*{troop}" id="troop"/>
+                <div class="errortext" th:errors="*{troop}"></div>
+            </div>
+
+            <div class="text size-3">
+                <label for="track">Klass:</label>
+                <select th:field="*{track}" id="track">
+                    <option value="0">Välj en klass</option>
+                    <option th:each="track : ${tracks}"
+                            th:value="${track.id}"
+                            th:text="${track.name}"></option>
+                </select>
+                <div class="errortext" th:errors="*{track}"></div>
+            </div>
+
+            <div class="text size-3">
+                <label for="leaderContact">Kontaktperson (ledare)</label>
+                <input type="text" th:field="*{leaderContact}" id="leaderContact"/>
+                <div class="errortext" th:errors="*{leaderContact}"></div>
+            </div>
+
+            <div class="text size-4">
+                <label for="leaderContactMail">E-post till kontaktperson</label>
+                <input type="email" th:field="*{leaderContactMail}" id="leaderContactMail"/>
+                <div class="errortext" th:errors="*{leaderContactMail}"></div>
+            </div>
+
+            <div class="text size-3">
+                <label for="leaderContactPhone">Mobiltelefonnummer till kontaktperson</label>
+                <input type="text" th:field="*{leaderContactPhone}" id="leaderContactPhone"/>
+                <div class="errortext" th:errors="*{leaderContactPhone}"></div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="submit-area">
+        <input type="submit" value="Skicka in"/>
+    </div>
+</form>
+
+</body>
+</html>

@@ -23,7 +23,7 @@
             <div class="text size-3">
                 <label>Patrullens namn:</label>
                 <input type="text" th:field="*{patrolName}"/>
-                <div class="errortext" th:if="${#fields.hasErrors('patrolName')}" th:errors="*{patrolName}"></div>
+                <div class="errortext" th:errors="*{patrolName}"></div>
                 <br>
                 <small th:if="${patrol.patrolId != null}" th:text="'Patrullnummer: ' + ${patrol.patrolId}"></small>
             </div>
@@ -39,11 +39,13 @@
                     <option value="">Välj en klass</option>
                     <option th:each="track : ${tracks}" th:value="${track.id}" th:text="${track.name}"></option>
                 </select>
+                <div class="errortext" th:errors="*{track}"></div>
             </div>
 
             <div class="text size-3">
                 <label>Kår:</label>
                 <input type="text" th:field="*{troop}"/>
+                <div class="errortext" th:errors="*{troop}"></div>
             </div>
 
             <div class="text size-3">
@@ -73,16 +75,19 @@
             <div class="text size-3">
                 <label>Ledare:</label>
                 <input type="text" th:field="*{leaderContact}"/>
+                <div class="errortext" th:errors="*{leaderContact}"></div>
             </div>
 
             <div class="text size-3">
                 <label>E-post till ledare:</label>
                 <input type="email" th:field="*{leaderContactMail}"/>
+                <div class="errortext" th:errors="*{leaderContactMail}"></div>
             </div>
 
             <div class="text size-3">
                 <label>Mobiltelefonnummer till ledare:</label>
                 <input type="text" th:field="*{leaderContactPhone}"/>
+                <div class="errortext" th:errors="*{leaderContactPhone}"></div>
             </div>
 
             <div class="text size-3">

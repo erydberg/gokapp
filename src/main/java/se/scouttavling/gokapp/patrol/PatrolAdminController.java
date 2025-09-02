@@ -15,6 +15,8 @@ import se.scouttavling.gokapp.track.TrackService;
 
 import java.util.List;
 
+//TODO alla olika sorting-anrop
+
 @RequestMapping("/admin/patrol")
 @RequiredArgsConstructor
 @Controller
@@ -46,11 +48,30 @@ public class PatrolAdminController {
         return "patrol_admin_edit";  // Thymeleaf form
     }
 
+    /**
+     * Go to edit mode of a patrol loaded from backend database
+     * @param id
+     * @param model
+     * @return
+     */
+    @GetMapping("/{id}")
+    public String edit(@PathVariable("id") Integer id, Model model) {
+
+        Patrol patrol = patrolService.getPatrolById(id).
+                orElseThrow(() -> new IllegalArgumentException("Invalid patrol Id:" + id));
+        model.addAttribute("patrol", patrol);
+        model.addAttribute("statuslist", Status.values());
+
+        return "patrol_admin_edit";
+    }
+
+
     @PostMapping
     public String save(@Valid @ModelAttribute("patrol") Patrol patrol, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errormsg", "Fyll i alla obligatoriska uppgifter");
             model.addAttribute("patrol", patrol);
+            model.addAttribute("statuslist", Status.values());
             return "patrol_admin_edit";
         }
         patrolService.save(patrol);
@@ -60,6 +81,22 @@ public class PatrolAdminController {
     }
 
 
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+
+        patrolService.deletePatrolById(id);
+        redirectAttributes.addFlashAttribute("confirmmsg", "Kontrollen borttagen");
+
+        return "redirect:/admin/patrol";
+    }
+
+
+    /**
+     * Switch between paid / not paid
+     * @param id
+     * @param status
+     * @return
+     */
     @PutMapping("/setpaid/{id}")
     @ResponseBody
     public ResponseEntity<String> setPaid(

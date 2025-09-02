@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title>Bekräftelse anmäld patrull till [[${config.name}]]</title>
+</head>
+<body>
+<div class="nav-box">
+    <div class="page-head">
+        <h1>
+            Patrull <span th:text="${patrol.patrolName}"></span>
+            anmäld till <span th:text="${config.name}"></span>
+        </h1>
+    </div>
+</div>
+
+<div class="ingress">
+    <!-- Include messages -->
+    <div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+
+    <h2>Anmälningsbekräftelse</h2>
+
+    <p>
+        Patrullnamn: <span th:text="${patrol.patrolName}"></span><br/>
+        Patrullnummer: <span th:text="${patrol.patrolId}"></span><br/>
+        Klass/gren: <span th:text="${patrol.track.name}"></span><br/>
+        Scoutkår: <span th:text="${patrol.troop}"></span><br/>
+        Kontaktperson: <span th:text="${patrol.leaderContact}"></span><br/>
+        Telefon: <span th:text="${patrol.leaderContactPhone}"></span><br/>
+        E-post: <span th:text="${patrol.leaderContactMail}"></span><br/>
+    </p>
+
+    <p th:text="${configregistration.confirmMessage}"></p>
+
+    <a th:href="@{/register}">
+        Klicka här om du vill anmäla en patrull till.
+    </a>
+</div>
+</body>
+</html>
