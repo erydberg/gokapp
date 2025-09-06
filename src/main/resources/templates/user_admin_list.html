@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Användare</title>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function confirmDelete(formId) {
+            if (confirm("Vill du ta bort användaren?")) {
+                document.getElementById(formId).submit();
+            }
+            return false;
+        }
+        /*]]>*/
+    </script>
+</head>
+<body>
+<div class="nav-box">
+    <h1>Användare</h1>
+    <a th:href="@{/admin/user/new}">Lägg till ny användare</a> |
+    <a th:href="@{/admin}">Tillbaka</a>
+</div>
+
+<!-- Include messages -->
+<div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+
+<div class="notepad">
+    <ul class="list">
+        <li th:each="user, iterUser : ${users}">
+            <a th:href="@{/admin/user/{id}(id=${user.id})}"
+               th:text="${user.username}">Användarnamn</a>
+
+            <!-- Delete form -->
+            <form th:id="'deleteForm-' + ${iterUser.index}"
+                  th:action="@{/admin/user/{id}/delete(id=${user.id})}"
+                  method="post" style="display:inline;">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <a href="#"
+                   class="del"
+                   th:onclick="'return confirmDelete(\'deleteForm-' + ${iterUser.index} + '\');'">
+                    <img th:src="@{/css/delete.png}" alt="Radera"/>
+                </a>
+            </form>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

@@ -1,27 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="sv">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Login</title>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title>Logga in</title>
 </head>
 <body>
 <h1>Logga in</h1>
 
-<!-- Error message if login failed -->
-<div th:if="${error}" class="errorblock" th:text="${error}"></div>
+<!-- Error and logout messages -->
+<div th:if="${param.error}" class="errorblock">
+    Felaktigt användarnamn eller lösenord
+</div>
+<div th:if="${param.logout}" class="confirmblock">
+    Du har loggats ut
+</div>
 
-<form th:action="@{/login}" method="post">
-    <div>
-        <label for="username">Användarnamn:</label>
-        <input type="text" id="username" name="username" required/>
-    </div>
-    <div>
-        <label for="password">Lösenord:</label>
-        <input type="password" id="password" name="password" required/>
-    </div>
-    <div>
-        <button type="submit">Logga in</button>
-    </div>
+<form th:action="@{/login}" method="post" class="form-general">
+    <fieldset>
+        <div>
+            <label for="username">Användarnamn:</label>
+            <input type="text" id="username" name="username"
+                   autocomplete="username" autofocus required/>
+        </div>
+        <div>
+            <label for="password">Lösenord:</label>
+            <input type="password" id="password" name="password"
+                   autocomplete="current-password" required/>
+        </div>
+
+        <!-- CSRF token -->
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+        <div class="submit-area">
+            <button type="submit">Logga in</button>
+        </div>
+    </fieldset>
 </form>
 </body>
 </html>

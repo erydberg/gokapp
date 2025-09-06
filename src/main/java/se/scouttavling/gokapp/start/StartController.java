@@ -58,7 +58,7 @@ public class StartController {
 
     @GetMapping("/login")
     public String login() {
-        return "login"; // maps to login.html in src/main/resources/templates
+        return "login";
     }
 
     @GetMapping("/loginfailed")

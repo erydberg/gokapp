@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import se.scouttavling.gokapp.configuration.ConfigService;
 import se.scouttavling.gokapp.configuration.RegistrationConfig;
 import se.scouttavling.gokapp.configuration.RegistrationConfigService;
+import se.scouttavling.gokapp.start.RegistrationChecker;
 import se.scouttavling.gokapp.track.Track;
 import se.scouttavling.gokapp.track.TrackService;
 
@@ -32,11 +33,19 @@ public class PatrolPublicRegistrationController {
 
     @GetMapping
     public String showForm(Model model) {
-        model.addAttribute("config", configService.getCurrentConfig());
-        model.addAttribute("patrolPublicDto", new PatrolPublicDto());
-        model.addAttribute("tracks", trackService.findAllTracks());
-        model.addAttribute("registrationconfig", registrationConfigService.getCurrentConfig());
-        return "patrol_public_registration"; // thymeleaf template
+        RegistrationConfig registrationConfig = registrationConfigService.getCurrentConfig();
+        if (RegistrationChecker.isOpenForRegistration(registrationConfig, patrolService.getAllPatrols().size())) {
+            model.addAttribute("config", configService.getCurrentConfig());
+            model.addAttribute("patrolPublicDto", new PatrolPublicDto());
+            model.addAttribute("tracks", trackService.findAllTracks());
+            model.addAttribute("registrationconfig", registrationConfig);
+            return "patrol_public_registration";
+        } else {
+            model.addAttribute("config", configService.getCurrentConfig());
+            model.addAttribute("registrationconfig", registrationConfig);
+            return "patrol_public_registration_closed";
+        }
+
     }
 
     @PostMapping

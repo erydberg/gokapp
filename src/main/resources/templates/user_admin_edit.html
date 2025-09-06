@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title th:text="${user.id} != null ? 'Redigera användare - ' + ${user.username} : 'Ny användare'">
+        Användare</title>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<div class="nav-box">
+    <h1 th:text="${user.id} != null ? 'Redigera användare' : 'Ny användare'">Användare</h1>
+
+    <!-- Include messages -->
+    <div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+
+    <form th:action="@{/admin/user}" th:object="${user}" method="post" class="form-general">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="form-box">
+            <fieldset>
+                <div class="text size-3">
+
+                    <label for="username">Användarnamn:</label>
+                    <input type="text" th:field="*{username}" id="username"/>
+                    <div class="errortext" th:errors="*{username}"></div>
+
+                    <label for="password">Lösenord:</label>
+                    <input type="password" th:field="*{password}" id="password"/>
+                    <div class="errortext" th:errors="*{password}"></div>
+                    <small th:if="${user.id != null}">Lämna blankt för att behålla nuvarande lösenord</small>
+
+                    <label for="role">Roll:</label>
+                    <select th:field="*{role}" id="role">
+                        <option th:value="ROLE_ADMIN" th:text="'admin'"
+                                th:selected="${user.role} == T(se.scouttavling.gokapp.model.Role).ROLE_ADMIN"></option>
+                        <option th:value="ROLE_USER" th:text="'kontrollant'"
+                                th:selected="${user.role} == T(se.scouttavling.gokapp.model.Role).ROLE_USER"></option>
+                        <option th:value="ROLE_STARTFINISH_ADMIN" th:text="'start- måladmin'"
+                                th:selected="${user.role} == T(se.scouttavling.gokapp.model.Role).ROLE_STARTFINISH_ADMIN"></option>
+                    </select>
+                    <div class="errortext" th:errors="*{role}"></div>
+
+                </div>
+            </fieldset>
+
+            <div class="submit-area">
+                <button type="submit" name="saveUser">Spara</button>
+                | <a th:href="@{/admin/user}">Tillbaka</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

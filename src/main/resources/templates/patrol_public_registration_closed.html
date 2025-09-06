@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title>Registreringen är inte öppen [[${config.name}]]</title>
+</head>
+<body>
+
+<!-- Nav box header -->
+<div th:fragment="navbox(headerText)">
+    <div class="nav-box">
+        <div class="page-head">
+            <h1 th:text="${headerText}">Header</h1>
+        </div>
+    </div>
+</div>
+<div class="nav-box">
+    <div class="page-head">
+        <h1>Ingen registrering av patruller för <span th:text="${config.name}"></span></h1>
+    </div>
+</div>
+
+<div th:replace="fragments :: messages(${errormsg}, ${confirmmsg})"></div>
+
+<div class="ingress">
+    <div th:if="${registrationconfig.registrationNotOpen}">
+        <p th:text="${registrationconfig.registrationNotOpen}"></p>
+    </div>
+    <div th:if="${registrationconfig.registrationNotOpen == null}">
+        <p>
+            Det går inte att registrera några patruller för tävlingen.
+            Anmälan är stängd, sista dagen har passerat och/eller antalet
+            anmälda patruller har nått max-gränsen.
+        </p>
+    </div>
+
+    <a th:href="@{/}">Till startsidan</a>
+</div>
+
+</body>
+</html>
