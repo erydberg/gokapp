@@ -1,0 +1,49 @@
+<!-- fragments/edit_score.html -->
+<div th:fragment="editScore(score)">
+
+    <!-- Case 1: Station is a waypoint -->
+    <div th:if="${score.station.waypoint}">
+        <label for="visitedWaypoint">Patrullen har passerat</label>
+        <input type="checkbox" th:field="*{visitedWaypoint}" id="visitedWaypoint"/> Ja
+
+        <p th:if="${score.visitedWaypoint}">
+            <small>Vill du avmarkera passagen, ta bort hela "poängen" istället.</small>
+        </p>
+    </div>
+
+    <!-- Case 2: Normal scoring station -->
+    <div th:if="${!score.station.waypoint}">
+
+        <!-- Main score -->
+        <div class="form-box">
+            <fieldset>
+                <h3>Poäng</h3>
+                <div class="radio-score">
+                    <th:block th:each="j : ${#numbers.sequence(score.station.minScore, score.station.maxScore)}">
+                        <input type="radio"
+                               th:field="*{scorePoint}"
+                               th:value="${j}"
+                               th:id="'scorePoint' + ${j}" />
+                        <label th:for="'scorePoint' + ${j}" th:text="${j}"></label>
+                    </th:block>
+                </div>
+            </fieldset>
+        </div>
+
+        <!-- Style points -->
+        <div class="form-box">
+            <fieldset>
+                <h3>Stilpoäng:</h3>
+                <div class="radio-score">
+                    <th:block th:each="i : ${#numbers.sequence(score.station.minStyleScore, score.station.maxStyleScore)}">
+                        <input type="radio"
+                               th:field="*{stylePoint}"
+                               th:value="${i}"
+                               th:id="'stylePoint' + ${i}" />
+                        <label th:for="'stylePoint' + ${i}" th:text="${i}"></label>
+                    </th:block>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>

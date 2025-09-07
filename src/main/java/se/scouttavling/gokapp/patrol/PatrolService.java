@@ -46,10 +46,16 @@ public class PatrolService {
 
 
     public List<Patrol> allPatrolsLeftOnStation(Integer stationId) {
+
+        return patrolRepository.findAllWithoutScoreForStation(stationId);
+
+        /* In memory version
         return patrolRepository.findAllWithScores().stream()
                 .filter(p -> p.getScores().stream()
                         .noneMatch(s -> s.getStation().getId().equals(stationId)))
                 .toList();
+
+         */
     }
 
 }

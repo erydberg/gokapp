@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Välj kontroll</title>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+</head>
+<body>
+<div class="nav-box">
+    <h1>Rapportera poäng - välj kontroll</h1>
+</div>
+
+<!-- Include messages -->
+<div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+
+
+<form th:action="@{/score/selectstation}" th:object="${stationSelectionForm}" method="post" class="form-general">
+    <div class="form-box">
+        <fieldset>
+            <select th:field="*{stationId}">
+                <option value="">-- Välj kontroll --</option>
+                <option th:each="station : ${stations}"
+                        th:value="${station.id}"
+                        th:text="${station.stationName}">
+                </option>
+            </select>
+        </fieldset>
+    </div>
+
+    <div class="submit-area">
+        <button type="submit">Fortsätt</button>
+        | <a th:href="@{/startmenu}">Avbryt</a>
+    </div>
+</form>
+</body>
+</html>

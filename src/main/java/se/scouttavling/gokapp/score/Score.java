@@ -1,44 +1,40 @@
 package se.scouttavling.gokapp.score;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
 import lombok.*;
 import se.scouttavling.gokapp.patrol.Patrol;
 import se.scouttavling.gokapp.station.Station;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "score")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class Score {
 
     @Id
-    @SequenceGenerator(name = "scoreSeqGen", sequenceName = "SCORE_SEQ", initialValue = 1, allocationSize = 10)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "scoreSeqGen")
-    @Column(name = "scoreid", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_station")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "station_id", nullable = false)
     private Station station;
 
-    @Column(name = "scorepoint")
-    private int scorePoint;
-
-    @Column(name = "stylepoint")
-    private int stylePoint;
-
-    @ManyToOne
-    @JoinColumn(name = "fk_patrol")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "patrol_id", nullable = false)
     private Patrol patrol;
 
-    @Column(name = "last_saved")
-    private LocalDateTime lastSaved;
+    private int scorePoint;
 
-    @Column(name = "visited_waypoint")
+    private int stylePoint;
+
     private boolean visitedWaypoint;
+
+    private LocalDateTime lastSaved;
 }
 

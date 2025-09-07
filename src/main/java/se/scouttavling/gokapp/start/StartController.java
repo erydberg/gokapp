@@ -42,7 +42,7 @@ public class StartController {
         return "welcomepage";
     }
 
-    @GetMapping("/controller/startmenu")
+    @GetMapping("/startmenu")
     public String startMenu() {
 
         return "start_menu";

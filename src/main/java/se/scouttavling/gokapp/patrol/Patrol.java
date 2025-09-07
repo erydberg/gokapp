@@ -8,9 +8,9 @@ import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import se.scouttavling.gokapp.score.Score;
 import se.scouttavling.gokapp.station.Station;
 import se.scouttavling.gokapp.track.Track;
-import se.scouttavling.gokapp.score.Score;
 
 import java.time.LocalDateTime;
 import java.util.*;

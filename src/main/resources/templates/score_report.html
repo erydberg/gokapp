@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Rapportera poäng</title>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <script th:inline="javascript">
+        // If Thymeleaf sets alertmsg, we grab it here
+        var msg = /*[[${alertmsg}]]*/ null;
+    </script>
+    <script th:src="@{/js/score.js}"></script>
+</head>
+<body>
+<div class="nav-box">
+    <h1>Rapportera poäng</h1>
+</div>
+
+<!-- Include messages -->
+<div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+
+<form th:action="@{/score}" th:object="${score}" method="post" class="form-general">
+    <input type="hidden" th:field="*{id}"/>
+    <input type="hidden" th:field="*{station.id}"/>
+
+    <p>Vald kontroll: <span th:text="${station.stationName}"></span></p>
+
+    <!-- Hidden stationId so it persists -->
+    <input type="hidden" th:field="*{station.id}"/>
+
+    <div class="form-box">
+        <div class="station-container">
+            <!-- Left side: patrol dropdown -->
+            <div class="dropdown-area">
+                <fieldset>
+                    <label for="patrol">Patrull:</label>
+                    <select th:field="*{patrol}" id="patrol">
+                        <option value="">-- Välj patrull --</option>
+                        <option th:each="patrol : ${patrols}"
+                                th:value="${patrol.patrolId}"
+                                th:text="${patrol.patrolName}">
+                        </option>
+                    </select>
+                </fieldset>
+            </div>
+
+            <!-- Right side: quick number pad -->
+            <div class="numpad-area">
+                <label class="numpad-display">Nr: <span id="current_filter"></span></label>
+
+                <div class="numpad-grid">
+                    <button type="button" onclick="filterPatrol(7)">7</button>
+                    <button type="button" onclick="filterPatrol(8)">8</button>
+                    <button type="button" onclick="filterPatrol(9)">9</button>
+
+                    <button type="button" onclick="filterPatrol(4)">4</button>
+                    <button type="button" onclick="filterPatrol(5)">5</button>
+                    <button type="button" onclick="filterPatrol(6)">6</button>
+
+                    <button type="button" onclick="filterPatrol(1)">1</button>
+                    <button type="button" onclick="filterPatrol(2)">2</button>
+                    <button type="button" onclick="filterPatrol(3)">3</button>
+
+                    <button type="button" onclick="clearFilter()">C</button>
+                    <button type="button" onclick="filterPatrol(0)">0</button>
+                    <button type="button" onclick="backspaceFilter()">&lt;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div th:replace="~{fragments_edit_score :: editScore(${score})}"></div>
+    </fieldset>
+    </div>
+
+    <div class="submit-area">
+        <button type="submit">Spara</button>
+        | <a th:href="@{/statmenu}">Avbryt</a>
+    </div>
+</form>
+</body>
+</html>

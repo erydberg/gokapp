@@ -42,4 +42,8 @@ public interface PatrolRepository extends JpaRepository<Patrol, Integer> {
     //my old query don't work anymore so this gives every patrol that has a score and then it will be filtered in PatrolService
     @Query("SELECT DISTINCT p FROM Patrol p LEFT JOIN FETCH p.scores s")
     List<Patrol> findAllWithScores();
+
+
+    @Query("SELECT p FROM Patrol p WHERE NOT EXISTS (SELECT s FROM Score s WHERE s.patrol = p AND s.station.id = :stationId)")
+    List<Patrol> findAllWithoutScoreForStation(@Param("stationId") Integer stationId);
 }

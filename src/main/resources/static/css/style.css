@@ -194,32 +194,61 @@ fieldset {
 	padding: 0;
 }
 
-panes {
-        overflow: auto;
-        width: 100%;
+.station-container {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
 }
 
-rightpane, leftpane {
-        display: block;
+.dropdown-area {
+  flex: 1;
 }
 
-rightpane {
-        float: right;
-        min-width: 45%;
+.numpad-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-leftpane {
-        float: left;
+.numpad-display {
+  display: block;
+  margin-bottom: 10px;
+  padding: 6px 12px;
+  font-family: monospace;
+  font-size: 1.1rem;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  border-radius: 4px;
+  width: 100%;
+  text-align: center;
 }
 
-quicknum {
-        display: block;
-        float: right;
+.numpad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 50px);
+  grid-gap: 10px;
 }
 
-quicknum button {
-  type: button;
+.numpad-grid button {
+  width: 50px;
+  height: 50px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: 1px solid #888;
+  border-radius: 6px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background 0.2s;
 }
+
+.numpad-grid button:hover {
+  background-color: #ddd;
+}
+
+.numpad-grid button:active {
+  background-color: #bbb;
+}
+
 
 .checkbox input, .radio input {
 	margin-right: 5px;
