@@ -4,8 +4,8 @@
     <title>Rapportera poäng</title>
     <th:insert th:replace="~{fragments :: metadata}"></th:insert>
     <script th:inline="javascript">
-        // If Thymeleaf sets alertmsg, we grab it here
         var msg = /*[[${alertmsg}]]*/ null;
+        console.log("message " + msg);
     </script>
     <script th:src="@{/js/score.js}"></script>
 </head>
@@ -69,12 +69,10 @@
 
 
     <div th:replace="~{fragments_edit_score :: editScore(${score})}"></div>
-    </fieldset>
-    </div>
 
     <div class="submit-area">
         <button type="submit">Spara</button>
-        | <a th:href="@{/statmenu}">Avbryt</a>
+        | <a th:href="@{/startmenu}">Avbryt</a>
     </div>
 </form>
 </body>

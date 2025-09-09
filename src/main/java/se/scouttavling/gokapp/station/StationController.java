@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import se.scouttavling.gokapp.security.User;
+import se.scouttavling.gokapp.security.UserService;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ import java.util.List;
 public class StationController {
 
     final private StationService stationService;
+    final private UserService userService;
 
 
     @GetMapping
@@ -30,6 +33,7 @@ public class StationController {
     @GetMapping("/new")
     public String displayForm(Model model) {
         model.addAttribute("station", new Station());
+        model.addAttribute("users", userService.findAllUsers());
 
         return "station_edit";
     }
@@ -40,6 +44,7 @@ public class StationController {
         Station station = stationService.getStationById(id).
                 orElseThrow(() -> new IllegalArgumentException("Invalid station Id:" + id));
         model.addAttribute("station", station);
+        model.addAttribute("users", userService.findAllUsers());
 
         return "station_edit";
     }
@@ -47,11 +52,24 @@ public class StationController {
     @PostMapping
     public String save(@Valid @ModelAttribute("station") Station station, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
+        System.out.println("Saving a station");
         if(bindingResult.hasErrors()) {
+            System.out.println("Errors exists");
             model.addAttribute("errormsg", "Fyll i alla obligatoriska uppgifter");
             model.addAttribute("station", station);
+            model.addAttribute("users", userService.findAllUsers());
             return "station_edit";
         }
+
+        System.out.println("Fetching user from db based on id " + station.getStationUser().getId());
+        // Fetch the User from DB based on ID set in the form
+        if (station.getStationUser() != null && station.getStationUser().getId() != null) {
+            User user = userService.findUserById(station.getStationUser().getId()).orElse(null);
+            station.setStationUser(user);
+        } else {
+            station.setStationUser(null); // in case no user is selected
+        }
+
         stationService.save(station);
         redirectAttributes.addFlashAttribute("confirmmsg", "Kontrollen är sparad");
 

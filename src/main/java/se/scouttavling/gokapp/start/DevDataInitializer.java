@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import se.scouttavling.gokapp.patrol.Patrol;
 import se.scouttavling.gokapp.patrol.PatrolService;
 import se.scouttavling.gokapp.patrol.Status;
+import se.scouttavling.gokapp.security.Role;
+import se.scouttavling.gokapp.security.User;
+import se.scouttavling.gokapp.security.UserService;
 import se.scouttavling.gokapp.station.Station;
 import se.scouttavling.gokapp.station.StationService;
 import se.scouttavling.gokapp.track.Track;
@@ -20,12 +23,14 @@ public class DevDataInitializer {
     private final StationService stationService;
     private final TrackService trackService;
     private final PatrolService patrolService;
+    private final UserService userService;
 
     @PostConstruct
     public void init() {
         initTracks();
         initStations();
         initPatrols();
+        initUsers();
     }
 
     private void initTracks() {
@@ -97,6 +102,16 @@ public class DevDataInitializer {
             patrolService.save(p2);
             System.out.println("Saved patrol 1");
         }
+    }
+
+    private void initUsers() {
+        User user = new User();
+        user.setUsername("k1");
+        user.setPassword("losen_test"); // Make sure UserService encodes the password
+        user.addRole(Role.ROLE_USER);
+        user.setEnabled(true);
+        userService.save(user);
+        System.out.println("User created: username=k1, password=losen_test");
     }
 }
 

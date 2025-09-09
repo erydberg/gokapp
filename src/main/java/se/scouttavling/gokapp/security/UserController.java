@@ -24,7 +24,7 @@ public class UserController {
     public String listUsers(Model model) {
         List<User> users = userService.findAllUsers();
         model.addAttribute("users", users);
-        return "admin_user_list";
+        return "user_admin_list";
     }
 
     // Show form for creating a new user
@@ -32,7 +32,7 @@ public class UserController {
     public String newUser(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        return "admin_user_edit";
+        return "user_admin_edit";
     }
 
     // Show form for editing an existing user
@@ -44,7 +44,7 @@ public class UserController {
             return "redirect:/admin/user";
         }
         model.addAttribute("user", user);
-        return "admin_user_edit";
+        return "user_admin_edit";
     }
 
     // Save new or edited user
@@ -54,7 +54,7 @@ public class UserController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("errormsg", "Fyll i alla obligatoriska fält korrekt");
-            return "admin_user_edit";
+            return "user_admin_edit";
         }
 
         try {

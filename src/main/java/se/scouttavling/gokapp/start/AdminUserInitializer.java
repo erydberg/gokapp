@@ -17,14 +17,14 @@ public class AdminUserInitializer {
 
     @EventListener(ApplicationReadyEvent.class)
     public void ensureAdminUserExists() {
-        if (userService.countUsers() == 0) {
+    //    if (userService.countUsers() == 0) {
             User admin = new User();
             admin.setUsername("admin");
             admin.setPassword("admin"); // Make sure UserService encodes the password
             admin.addRole(Role.ROLE_ADMIN);
             userService.save(admin);
             System.out.println("Default admin user created: username=admin, password=admin");
-        }
+   //     }
     }
 }
 

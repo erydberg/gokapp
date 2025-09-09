@@ -52,5 +52,9 @@ public class UserService {
     public int countUsers() {
         return findAllUsers().size();
     }
+
+    public List<String> getAllUsernames() {
+        return userRepository.findAllUsernames();
+    }
 }
 

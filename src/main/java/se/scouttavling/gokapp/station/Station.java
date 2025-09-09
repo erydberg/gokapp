@@ -3,6 +3,7 @@ package se.scouttavling.gokapp.station;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+import se.scouttavling.gokapp.security.User;
 
 @Entity
 @Table(name = "station")
@@ -45,9 +46,10 @@ public class Station {
     @Column(name = "stationphone", length = 50)
     private String stationPhonenumber;
 
-    @Column(name = "stationuser", length = 16)
-    private String stationUser;
-
     @Column(name = "waypoint")
     private Boolean waypoint = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User stationUser; // the user allowed to score this station
 }

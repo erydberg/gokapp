@@ -50,8 +50,15 @@
                     <label for="stationPhonenumber">Telefonnummer till ansvarig:</label>
                     <input type="text" th:field="*{stationPhonenumber}" id="stationPhonenumber"/>
 
-                    <label for="stationUser">Användare som får lägga till poäng (utöver admin-konton):</label>
-                    <input type="text" th:field="*{stationUser}" id="stationUser"/>
+
+                    <label for="stationUser">Användare som får lägga till poäng (utöver admin-konton)::</label>
+                    <select id="stationUser" th:field="*{stationUser.id}">
+                        <option value="">-- Välj användare --</option>
+                        <option th:each="user : ${users}"
+                                th:value="${user.id}"
+                                th:text="${user.username}">
+                        </option>
+                    </select>
                 </div>
             </fieldset>
 

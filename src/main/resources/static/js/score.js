@@ -50,4 +50,20 @@ function backspaceFilter() {
 document.addEventListener('DOMContentLoaded', () => {
   updateDisplay();
   applyFilter(false);
+
+   if (typeof msg !== "undefined" && msg !== null && msg !== "") {
+          alert(msg);
+
+          // Uncheck all radios
+          document.querySelectorAll("input[type='radio']").forEach(function (el) {
+              el.checked = false;
+          });
+
+          // Uncheck all checkboxes
+          document.querySelectorAll("input[type='checkbox']").forEach(function (el) {
+              el.checked = false;
+          });
+      }
 });
+
+
