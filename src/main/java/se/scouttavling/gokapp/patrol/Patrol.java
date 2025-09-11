@@ -60,9 +60,8 @@ public class Patrol implements Comparable<Patrol> {
     @Column(name = "note", length = 500)
     private String note;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "patrol", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("lastSaved desc")
-    @JoinColumn(name = "fk_patrol")
     private Set<Score> scores = new LinkedHashSet<>();
 
     @NotEmpty(message = "Missa inte att fylla i kontaktperson")

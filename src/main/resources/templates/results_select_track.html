@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title>Välj klass</title>
+</head>
+<body>
+<div class="nav-box">
+    <a th:href="@{/startmenu}">Tillbaka</a>
+    <ul>
+        <li th:each="track : ${tracks}" class="nav-item-small">
+            <a th:href="@{/results/bytrack/{id}(id=${track.id})}"
+               th:text="${track.name}"></a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

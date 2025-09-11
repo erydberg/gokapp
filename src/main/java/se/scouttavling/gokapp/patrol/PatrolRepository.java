@@ -46,4 +46,7 @@ public interface PatrolRepository extends JpaRepository<Patrol, Integer> {
 
     @Query("SELECT p FROM Patrol p WHERE NOT EXISTS (SELECT s FROM Score s WHERE s.patrol = p AND s.station.id = :stationId)")
     List<Patrol> findAllWithoutScoreForStation(@Param("stationId") Integer stationId);
+
+    @Query("SELECT DISTINCT p FROM Patrol p LEFT JOIN FETCH p.scores s LEFT JOIN FETCH s.station WHERE p.track.id = :trackId")
+    List<Patrol> findByTrackIdWithScores(@Param("trackId") Integer trackId);
 }

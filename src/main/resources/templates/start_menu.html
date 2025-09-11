@@ -18,9 +18,11 @@
     <ul>
         <li class="nav-item"><a th:href="@{/score}">Rapportera poäng</a></li>
         <li class="nav-item"><a th:href="@{/correctscore}">Ändra poäng</a></li>
-        <li class="nav-item"><a th:href="@{/reports/patrols}">Patruller</a></li>
-        <li class="nav-item"><a th:href="@{/reports/bytrack}">Resultat per klass</a></li>
+        <li class="nav-item"><a th:href="@{/patrols}">Patruller</a></li>
 
+        <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_STARTFINISH')">
+          <a th:href="@{/results/bytrack}">Resultat per klass</a>
+        </li>
         <!-- Show only for ADMIN or STARTFINISH -->
         <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_STARTFINISH')">
             <a th:href="@{/startfinish}">Start- och måladministration</a>

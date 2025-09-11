@@ -17,8 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StationController {
 
-    final private StationService stationService;
-    final private UserService userService;
+    private final StationService stationService;
+    private final UserService userService;
 
 
     @GetMapping

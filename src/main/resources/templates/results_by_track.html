@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title>Resultatlista</title>
+</head>
+<body>
+<div class="nav-box">
+    <a th:href="@{/results/bytrack}">Tillbaka till klasser</a>
+</div>
+
+<div th:if="${selectedTrack != null}">
+    <h2 th:text="'Resultatlista ' + ${selectedTrack.name}"></h2>
+    <p th:if="${patrols != null}" th:text="'Totalt ' + ${patrols.size()} + ' patruller'"></p>
+</div>
+
+<div th:if="${patrols != null}">
+    <div th:each="patrol, iterStat : ${patrols}" class="scoreitem">
+        <a th:href="@{/patrol/viewpatrolfromlisttrack/{patrolId}/track/{trackId}(patrolId=${patrol.patrolId}, trackId=${selectedTrack.id})}"
+           th:text="${iterStat.count + '. ' + patrol.patrolName}"></a><br/>
+
+        <span th:text="${patrol.troop}"></span><br/>
+        <strong th:text="'Totalt: ' + ${patrol.totalScore}"></strong><br/>
+        <span th:text="'(' + ${patrol.totalScorePoint} + ' poäng + ' + ${patrol.totalStylePoint} + ' stilpoäng)'"></span><br/>
+
+        <small th:text="'Antal kontroller: ' + ${patrol.totalReportedStations}"></small><br/>
+        <small th:text="'Antal kontroller med maxpoäng: ' + ${patrol.numberOfMaxPoints}"></small>
+    </div>
+</div>
+</body>
+</html>

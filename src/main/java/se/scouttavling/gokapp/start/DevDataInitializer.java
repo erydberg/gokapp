@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import se.scouttavling.gokapp.patrol.Patrol;
 import se.scouttavling.gokapp.patrol.PatrolService;
 import se.scouttavling.gokapp.patrol.Status;
+import se.scouttavling.gokapp.score.Score;
+import se.scouttavling.gokapp.score.ScoreService;
 import se.scouttavling.gokapp.security.Role;
 import se.scouttavling.gokapp.security.User;
 import se.scouttavling.gokapp.security.UserService;
@@ -24,6 +26,7 @@ public class DevDataInitializer {
     private final TrackService trackService;
     private final PatrolService patrolService;
     private final UserService userService;
+    private final ScoreService scoreService;
 
     @PostConstruct
     public void init() {
@@ -91,6 +94,11 @@ public class DevDataInitializer {
             patrolService.save(p1);
             System.out.println("Saved patrol 1");
 
+            Score score = Score.builder().patrol(p1).station(stationService.getAll().getFirst()).scorePoint(8).stylePoint(1).build();
+            scoreService.save(score);
+            Score score2 = Score.builder().patrol(p1).station(stationService.getAll().getLast()).scorePoint(4).stylePoint(0).build();
+            scoreService.save(score2);
+
             Patrol p2 = new Patrol();
             p2.setPatrolName("Patrol 2");
             p2.setTrack(trackService.findAllTracks().getFirst());
@@ -101,8 +109,31 @@ public class DevDataInitializer {
             p2.setTroop("Scoutkåren B");
             patrolService.save(p2);
             System.out.println("Saved patrol 1");
+
+            Score score3 = Score.builder().patrol(p2).station(stationService.getAll().getFirst()).scorePoint(7).stylePoint(1).build();
+            scoreService.save(score3);
+            Score score4 = Score.builder().patrol(p2).station(stationService.getAll().getLast()).scorePoint(4).stylePoint(1).build();
+            scoreService.save(score4);
+
+            Patrol p3 = new Patrol();
+            p3.setPatrolName("Patrol 3 - track A");
+            p3.setTrack(trackService.findAllTracks().getFirst());
+            p3.setLeaderContact("Abraham");
+            p3.setLeaderContactMail("aa@mail.se");
+            p3.setLeaderContactPhone("77777");
+            p3.setStatus(Status.REGISTERED);
+            p3.setTroop("Scoutkåren B");
+            patrolService.save(p3);
+            System.out.println("Saved patrol 3");
+
+            Score score5 = Score.builder().patrol(p3).station(stationService.getAll().getFirst()).scorePoint(10).stylePoint(1).build();
+            scoreService.save(score5);
+            Score score6 = Score.builder().patrol(p3).station(stationService.getAll().getLast()).scorePoint(2).stylePoint(1).build();
+            scoreService.save(score6);
         }
     }
+
+
 
     private void initUsers() {
         User user = new User();

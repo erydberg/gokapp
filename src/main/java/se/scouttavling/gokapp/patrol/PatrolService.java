@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import se.scouttavling.gokapp.track.Track;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +43,14 @@ public class PatrolService {
                 .stream()
                 .sorted(Comparator.comparing(Patrol::getTotalScore).reversed()) // sort by score descending
                 .toList();
+    }
+
+    public List<Patrol> getAllPatrolsByTrackSortedByScore(Track track) {
+
+        List<Patrol> patrols = patrolRepository.findByTrackIdWithScores(track.getId());
+        Collections.sort(patrols);
+
+        return patrols;
     }
 
 
