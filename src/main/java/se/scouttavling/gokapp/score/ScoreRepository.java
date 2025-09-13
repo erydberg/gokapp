@@ -26,6 +26,7 @@ public interface ScoreRepository extends JpaRepository<Score, Integer> {
     @Query("SELECT s FROM Score s JOIN FETCH s.patrol JOIN FETCH s.station WHERE s.id = :id")
     Optional<Score> findByIdWithPatrolAndStation(@Param("id") Integer id);
 
+
     // --- Using EntityGraph for all scores with Patrol and Station loaded ---
     @EntityGraph(attributePaths = {"patrol", "station"})
     List<Score> findAll();
@@ -33,5 +34,8 @@ public interface ScoreRepository extends JpaRepository<Score, Integer> {
     // --- Example: find all scores for a patrol, fetching stations eagerly ---
     @EntityGraph(attributePaths = {"station"})
     List<Score> findByPatrol_PatrolId(Integer patrolId);
+
+    @EntityGraph(attributePaths = {"patrol"})
+    List<Score> findByStation_IdOrderByLastSavedDesc(Integer stationId);
 }
 

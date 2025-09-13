@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title>Rapporterade poäng på kontrollen</title>
+</head>
+<body>
+<div class="nav-box">
+    <a th:href="@{/startmenu}">Tillbaka till menyn</a>
+    <!-- Include messages -->
+    <div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+
+
+
+    <h2 th:text="'Kontroll ' + ${station.stationName}">Kontroll</h2>
+    <h3 th:text="${#lists.size(scores)} + ' rapporterade poäng'"></h3>
+    <small>Sorteras med senaste poängen överst</small>
+
+    <div th:each="score : ${scores}" class="scoreitem">
+        <div th:if="${score.patrol != null}">
+            <a th:href="@{/correct/score/{id}(id=${score.id})}"
+               th:text="${score.patrol.patrolName}"></a>
+            (<span th:text="${score.patrol.track.name}"></span>)<br>
+            <small>Patrullnummer <span th:text="${score.patrol.patrolId}"></span></small><br>
+            <span th:text="${score.patrol.troop}"></span><br>
+        </div>
+
+        <div th:if="${score.visitedWaypoint}">
+            Passerat:
+            <span th:text="${#temporals.format(score.lastSaved, 'yyyy-MM-dd HH:mm')}"></span><br>
+        </div>
+
+        <div th:if="${!score.visitedWaypoint}">
+            Poäng: <span th:text="${score.scorePoint}"></span><br>
+            Stilpoäng: <span th:text="${score.stylePoint}"></span><br>
+            Sparat:
+            <span th:text="${#temporals.format(score.lastSaved, 'yyyy-MM-dd HH:mm')}"></span><br>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TrackController {
 
-    final private TrackService trackService;
+    private final TrackService trackService;
 
     @GetMapping
     public String listTracks(Model model) {

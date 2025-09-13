@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ändra poäng</title>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+</head>
+<body>
+<div th:if="${msg}" class="statusrow" th:text="${msg}"></div>
+
+<div class="nav-box">
+    <div th:if="${errormsg}" class="errorblock" th:text="${errormsg}"></div>
+
+    <h2 th:text="'Ändra poäng för ' + ${score.station.stationName}">Ändra poäng</h2>
+
+    <form th:action="@{/correct/score}" th:object="${score}" method="post" class="form-general">
+        <!-- Hidden fields -->
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{patrol.patrolId}"/>
+        <input type="hidden" th:field="*{station.id}"/>
+
+        <div class="form-box">
+            <p>
+                <span th:text="'Patrull: ' + ${score.patrol.patrolName}"></span>
+                <span th:text="'(nr: ' + ${score.patrol.patrolId} + ')'"></span><br>
+                <span th:text="${score.patrol.track.name}"></span><br>
+                <span th:text="${score.patrol.troop}"></span>
+            </p>
+
+            <!-- Include edit fragment -->
+            <div th:replace="~{fragments_edit_score :: editScore(${score})}"></div>
+
+            <p>
+                <small>
+                    Senast sparat:
+                    <span th:text="${#temporals.format(score.lastSaved, 'yyyy-MM-dd HH:mm')}"></span>
+                </small>
+            </p>
+
+            <div class="submit-area">
+                <button type="submit" name="action" value="save">Spara</button>
+                <button type="submit" name="action" value="delete">Ta bort</button>
+                <a th:href="@{/correct/selectstation/{stationId}(stationId=${score.station.id})}">
+                    Avbryt
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

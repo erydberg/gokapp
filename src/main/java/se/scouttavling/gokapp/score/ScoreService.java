@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +24,7 @@ public class ScoreService {
     }
 
     public Score save(Score score) {
+        score.setLastSaved(LocalDateTime.now());
         return scoreRepository.save(score);
     }
 
@@ -51,5 +52,9 @@ public class ScoreService {
     public List<Score> findByPatrol(Integer patrolId) {
         return scoreRepository.findByPatrol_PatrolId(patrolId);
     }
-}
 
+
+    public List<Score> getScoresForStation(Integer stationId) {
+        return scoreRepository.findByStation_IdOrderByLastSavedDesc(stationId);
+    }
+}

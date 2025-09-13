@@ -67,14 +67,32 @@ public class PatrolAdminController {
 
 
     @PostMapping
-    public String save(@Valid @ModelAttribute("patrol") Patrol patrol, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+    public String save(@Valid @ModelAttribute("patrol") Patrol updatedPatrol, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errormsg", "Fyll i alla obligatoriska uppgifter");
-            model.addAttribute("patrol", patrol);
+            model.addAttribute("patrol", updatedPatrol);
             model.addAttribute("statuslist", Status.values());
             return "patrol_admin_edit";
         }
-        patrolService.save(patrol);
+
+        Patrol patrolFromDb = patrolService.getPatrolById(updatedPatrol.getPatrolId()).orElseThrow(()-> new IllegalArgumentException("Patrol not found"));
+        patrolFromDb.setPatrolName(updatedPatrol.getPatrolName());
+        patrolFromDb.setTroop(updatedPatrol.getTroop());
+        patrolFromDb.setStatus(updatedPatrol.getStatus());
+        patrolFromDb.setTrack(updatedPatrol.getTrack());
+        patrolFromDb.setLeaderContact(updatedPatrol.getLeaderContact());
+        patrolFromDb.setLeaderContactPhone(updatedPatrol.getLeaderContactPhone());
+        patrolFromDb.setLeaderContactMail(updatedPatrol.getLeaderContactMail());
+        patrolFromDb.setNote(updatedPatrol.getNote());
+        patrolFromDb.setPaid(updatedPatrol.getPaid());
+        patrolFromDb.setDateRegistered(updatedPatrol.getDateRegistered());
+        patrolFromDb.setEndTime(updatedPatrol.getEndTime());
+        patrolFromDb.setStartTime(updatedPatrol.getStartTime());
+        patrolFromDb.setStartStation(updatedPatrol.getStartStation());
+        patrolFromDb.setExternalId(updatedPatrol.getExternalId());
+        patrolFromDb.setMembers(updatedPatrol.getMembers());
+
+        patrolService.save(patrolFromDb);
         redirectAttributes.addFlashAttribute("confirmmsg", "Patrullen är sparad");
 
         return "redirect:/admin/patrol";

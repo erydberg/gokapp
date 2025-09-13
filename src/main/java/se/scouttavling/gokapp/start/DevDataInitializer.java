@@ -130,6 +130,28 @@ public class DevDataInitializer {
             scoreService.save(score5);
             Score score6 = Score.builder().patrol(p3).station(stationService.getAll().getLast()).scorePoint(2).stylePoint(1).build();
             scoreService.save(score6);
+
+            Patrol p4 = new Patrol();
+            p4.setPatrolName("Patrol 4 utan poäng");
+            p4.setTrack(trackService.findAllTracks().getFirst());
+            p4.setLeaderContact("mossa");
+            p4.setLeaderContactMail("bb@mail.se");
+            p4.setLeaderContactPhone("73337");
+            p4.setStatus(Status.REGISTERED);
+            p4.setTroop("Scoutkåren B");
+            patrolService.save(p4);
+            System.out.println("Saved patrol 4");
+
+            Patrol p5 = new Patrol();
+            p5.setPatrolName("Patrol 5 utan poäng");
+            p5.setTrack(trackService.findAllTracks().getFirst());
+            p5.setLeaderContact("rico");
+            p5.setLeaderContactMail("bccc@mail.se");
+            p5.setLeaderContactPhone("733334444437");
+            p5.setStatus(Status.REGISTERED);
+            p5.setTroop("Scoutkåren B");
+            patrolService.save(p5);
+            System.out.println("Saved patrol 5");
         }
     }
 

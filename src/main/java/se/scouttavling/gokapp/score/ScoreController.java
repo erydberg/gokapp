@@ -57,7 +57,6 @@ public class ScoreController {
         return "score_report";
     }
 
-
     /**
      * Save a score
      */
@@ -96,7 +95,6 @@ public class ScoreController {
         // Reset form for new input
         Score newScore = new Score();
         newScore.setStation(station);
-        System.out.println("Station on new score is " + newScore.getStation().getStationName());
         List<Patrol> patrols = patrolService.allPatrolsLeftOnStation(station.getId());
 
         model.addAttribute("station", station);
@@ -105,34 +103,6 @@ public class ScoreController {
 
         System.out.println("no of saved scores: " + scoreService.findAll().size());
         return "score_report";
-    }
-
-
-    /**
-     * Edit an existing score
-     */
-    @GetMapping("/edit/{id}")
-    public String editScore(@PathVariable Integer id, Model model) {
-        Score score = scoreService.findByIdWithPatrolAndStation(id)
-                .orElseThrow(() -> new IllegalArgumentException("Score not found"));
-        model.addAttribute("score", score);
-        model.addAttribute("stations", stationService.getAll());
-        return "editscore";
-    }
-
-
-    /**
-     * Delete a score
-     */
-    @PostMapping("/delete/{id}")
-    public String deleteScore(@PathVariable Integer id, @RequestParam Integer patrolId, Model model) {
-        scoreService.deleteById(id);
-
-        Patrol patrol = patrolService.getPatrolById(patrolId)
-                .orElseThrow(() -> new IllegalArgumentException("Patrol not found"));
-        model.addAttribute("patrol", patrol);
-        model.addAttribute("backurl", "/reports/patrols");
-        return "viewpatrol";
     }
 }
 

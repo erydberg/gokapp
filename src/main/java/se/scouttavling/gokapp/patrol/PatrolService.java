@@ -67,4 +67,8 @@ public class PatrolService {
          */
     }
 
+    public List<Patrol> getAllPatrolsSortByName() {
+
+        return patrolRepository.findAllByOrderByPatrolNameAsc();
+    }
 }
