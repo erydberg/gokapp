@@ -96,7 +96,7 @@ public class GokAppTest {
         patrolService.save(lowScorePatrol);
 
         // Retrieve and verify sorting by totalScore descending
-        List<Patrol> sortedPatrols = patrolService.getAllPatrolsByTrack(testTrack);
+        List<Patrol> sortedPatrols = patrolService.getAllPatrolsByTrackSortedByScore(testTrack);
 
         assertThat(sortedPatrols).hasSize(2);
         assertThat(sortedPatrols.get(0).getPatrolName()).isEqualTo("HighScore Patrol");
@@ -125,7 +125,7 @@ public class GokAppTest {
 
         patrolService.save(patrol);
 
-        Optional<Patrol> retrieved = patrolService.getPatrolById(patrol.getPatrolId());
+        Optional<Patrol> retrieved = patrolService.getPatrolByIdWithScores(patrol.getPatrolId());
         assertThat(retrieved).isPresent();
         assertThat(retrieved.get().getTotalScore()).isEqualTo(2 + 4 + 6 + 1 + 2 + 3); // totalScorePoint + totalStylePoint
         assertThat(retrieved.get().getScores()).hasSize(3);

@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class PatrolServiceIntegrationTest {
+class PatrolServiceIntegrationTest {
 
     @Autowired
     private PatrolService patrolService;
@@ -36,7 +36,7 @@ public class PatrolServiceIntegrationTest {
     private Track testTrack;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         // Clean database before each test
         patrolRepository.deleteAll();
         trackRepository.deleteAll();
@@ -54,7 +54,7 @@ public class PatrolServiceIntegrationTest {
     }
 
     @Test
-    public void testSaveAndRetrievePatrol() {
+    void testSaveAndRetrievePatrol() {
         Patrol patrol = new Patrol();
         patrol.setPatrolName("Alpha Patrol");
         patrol.setTroop("Troop 1");
@@ -72,7 +72,7 @@ public class PatrolServiceIntegrationTest {
     }
 
     @Test
-    public void testGetPatrolById() {
+    void testGetPatrolById() {
         Patrol patrol = new Patrol();
         patrol.setPatrolName("Bravo Patrol");
         patrol.setTroop("Troop 2");
@@ -87,7 +87,7 @@ public class PatrolServiceIntegrationTest {
     }
 
     @Test
-    public void testGetAllPatrolsByTrack() {
+    void testGetAllPatrolsByTrack() {
         Patrol patrol1 = new Patrol();
         patrol1.setPatrolName("Patrol 1");
         patrol1.setLeaderContact("kalle");
@@ -106,7 +106,7 @@ public class PatrolServiceIntegrationTest {
         patrol2.setTrack(testTrack);
         patrolService.save(patrol2);
 
-        List<Patrol> patrols = patrolService.getAllPatrolsByTrack(testTrack);
+        List<Patrol> patrols = patrolService.getAllPatrolsByTrackSortedByScore(testTrack);
         assertThat(patrols).hasSize(2);
         assertThat(patrols.get(0).getTotalScore()).isZero(); // initial score
     }

@@ -45,6 +45,7 @@ public class PatrolService {
                 .toList();
     }
 
+
     public List<Patrol> getAllPatrolsByTrackSortedByScore(Track track) {
 
         List<Patrol> patrols = patrolRepository.findByTrackIdWithScores(track.getId());
@@ -70,5 +71,10 @@ public class PatrolService {
     public List<Patrol> getAllPatrolsSortByName() {
 
         return patrolRepository.findAllByOrderByPatrolNameAsc();
+    }
+
+    public Optional<Patrol> getPatrolByIdWithScores(Integer patrolId) {
+
+        return patrolRepository.findPatrolByIdWithScores(patrolId);
     }
 }

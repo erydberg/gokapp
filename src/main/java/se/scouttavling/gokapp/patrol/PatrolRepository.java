@@ -8,6 +8,7 @@ import se.scouttavling.gokapp.station.Station;
 import se.scouttavling.gokapp.track.Track;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface PatrolRepository extends JpaRepository<Patrol, Integer> {
@@ -35,14 +36,16 @@ public interface PatrolRepository extends JpaRepository<Patrol, Integer> {
         return findById(id).orElseThrow(() -> new RuntimeException("Patrol not found with id " + id));
     }
 
-    //OLD
-//    @Query("SELECT p FROM Patrol p LEFT JOIN FETCH p.scores s WHERE s.station.stationId <> :stationId OR s IS NULL")
-//    List<Patrol> findPatrolsLeftOnStation(@Param("stationId") Integer stationId);
-
     //my old query don't work anymore so this gives every patrol that has a score and then it will be filtered in PatrolService
     @Query("SELECT DISTINCT p FROM Patrol p LEFT JOIN FETCH p.scores s")
     List<Patrol> findAllWithScores();
 
+    @Query("SELECT p FROM Patrol p LEFT JOIN FETCH p.scores s WHERE p.patrolId = :patrolId")
+    Optional<Patrol> findPatrolByIdWithScores(@Param("patrolId") Integer patrolId);
+
+
+    @Query("SELECT p FROM Patrol p LEFT JOIN FETCH p.scores s LEFT JOIN FETCH s.station WHERE p.patrolId = :patrolId")
+    Optional<Patrol> findPatrolByIdWithScoresAndStations(Integer patrolId);
 
     @Query("SELECT p FROM Patrol p WHERE NOT EXISTS (SELECT s FROM Score s WHERE s.patrol = p AND s.station.id = :stationId)")
     List<Patrol> findAllWithoutScoreForStation(@Param("stationId") Integer stationId);
