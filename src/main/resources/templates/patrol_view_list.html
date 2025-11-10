@@ -20,6 +20,9 @@
         <span th:text="${patrol.troop}"></span><br/>
         <span th:text="${patrol.leaderContact}"></span><br/>
         <span th:text="${patrol.leaderContactPhone}"></span><br/>
+        <span th:text="${patrol.getLatestScore?.lastSaved}">Ingen kontroll har passerats</span>
+        <span th:text="${patrol.getLatestScore?.station?.stationName}"></span><br/>
+
     </div>
 </div>
 </body>

@@ -16,7 +16,8 @@ public class ViewPatrolsController {
     @GetMapping
     public String listAllPatrols(Model model) {
 
-        model.addAttribute("patrols", patrolService.getAllPatrolsSortByName());
+        model.addAttribute("patrols", patrolService.getAllPatrolsWithScoresAndStations());
+
         return "patrol_view_list";
     }
 }

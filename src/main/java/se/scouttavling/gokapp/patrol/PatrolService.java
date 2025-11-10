@@ -57,7 +57,7 @@ public class PatrolService {
 
     public List<Patrol> allPatrolsLeftOnStation(Integer stationId) {
 
-        return patrolRepository.findAllWithoutScoreForStation(stationId);
+        return patrolRepository.findAllWithoutScoreOnStation(stationId);
 
         /* In memory version
         return patrolRepository.findAllWithScores().stream()
@@ -71,6 +71,14 @@ public class PatrolService {
     public List<Patrol> getAllPatrolsSortByName() {
 
         return patrolRepository.findAllByOrderByPatrolNameAsc();
+    }
+
+    public List<Patrol> getAllPatrolsWithScores() {
+        return patrolRepository.findAllWithScoresSorted();
+    }
+
+    public List<Patrol> getAllPatrolsWithScoresAndStations() {
+        return patrolRepository.findAllWithScoresAndStationsSorted();
     }
 
     public Optional<Patrol> getPatrolByIdWithScores(Integer patrolId) {

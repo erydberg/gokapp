@@ -1,10 +1,10 @@
 package se.scouttavling.gokapp.patrol;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-import se.scouttavling.gokapp.station.Station;
 import se.scouttavling.gokapp.track.Track;
 
 import java.util.List;
@@ -40,6 +40,12 @@ public interface PatrolRepository extends JpaRepository<Patrol, Integer> {
     @Query("SELECT DISTINCT p FROM Patrol p LEFT JOIN FETCH p.scores s")
     List<Patrol> findAllWithScores();
 
+    @Query("SELECT DISTINCT p FROM Patrol p LEFT JOIN FETCH p.scores s ORDER BY p.patrolName ASC")
+    List<Patrol> findAllWithScoresSorted();
+
+    @Query("SELECT DISTINCT p FROM Patrol p LEFT JOIN FETCH p.scores s LEFT JOIN FETCH s.station ORDER BY p.patrolName ASC")
+    List<Patrol> findAllWithScoresAndStationsSorted();
+
     @Query("SELECT p FROM Patrol p LEFT JOIN FETCH p.scores s WHERE p.patrolId = :patrolId")
     Optional<Patrol> findPatrolByIdWithScores(@Param("patrolId") Integer patrolId);
 
@@ -48,7 +54,7 @@ public interface PatrolRepository extends JpaRepository<Patrol, Integer> {
     Optional<Patrol> findPatrolByIdWithScoresAndStations(Integer patrolId);
 
     @Query("SELECT p FROM Patrol p WHERE NOT EXISTS (SELECT s FROM Score s WHERE s.patrol = p AND s.station.id = :stationId)")
-    List<Patrol> findAllWithoutScoreForStation(@Param("stationId") Integer stationId);
+    List<Patrol> findAllWithoutScoreOnStation(@Param("stationId") Integer stationId);
 
     @Query("SELECT DISTINCT p FROM Patrol p LEFT JOIN FETCH p.scores s LEFT JOIN FETCH s.station WHERE p.track.id = :trackId")
     List<Patrol> findByTrackIdWithScores(@Param("trackId") Integer trackId);
