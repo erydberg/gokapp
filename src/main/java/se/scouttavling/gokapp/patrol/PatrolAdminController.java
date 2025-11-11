@@ -75,24 +75,31 @@ public class PatrolAdminController {
             return "patrol_admin_edit";
         }
 
-        Patrol patrolFromDb = patrolService.getPatrolById(updatedPatrol.getPatrolId()).orElseThrow(()-> new IllegalArgumentException("Patrol not found"));
-        patrolFromDb.setPatrolName(updatedPatrol.getPatrolName());
-        patrolFromDb.setTroop(updatedPatrol.getTroop());
-        patrolFromDb.setStatus(updatedPatrol.getStatus());
-        patrolFromDb.setTrack(updatedPatrol.getTrack());
-        patrolFromDb.setLeaderContact(updatedPatrol.getLeaderContact());
-        patrolFromDb.setLeaderContactPhone(updatedPatrol.getLeaderContactPhone());
-        patrolFromDb.setLeaderContactMail(updatedPatrol.getLeaderContactMail());
-        patrolFromDb.setNote(updatedPatrol.getNote());
-        patrolFromDb.setPaid(updatedPatrol.getPaid());
-        patrolFromDb.setDateRegistered(updatedPatrol.getDateRegistered());
-        patrolFromDb.setEndTime(updatedPatrol.getEndTime());
-        patrolFromDb.setStartTime(updatedPatrol.getStartTime());
-        patrolFromDb.setStartStation(updatedPatrol.getStartStation());
-        patrolFromDb.setExternalId(updatedPatrol.getExternalId());
-        patrolFromDb.setMembers(updatedPatrol.getMembers());
+        if (updatedPatrol.getPatrolId() != null) {
+            System.out.println("En uppdatring av patrull med id " + updatedPatrol.getPatrolId());
+            Patrol patrolFromDb = patrolService.getPatrolById(updatedPatrol.getPatrolId()).orElseThrow(() -> new IllegalArgumentException("Patrol not found"));
+            patrolFromDb.setPatrolName(updatedPatrol.getPatrolName());
+            patrolFromDb.setTroop(updatedPatrol.getTroop());
+            patrolFromDb.setStatus(updatedPatrol.getStatus());
+            patrolFromDb.setTrack(updatedPatrol.getTrack());
+            patrolFromDb.setLeaderContact(updatedPatrol.getLeaderContact());
+            patrolFromDb.setLeaderContactPhone(updatedPatrol.getLeaderContactPhone());
+            patrolFromDb.setLeaderContactMail(updatedPatrol.getLeaderContactMail());
+            patrolFromDb.setNote(updatedPatrol.getNote());
+            patrolFromDb.setPaid(updatedPatrol.getPaid());
+            patrolFromDb.setDateRegistered(updatedPatrol.getDateRegistered());
+            patrolFromDb.setEndTime(updatedPatrol.getEndTime());
+            patrolFromDb.setStartTime(updatedPatrol.getStartTime());
+            patrolFromDb.setStartStation(updatedPatrol.getStartStation());
+            patrolFromDb.setExternalId(updatedPatrol.getExternalId());
+            patrolFromDb.setMembers(updatedPatrol.getMembers());
 
-        patrolService.save(patrolFromDb);
+            patrolService.save(patrolFromDb);
+        } else {
+            System.out.println("En ny patrull sparas från admin-gränssnittet");
+            patrolService.save(updatedPatrol);
+        }
+
         redirectAttributes.addFlashAttribute("confirmmsg", "Patrullen är sparad");
 
         return "redirect:/admin/patrol";

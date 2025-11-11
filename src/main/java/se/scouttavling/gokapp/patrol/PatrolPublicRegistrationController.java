@@ -51,10 +51,11 @@ public class PatrolPublicRegistrationController {
     @PostMapping
     public String save(@Valid @ModelAttribute("patrolPublicDto") PatrolPublicDto patrolPublicDto, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
+        model.addAttribute("config", configService.getCurrentConfig());
+        model.addAttribute("registrationconfig", registrationConfigService.getCurrentConfig());
+
         if (bindingResult.hasErrors()) {
-            model.addAttribute("config", configService.getCurrentConfig());
             model.addAttribute("tracks", trackService.findAllTracks());
-            model.addAttribute("registrationconfig", registrationConfigService.getCurrentConfig());
             return "patrol_public_registration";
         }
 
@@ -62,10 +63,13 @@ public class PatrolPublicRegistrationController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid track id"));
 
         Patrol patrol = PatrolMapper.fromPublicDto(patrolPublicDto, track);
+        patrol.setStatus(Status.REGISTERED);
         patrolService.save(patrol);
 
-        model.addAttribute("confirmmsg", "Patrullen är registrerad!");
-        return "register_success";
+        model.addAttribute("patrol", patrol);
+
+        redirectAttributes.addFlashAttribute("confirmmsg", "Patrullen är registrerad");
+        return "patrol_public_registration_success";
     }
 
 }

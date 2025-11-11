@@ -48,10 +48,10 @@ public class Patrol implements Comparable<Patrol> {
     @JoinColumn(name = "fk_track")
     private Track track;
 
-    @Column(name = "starttime", length = 10)
+    @Column(name = "starttime", length = 20)
     private String startTime;
 
-    @Column(name = "endtime", length = 10)
+    @Column(name = "endtime", length = 20)
     private String endTime;
 
     @Column(name = "members", length = 500)
