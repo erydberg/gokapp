@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf?.token}">
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}">
+    <title>Tävlingslednings dashboard</title>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+
+
+    <script th:inline="javascript">
+        const path = [[@{/}]];
+    </script>
+    <script th:src="@{/js/start_finish.js}" defer></script>
+</head>
+
+<body>
+
+<div class="nav-box">
+    <h1>Tävlingsledningens dashboard</h1>
+    <a th:href="@{/startmenu}"><img th:src="@{/css/back2.png}" alt="Tillbaka"></a>
+    <a class="toolitem" href="#" onclick="reloadPage();">
+        <img th:src="@{/css/reload.png}" alt="Ladda om">
+    </a>
+</div>
+
+<!-- Include messages -->
+<div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+
+<div th:if="${patrols != null}">
+    Totalt anmälda <span th:text="${#lists.size(patrols)} + ' patruller'"></span>
+    ute: <span th:text="${statusCounter['ACTIVE']}">0</span>
+    i mål: <span th:text="${statusCounter['FINISHED']}">0</span>
+    lämnat återbud: <span th:text="${statusCounter['RESIGNED']}">0</span>
+</div>
+
+<!-- Table -->
+<div class="switchstatus">
+    <table>
+        <thead>
+        <tr>
+            <th>Status
+                <a th:href="@{/startfinish(sort='status', dir=${dir == 'asc' ? 'desc' : 'asc'})}">
+                    <img th:src="@{/css/arrow-down.png}" alt="sort">
+                </a>
+            </th>
+            <th>Patrull
+                <a th:href="@{/startfinish(sort='patrolName', dir=${dir == 'asc' ? 'desc' : 'asc'})}">
+                    <img th:src="@{/css/arrow-down.png}" alt="sort">
+                </a>
+                </th>
+            <th>Klass
+                <a th:href="@{/startfinish(sort='track.name', dir=${dir == 'asc' ? 'desc' : 'asc'})}">
+                    <img th:src="@{/css/arrow-down.png}" alt="sort">
+                </a>
+                </th>
+            <th>Kår
+                <a th:href="@{/startfinish(sort='troop', dir=${dir == 'asc' ? 'desc' : 'asc'})}">
+                    <img th:src="@{/css/arrow-down.png}" alt="sort">
+                </a>
+            </th>
+            <th>Antal kontroller
+                <a th:href="@{/startfinish(sort='station', dir=${dir == 'asc' ? 'desc' : 'asc'})}">
+                    <img th:src="@{/css/arrow-down.png}" alt="sort">
+                </a>
+            </th>
+            <th>Antal poäng
+                <a th:href="@{/startfinish(sort='totalScore', dir=${dir == 'asc' ? 'desc' : 'asc'})}">
+                    <img th:src="@{/css/arrow-down.png}" alt="sort">
+                </a>
+            </th>
+            <th>Senast inrapporterat
+                <a th:href="@{/startfinish(sort='latestScore', dir=${dir == 'asc' ? 'desc' : 'asc'})}">
+                    <img th:src="@{/css/arrow-down.png}" alt="sort">
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="patrol, stat : ${patrols}"
+            th:class="${stat.index % 2 == 1} ? 'odd' : ''">
+
+            <!-- Status column -->
+            <td class="patrolstatus">
+                <img class="patrol"
+                     th:data-id="${patrol.patrolId}"
+                     th:data-status="${patrol.status != null ? patrol.status : 'REGISTERED'}"
+                     th:src="@{|/css/${patrol.status != null ? patrol.status : 'REGISTERED'}.png|}"
+                     alt="status"
+                     style="cursor:pointer;"/>
+            </td>
+
+            <!-- Patrol name and info -->
+            <td>
+                <a th:href="@{'/startfinish/viewpatrol/' + ${patrol.patrolId}}"
+                   th:text="${patrol.patrolName}"></a>
+                <br>
+                <small>
+                    (Patrullnr: <span th:text="${patrol.patrolId}"></span>
+                    <span th:if="${patrol.startStation != null}">
+                        Start: <span th:text="${patrol.startStation.stationNumber}"></span>.
+                        <span th:text="${patrol.startStation.stationName}"></span>
+                    </span>)
+                </small>
+            </td>
+
+            <!-- Other columns -->
+            <td th:text="${patrol.track.name}"></td>
+            <td th:text="${patrol.troop}"></td>
+            <td th:text="${patrol.totalReportedStations}"></td>
+            <td>
+                <span th:text="${patrol.totalScore}"></span>
+                (<span th:text="${patrol.totalScorePoint}"></span>+
+                <span th:text="${patrol.totalStylePoint}"></span>)
+            </td>
+
+            <!-- Latest report -->
+            <td>
+                <span th:if="${patrol.latestScore != null and patrol.latestScore.lastSaved != null}">
+                    <span th:text="${#temporals.format(patrol.latestScore.lastSaved, 'HH:mm (d/M)')}"></span>
+                    <span th:text="' ' + ${patrol.latestScore.station.stationName}"></span>
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <a th:href="@{/startmenu}">Tillbaka</a>
+</div>
+
+</body>
+</html>

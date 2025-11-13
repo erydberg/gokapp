@@ -1,5 +1,8 @@
 package se.scouttavling.gokapp.patrol;
 
+import se.scouttavling.gokapp.score.Score;
+
+import java.time.LocalDateTime;
 import java.util.Comparator;
 
 public class PatrolComparator {
@@ -20,4 +23,11 @@ public class PatrolComparator {
     // Sort by troop
     public static final Comparator<Patrol> BY_TROOP =
             Comparator.comparing(Patrol::getTroop, Comparator.nullsLast(String::compareToIgnoreCase));
+
+    // Sort by latestScore
+    public static final Comparator<Patrol> BY_LATEST_SCORE =
+            Comparator.comparing((Patrol p) -> {
+                Score score = p.getLatestScore();
+                return score != null ? score.getLastSaved() : null;
+            }, Comparator.nullsLast(LocalDateTime::compareTo));
 }

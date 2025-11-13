@@ -14,7 +14,6 @@ public class ScoreService {
 
     private final ScoreRepository scoreRepository;
 
-    // --- Basic CRUD ---
     public List<Score> findAll() {
         return scoreRepository.findAll();
     }
