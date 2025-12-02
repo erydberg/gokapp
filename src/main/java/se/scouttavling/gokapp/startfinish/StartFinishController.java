@@ -27,7 +27,6 @@ public class StartFinishController {
 
         List<Patrol> patrols = patrolService.findAllSorted(sort, dir);
         Map<String, Long> statusCounter = StatusCounter.calculateAllStatuses(patrols);
-
         model.addAttribute("statusCounter", statusCounter);
         model.addAttribute("patrols", patrols);
         model.addAttribute("sort", sort);

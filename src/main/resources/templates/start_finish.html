@@ -6,32 +6,31 @@
     <meta name="_csrf_header" th:content="${_csrf?.headerName}">
     <title>Tävlingslednings dashboard</title>
     <th:insert th:replace="~{fragments :: metadata}"></th:insert>
-
-
     <script th:inline="javascript">
         const path = [[@{/}]];
     </script>
     <script th:src="@{/js/start_finish.js}" defer></script>
 </head>
-
 <body>
-
 <div class="nav-box">
+    <span class="toolbar">
+        <a th:href="@{/startmenu}"><img th:src="@{/css/back2.png}" alt="Tillbaka"></a>
+        <button class="toolitem" onclick="location.reload();" style="border:none; background:none; cursor:pointer;">
+            <img th:src="@{/css/reload.png}" alt="Ladda om">
+        </button>
+    </span>
+
     <h1>Tävlingsledningens dashboard</h1>
-    <a th:href="@{/startmenu}"><img th:src="@{/css/back2.png}" alt="Tillbaka"></a>
-    <a class="toolitem" href="#" onclick="reloadPage();">
-        <img th:src="@{/css/reload.png}" alt="Ladda om">
-    </a>
 </div>
 
 <!-- Include messages -->
 <div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
 
 <div th:if="${patrols != null}">
-    Totalt anmälda <span th:text="${#lists.size(patrols)} + ' patruller'"></span>
-    ute: <span th:text="${statusCounter['ACTIVE']}">0</span>
-    i mål: <span th:text="${statusCounter['FINISHED']}">0</span>
-    lämnat återbud: <span th:text="${statusCounter['RESIGNED']}">0</span>
+    Totalt: <span th:text="${#lists.size(patrols)} + ' patruller varav: '"></span>
+    går spåret: <span th:text="${statusCounter['ACTIVE'] ?: 0}">0</span>
+    i mål: <span th:text="${statusCounter['FINISHED'] ?: 0}">0</span>
+    lämnat återbud: <span th:text="${statusCounter['RESIGNED'] ?: 0}">0</span>
 </div>
 
 <!-- Table -->

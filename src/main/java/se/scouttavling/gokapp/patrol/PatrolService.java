@@ -41,9 +41,6 @@ public class PatrolService {
 
     public List<Patrol> findAllSorted(String sort, String dir) {
         List<Patrol> patrols = patrolRepository.findAllWithScoresSorted();
-        System.out.println(patrols.size());
-        System.out.println(sort);
-        System.out.println(dir);
 
         if (sort == null || sort.isBlank()) {
             sort = "patrolName";
