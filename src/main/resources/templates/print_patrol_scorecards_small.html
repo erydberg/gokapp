@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title>Skriv ut startkort - små</title>
+    <link rel="stylesheet" th:href="@{/css/print_scorecards_small.css}" />
+</head>
+<body>
+<div class="card-grid">
+    <div th:each="patrol : ${patrols}" class="score-card">
+        <div class="card-header">
+            <h2 class="card-title" th:text="${patrol.patrolName}">Patrol Name</h2>
+            <div class="patrol-number" th:text="'Patrull ' + ${patrol.patrolId}">Patrull 1</div>
+        </div>
+
+        <div class="card-body">
+            <div class="info-section">
+                <div class="info-row">
+                    <span class="info-label">Kår:</span>
+                    <span class="info-value" th:text="${patrol.troop}">Troop</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Spår:</span>
+                    <span class="info-value" th:text="${patrol.track.name}">Track</span>
+                </div>
+            </div>
+
+            <div class="stations-section">
+                <div class="stations-title">Stationer</div>
+                <div class="stations-grid">
+                    <div th:each="station : ${stations}" class="station-box">
+                        <div class="station-number" th:text="${station.stationNumber}"></div>
+                        <div class="station-score"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

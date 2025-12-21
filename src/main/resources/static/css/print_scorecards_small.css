@@ -1,0 +1,298 @@
+body {
+          margin: 0;
+          padding: 0;
+        }
+
+        .print-container {
+          display: none;
+        }
+
+        /* Print styles */
+        @media print {
+          /* Hide everything except the cards
+          body * {
+            visibility: hidden;
+          }
+ */
+          .no-print {
+            display: none !important;
+          }
+
+          .print-container,
+          .print-container * {
+            visibility: visible;
+          }
+
+          .print-container {
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+          }
+
+          /* Page setup */
+          @page {
+            size: A4;
+            margin: 0;
+          }
+
+          /* Grid layout - 3x3 cards per page */
+          .card-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            width: 210mm;
+            height: 297mm;
+            page-break-after: always;
+          }
+
+          /* Individual card styling */
+          .score-card {
+            border: 2px dashed #999;
+            padding: 8mm;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            page-break-inside: avoid;
+            box-sizing: border-box;
+          }
+
+          .card-header {
+            border-bottom: 2px solid #333;
+            padding-bottom: 2mm;
+            margin-bottom: 3mm;
+            text-align: center;
+          }
+
+          .card-title {
+            font-size: 16pt;
+            font-weight: bold;
+            margin: 0 0 1mm 0;
+          }
+
+          .patrol-number {
+            font-size: 11pt;
+            color: #666;
+            font-weight: 500;
+          }
+
+          .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+          }
+
+          .info-section {
+            margin-bottom: 3mm;
+          }
+
+          .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.5mm 0;
+            font-size: 10pt;
+          }
+
+          .info-label {
+            font-weight: bold;
+          }
+
+          .info-value {
+            text-align: right;
+          }
+
+          .stations-section {
+            margin-bottom: 3mm;
+          }
+
+          .stations-title {
+            font-size: 10pt;
+            font-weight: bold;
+            margin-bottom: 2mm;
+            text-align: center;
+          }
+
+          .stations-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2mm;
+          }
+
+          .station-box {
+            border: 1.5px solid #333;
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+          }
+
+          .station-number {
+            font-size: 10pt;
+            font-weight: bold;
+            margin-bottom: 1mm;
+          }
+
+          .station-score {
+            width: 80%;
+            height: 6mm;
+            border-bottom: 1px solid #666;
+          }
+
+          .qr-section {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 2mm;
+            border-top: 1px solid #ddd;
+          }
+
+          .qr-code {
+            width: 20mm;
+            height: 20mm;
+            display: block;
+          }
+
+          .qr-label {
+            font-size: 8pt;
+            color: #666;
+            margin-top: 1mm;
+            text-align: center;
+          }
+        }
+
+        /* Screen preview styles */
+        @media screen {
+          .print-container {
+            display: block;
+            margin: 20px auto;
+            max-width: 1200px;
+            padding: 20px;
+          }
+
+          .card-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+          }
+
+          .score-card {
+            border: 2px dashed #999;
+            padding: 16px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+          }
+
+          .card-header {
+            border-bottom: 2px solid #333;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            text-align: center;
+          }
+
+          .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin: 0 0 4px 0;
+          }
+
+          .patrol-number {
+            font-size: 0.875rem;
+            color: #666;
+            font-weight: 500;
+          }
+
+          .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+          }
+
+          .info-section {
+            margin-bottom: 12px;
+          }
+
+          .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 0.875rem;
+          }
+
+          .info-label {
+            font-weight: bold;
+          }
+
+          .info-value {
+            text-align: right;
+          }
+
+          .stations-section {
+            margin-bottom: 12px;
+          }
+
+          .stations-title {
+            font-size: 0.875rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-align: center;
+          }
+
+          .stations-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+          }
+
+          .station-box {
+            border: 1.5px solid #333;
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 4px;
+          }
+
+          .station-number {
+            font-size: 0.875rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+          }
+
+          .station-score {
+            width: 80%;
+            height: 20px;
+            border-bottom: 1px solid #666;
+          }
+
+          .qr-section {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid #ddd;
+          }
+
+          .qr-code {
+            width: 80px;
+            height: 80px;
+            display: block;
+          }
+
+          .qr-label {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 4px;
+            text-align: center;
+          }
+        }
