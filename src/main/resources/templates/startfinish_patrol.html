@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title>Patrull</title>
+</head>
+<body>
+<div class="nav-box">
+    <a th:href="@{/startfinish}">Tillbaka</a>
+    <!-- Include messages -->
+    <div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+
+    <h2></h2>
+</div>
+
+<div th:if="${patrol != null}">
+        <h3 th:text="${patrol.patrolName}">Namn</h3>
+        Scoutkår: <span th:text="${patrol.troop}"></span><br/>
+        Ledare: <span th:text="${patrol.leaderContact}"></span><br/>
+        Telefon till ledare: <span th:text="${patrol.leaderContactPhone}"></span><br/>
+        Senaste kontrollen: <span th:text="${#temporals.format(patrol.getLatestScore?.lastSaved, 'yyyy-MM-dd HH:mm')}">Ingen kontroll har passerats</span>
+        <span th:text="${patrol.getLatestScore?.station?.stationName}"></span><br/>
+    <!-- score table -->
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Kontroll</th>
+                <th>Poäng</th>
+                <th>Stilpoäng</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="score : ${scores}">
+                <td><a th:href="@{'/startfinish/score/' + ${score.id}}"
+                   th:text="${score.station?.stationName}"></a></td>
+                <td th:text="${score?.scorePoint}"></td>
+                <td th:text="${score?.stylePoint}"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
