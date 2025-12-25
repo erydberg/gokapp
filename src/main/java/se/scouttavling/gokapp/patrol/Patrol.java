@@ -91,6 +91,9 @@ public class Patrol implements Comparable<Patrol> {
     @JoinColumn(name = "fk_station")
     private Station startStation;
 
+    @Transient
+    private String qrCodeDataUrl;
+
 
     /* === Derived / helper methods === */
     @Transient

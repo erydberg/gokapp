@@ -8,6 +8,7 @@
         console.log("message " + msg);
     </script>
     <script th:src="@{/js/score.js}"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 </head>
 <body>
 <div class="nav-box">
@@ -22,6 +23,17 @@
     <input type="hidden" th:field="*{station.id}"/>
 
     <p>Vald kontroll: <span th:text="${station.stationName}"></span></p>
+
+    <!-- QR Scanner Section -->
+    <div class="form-box qr-scanner-section">
+        <button type="button" id="scanQrButton" class="btn-scan">
+            📷 Scanna QR-kod för att välja patrull
+        </button>
+        <div id="qrReader" style="display:none;"></div>
+        <div id="qrStatus" style="display:none; margin-top: 10px; padding: 10px; background: #e8f5e9; border-radius: 4px;">
+            <strong>✓ Patrull vald via QR-kod</strong>
+        </div>
+    </div>
 
     <!-- Hidden stationId so it persists -->
     <input type="hidden" th:field="*{station.id}"/>
@@ -75,5 +87,116 @@
         | <a th:href="@{/startmenu}">Avbryt</a>
     </div>
 </form>
+<script>
+    // QR Scanner functionality
+    const scanButton = document.getElementById('scanQrButton');
+    const qrReaderDiv = document.getElementById('qrReader');
+    const qrStatus = document.getElementById('qrStatus');
+    const patrolSelect = document.getElementById('patrol');
+    let html5QrCode;
+    let isScanning = false;
+
+    scanButton.addEventListener('click', function() {
+        if (isScanning) {
+            // Stop scanning
+            html5QrCode.stop().then(() => {
+                qrReaderDiv.style.display = 'none';
+                scanButton.textContent = '📷 Scanna QR-kod för att välja patrull';
+                isScanning = false;
+            }).catch((err) => {
+                console.error('Error stopping scanner:', err);
+            });
+        } else {
+            // Start scanning
+            qrReaderDiv.style.display = 'block';
+            scanButton.textContent = '⏹ Stoppa scanning';
+            isScanning = true;
+
+            html5QrCode = new Html5Qrcode("qrReader");
+
+            html5QrCode.start(
+                { facingMode: "environment" }, // Use back camera
+                {
+                    fps: 10,
+                    qrbox: { width: 250, height: 250 }
+                },
+                (decodedText) => {
+                    console.log('QR decoded:', decodedText);
+
+                    // Find and select the patrol by ID
+                    const patrolId = decodedText.trim();
+                    let found = false;
+
+                    for (let i = 0; i < patrolSelect.options.length; i++) {
+                        if (patrolSelect.options[i].value === patrolId) {
+                            patrolSelect.selectedIndex = i;
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    // Stop scanning and show success
+                    html5QrCode.stop().then(() => {
+                        qrReaderDiv.style.display = 'none';
+                        scanButton.textContent = '📷 Scanna QR-kod för att välja patrull';
+                        isScanning = false;
+
+                        if (found) {
+                            qrStatus.style.display = 'block';
+                            qrStatus.innerHTML = '<strong>✓ Patrull vald: ' +
+                                patrolSelect.options[patrolSelect.selectedIndex].text + '</strong>';
+
+                            // Hide success message after 3 seconds
+                            setTimeout(() => {
+                                qrStatus.style.display = 'none';
+                            }, 3000);
+                        } else {
+                            alert('Patrull med ID ' + patrolId + ' hittades inte i listan.');
+                        }
+                    });
+                },
+                (errorMessage) => {
+                    // Ignore continuous scan errors
+                }
+            ).catch((err) => {
+                console.error('Unable to start scanning', err);
+                alert('Kunde inte starta kamera. Kontrollera att du har gett tillstånd till kameran.');
+                qrReaderDiv.style.display = 'none';
+                scanButton.textContent = '📷 Scanna QR-kod för att välja patrull';
+                isScanning = false;
+            });
+        }
+    });
+</script>
+<style>
+    .qr-scanner-section {
+        text-align: center;
+        padding: 15px;
+        background: #f5f5f5;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .btn-scan {
+        background: #2196F3;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .btn-scan:hover {
+        background: #1976D2;
+    }
+
+    #qrReader {
+        margin: 15px auto;
+        max-width: 500px;
+    }
+</style>
 </body>
 </html>

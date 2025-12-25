@@ -37,20 +37,21 @@ body {
             margin: 0;
           }
 
-          /* Grid layout - 3x3 cards per page */
+          /* Grid layout - 3x3 cards per page (9 cards total) */
           .card-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(3, 1fr);
+            grid-template-columns: repeat(3, 55mm);
+            grid-template-rows: repeat(3, 85mm);
             width: 210mm;
             height: 297mm;
             page-break-after: always;
+            gap: 2.5mm;
           }
 
           /* Individual card styling */
           .score-card {
             border: 2px dashed #999;
-            padding: 8mm;
+            padding: 1mm;
             display: flex;
             flex-direction: column;
             background: white;
@@ -59,9 +60,6 @@ body {
           }
 
           .card-header {
-            border-bottom: 2px solid #333;
-            padding-bottom: 2mm;
-            margin-bottom: 3mm;
             text-align: center;
           }
 
@@ -88,10 +86,9 @@ body {
           }
 
           .info-row {
-            display: flex;
             justify-content: space-between;
-            padding: 1.5mm 0;
-            font-size: 10pt;
+            font-size: 1.1rem;
+            text-align: center;
           }
 
           .info-label {
@@ -116,7 +113,7 @@ body {
           .stations-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 2mm;
+            gap: 1mm;
           }
 
           .station-box {
@@ -125,7 +122,6 @@ body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             background: white;
           }
 
@@ -137,8 +133,7 @@ body {
 
           .station-score {
             width: 80%;
-            height: 6mm;
-            border-bottom: 1px solid #666;
+            height: 1mm;
           }
 
           .qr-section {
@@ -146,8 +141,6 @@ body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 2mm;
-            border-top: 1px solid #ddd;
           }
 
           .qr-code {
@@ -180,9 +173,10 @@ body {
             margin-top: 20px;
           }
 
+
           .score-card {
             border: 2px dashed #999;
-            padding: 16px;
+            padding: 4px;
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -191,9 +185,6 @@ body {
           }
 
           .card-header {
-            border-bottom: 2px solid #333;
-            padding-bottom: 8px;
-            margin-bottom: 12px;
             text-align: center;
           }
 
@@ -220,14 +211,9 @@ body {
           }
 
           .info-row {
-            display: flex;
             justify-content: space-between;
-            padding: 6px 0;
-            font-size: 0.875rem;
-          }
-
-          .info-label {
-            font-weight: bold;
+            font-size: 1.1rem;
+            text-align: center;
           }
 
           .info-value {
@@ -248,7 +234,7 @@ body {
           .stations-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
+            gap: 4px;
           }
 
           .station-box {
@@ -257,7 +243,6 @@ body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             background: white;
             border-radius: 4px;
           }
@@ -270,8 +255,7 @@ body {
 
           .station-score {
             width: 80%;
-            height: 20px;
-            border-bottom: 1px solid #666;
+            height: 10px;
           }
 
           .qr-section {
@@ -279,8 +263,6 @@ body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 12px;
-            border-top: 1px solid #ddd;
           }
 
           .qr-code {

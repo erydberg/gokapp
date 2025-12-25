@@ -23,6 +23,7 @@ public class PrintScorecardController {
     private final PatrolService patrolService;
     private final ConfigService configService;
     private final StationService stationService;
+    private final QRCodeService qrCodeService;
 
     @ModelAttribute("config")
     public Config loadConfig() {
@@ -40,7 +41,12 @@ public class PrintScorecardController {
     public String printSmallScoreccards(Model model) {
 
         List<Patrol> patrols = patrolService.getAllPatrols();
-        model.addAttribute("patrols",patrols);
+        patrols.forEach(patrol -> {
+            String qrDataUrl = qrCodeService.generateQRCodeDataUrl(patrol.getPatrolId());
+            patrol.setQrCodeDataUrl(qrDataUrl);
+        });
+
+        model.addAttribute("patrols", patrols);
 
         List<Station> stations = stationService.getAll();
         model.addAttribute("stations", stations);
