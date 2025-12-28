@@ -9,11 +9,7 @@ body {
 
         /* Print styles */
         @media print {
-          /* Hide everything except the cards
-          body * {
-            visibility: hidden;
-          }
- */
+
           .no-print {
             display: none !important;
           }
@@ -34,7 +30,7 @@ body {
           /* Page setup */
           @page {
             size: A4;
-            margin: 0;
+            margin: 8mm 8mm 8mm 8mm;
           }
 
           /* Grid layout - 3x3 cards per page (9 cards total) */
@@ -42,8 +38,8 @@ body {
             display: grid;
             grid-template-columns: repeat(3, 55mm);
             grid-template-rows: repeat(3, 85mm);
-            width: 210mm;
-            height: 297mm;
+            width: 194mm;
+            height: 281mm;
             page-break-after: always;
             gap: 2.5mm;
           }
@@ -64,7 +60,7 @@ body {
           }
 
           .card-title {
-            font-size: 16pt;
+            font-size: 12pt;
             font-weight: bold;
             margin: 0 0 1mm 0;
           }
@@ -87,7 +83,7 @@ body {
 
           .info-row {
             justify-content: space-between;
-            font-size: 1.1rem;
+            font-size: 1.0rem;
             text-align: center;
           }
 
@@ -189,7 +185,7 @@ body {
           }
 
           .card-title {
-            font-size: 1.25rem;
+            font-size: 1.00rem;
             font-weight: bold;
             margin: 0 0 4px 0;
           }
@@ -212,7 +208,7 @@ body {
 
           .info-row {
             justify-content: space-between;
-            font-size: 1.1rem;
+            font-size: 1.0rem;
             text-align: center;
           }
 

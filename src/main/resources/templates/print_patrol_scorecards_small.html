@@ -6,11 +6,15 @@
     <link rel="stylesheet" th:href="@{/css/print_cards_small.css}" />
 </head>
 <body>
+<div class="no-print">Vid utskrift blir korten 85 mm * 55 mm stora. Tryck ctrl + P för att se hur det blir.</div>
 <div class="card-grid">
     <div th:each="patrol : ${patrols}" class="score-card">
         <div class="card-header">
-            <h2 class="card-title" th:text="${#strings.abbreviate(patrol.patrolName, 30)}">Patrol Namn</h2>
-            <div class="patrol-number" th:text="'Patrullnr ' + ${patrol.patrolId}">Patrull 1</div>
+            <h2 class="card-title" th:text="${#strings.abbreviate(patrol.patrolName, 40)}">Patrolnamn</h2>
+            <div class="patrol-number" th:text="'Patrullnr ' + ${patrol.patrolId}"></div>
+            <div th:if="${patrol.startStation != null}" class="patrol-number">
+                <span th:text="'Start: ' + ${patrol.startStation.stationName}"></span>
+            </div>
             <div class="qr-section">
                 <img th:src="${patrol.qrCodeDataUrl}"
                      th:alt="'QR Code för ' + ${patrol.patrolName}"
@@ -29,7 +33,6 @@
             </div>
 
             <div class="stations-section">
-                <div class="stations-title">Kontroller</div>
                 <div class="stations-grid">
                     <div th:each="station : ${stations}" class="station-box">
                         <div class="station-number" th:text="${station.stationNumber}"></div>
