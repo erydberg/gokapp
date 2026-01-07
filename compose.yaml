@@ -20,7 +20,7 @@ services:
       retries: 10
 
   gokapp:
-    image: ghcr.io/scouttavling/gokapp:latest
+    image: ghcr.io/erydberg/gokapp:latest
     container_name: gokapp
     depends_on:
       mysql:

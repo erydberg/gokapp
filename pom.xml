@@ -121,7 +121,7 @@
                         </exclude>
                     </excludes>
                     <image>
-                        <name>ghcr.io/scouttavling/gokapp:latest</name>
+                        <name>ghcr.io/erydberg/gokapp:latest</name>
                     </image>
                 </configuration>
             </plugin>
