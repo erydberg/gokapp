@@ -1,10 +1,47 @@
 services:
   mysql:
     image: 'mysql:latest'
+    container_name: gokapp-mysql
     environment:
-      - 'MYSQL_DATABASE=mydatabase'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=myuser'
+      - MYSQL_DATABASE=gokapp
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-changeme}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-changeme}
+      - MYSQL_USER=${MYSQL_USER:-gokapp}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-gokapp}
     ports:
-      - '3306'
+      - '3306:3306'
+    networks:
+      - gokapp
+    volumes:
+      - gokapp-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-changeme}" ]
+      timeout: 5s
+      retries: 10
+
+  gokapp:
+    image: ghcr.io/scouttavling/gokapp:latest
+    container_name: gokapp
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      # Activate production profile
+      SPRING_PROFILES_ACTIVE: prod
+
+      # Database connection
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-gokapp}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:-gokapp}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:-changeme}
+
+    ports:
+      - "8080:8080"
+    networks:
+      - gokapp
+
+networks:
+  gokapp: {}
+
+volumes:
+  gokapp-mysql-data:
+    name: gokapp-mysql-data

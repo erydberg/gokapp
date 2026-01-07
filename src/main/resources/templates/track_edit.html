@@ -2,7 +2,7 @@
 <html lang="sv" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="'Klass - ' + (${track.name} != null ? ${track.name} : 'Ny')">Klass</title>
-    <th:insert th:replace="fragments :: metadata"></th:insert>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
 </head>
 <body>
 <div class="nav-box">
