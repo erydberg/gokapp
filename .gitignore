@@ -4,8 +4,15 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-#project
+# Environment files
 .env
+.env.prod
+.env.dev
+
+# SSL certificates
+traefik/certs/
+traefik/dynamic/
+letsencrypt/
 
 ### STS ###
 .apt_generated

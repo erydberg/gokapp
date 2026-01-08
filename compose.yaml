@@ -16,6 +16,7 @@ services:
       - gokapp-mysql-data:/var/lib/mysql
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-changeme}" ]
+      interval: 10s
       timeout: 5s
       retries: 10
 
@@ -34,8 +35,8 @@ services:
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:-gokapp}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:-changeme}
 
-    ports:
-      - "8080:8080"
+#    ports:
+#      - "8080:8080"
     networks:
       - gokapp
 

@@ -1,0 +1,49 @@
+services:
+  gokapp:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gokapp.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.gokapp.entrypoints=websecure"
+      - "traefik.http.routers.gokapp.tls.certresolver=letsencrypt"
+      - "traefik.http.services.gokapp.loadbalancer.server.port=8080"
+      # HTTP to HTTPS redirect
+      - "traefik.http.routers.gokapp-http.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.gokapp-http.entrypoints=web"
+      - "traefik.http.routers.gokapp-http.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true"
+
+  traefik:
+    image: traefik:v2.10
+    container_name: gokapp-traefik-prod
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      # Uncomment for testing with Let's Encrypt staging
+      # - "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--log.level=INFO"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt"
+    networks:
+      - gokapp
+    restart: unless-stopped
+    labels:
+      # Secure Traefik dashboard (optional)
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.traefik.service=api@internal"
+      # Add basic auth (generate with: htpasswd -nb admin password)
+      - "traefik.http.routers.traefik.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_DASHBOARD_AUTH:-admin:$$apr1$$8evjzp4m$$VjzYzJ5eUz7gXQbJMzQjn1}"

@@ -1,0 +1,40 @@
+services:
+  gokapp:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gokapp.rule=Host(`gokapp.local`)"
+      - "traefik.http.routers.gokapp.entrypoints=websecure"
+      - "traefik.http.routers.gokapp.tls=true"
+      - "traefik.http.services.gokapp.loadbalancer.server.port=8080"
+      # HTTP to HTTPS redirect
+      - "traefik.http.routers.gokapp-http.rule=Host(`gokapp.local`)"
+      - "traefik.http.routers.gokapp-http.entrypoints=web"
+      - "traefik.http.routers.gokapp-http.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+  traefik:
+    image: traefik:v2.10
+    container_name: gokapp-traefik-dev
+    command:
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.directory=/etc/traefik/dynamic"
+      - "--providers.file.watch=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--log.level=INFO"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8081:8080"  # Traefik dashboard
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik/certs:/etc/traefik/certs:ro"
+      - "./traefik/dynamic:/etc/traefik/dynamic:ro"
+    networks:
+      - gokapp
+    restart: unless-stopped

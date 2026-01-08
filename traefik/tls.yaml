@@ -1,0 +1,4 @@
+tls:
+  certificates:
+    - certFile: /etc/traefik/certs/gokapp.local.crt
+      keyFile: /etc/traefik/certs/gokapp.local.key
