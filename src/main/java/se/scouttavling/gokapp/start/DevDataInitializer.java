@@ -2,7 +2,10 @@ package se.scouttavling.gokapp.start;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import se.scouttavling.gokapp.patrol.Patrol;
 import se.scouttavling.gokapp.patrol.PatrolService;
@@ -28,7 +31,8 @@ public class DevDataInitializer {
     private final UserService userService;
     private final ScoreService scoreService;
 
-    @PostConstruct
+    @EventListener(ApplicationReadyEvent.class)
+    @Order(2)
     public void init() {
         initTracks();
         initStations();

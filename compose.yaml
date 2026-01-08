@@ -3,13 +3,10 @@ services:
     image: 'mysql:latest'
     container_name: gokapp-mysql
     environment:
-      - MYSQL_DATABASE=gokapp
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-changeme}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-changeme}
-      - MYSQL_USER=${MYSQL_USER:-gokapp}
       - MYSQL_DATABASE=${MYSQL_DATABASE:-gokapp}
-    ports:
-      - '3306:3306'
+      - MYSQL_USER=${MYSQL_USER:-gokapp}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-changeme}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-changeme}
     networks:
       - gokapp
     volumes:
@@ -27,16 +24,12 @@ services:
       mysql:
         condition: service_healthy
     environment:
-      # Activate production profile
-      SPRING_PROFILES_ACTIVE: prod
-
-      # Database connection
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILE:-prod}
+      # Use the SAME variables as MySQL container
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-gokapp}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:-gokapp}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:-changeme}
-
-#    ports:
-#      - "8080:8080"
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
       - gokapp
 
