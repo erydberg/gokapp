@@ -2,9 +2,7 @@ package se.scouttavling.gokapp.patrol;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import se.scouttavling.gokapp.station.Station;
 import se.scouttavling.gokapp.track.Track;
 
 import java.time.LocalDateTime;

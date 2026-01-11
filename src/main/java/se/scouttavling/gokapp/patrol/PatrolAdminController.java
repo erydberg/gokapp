@@ -15,8 +15,6 @@ import se.scouttavling.gokapp.track.TrackService;
 
 import java.util.List;
 
-//TODO alla olika sorting-anrop
-
 @RequestMapping("/admin/patrol")
 @RequiredArgsConstructor
 @Controller
@@ -36,10 +34,34 @@ public class PatrolAdminController {
     }
 
     @GetMapping
-    public String listAllPatrols(Model model) {
-        model.addAttribute("patrols", patrolService.getAllPatrols());
+    public String listAllPatrols(@RequestParam(required = false) String sort,
+                                 @RequestParam(required = false, defaultValue = "asc") String dir,
+                                 Model model) {
+        List<Patrol> patrols = patrolService.findAllSorted(sort, dir);
+        model.addAttribute("patrols", patrols);
+        model.addAttribute("sort", sort);
+        model.addAttribute("dir", dir);
         return "patrol_admin_list";
     }
+
+
+    /*
+
+    @GetMapping
+    public String loadStartAndFinish(@RequestParam(required = false) String sort,
+                                     @RequestParam(required = false, defaultValue = "asc") String dir,
+                                     Model model) {
+
+        List<Patrol> patrols = patrolService.findAllSorted(sort, dir);
+        Map<String, Long> statusCounter = StatusCounter.calculateAllStatuses(patrols);
+        model.addAttribute("statusCounter", statusCounter);
+        model.addAttribute("patrols", patrols);
+        model.addAttribute("sort", sort);
+        model.addAttribute("dir", dir);
+
+        return "start_finish";
+    }
+     */
 
     @GetMapping("/new")
     public String newPatrolForm(Model model) {

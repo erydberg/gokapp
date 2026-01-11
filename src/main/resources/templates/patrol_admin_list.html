@@ -35,40 +35,14 @@
 <div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
 
 <div class="notepad">
-    <!-- Filters -->
-    <form method="get" th:action="@{/admin/patrol}" class="filter-form">
-        <label for="trackFilter">Klass:</label>
-        <select name="id" id="trackFilter">
-            <option value="">Alla</option>
-            <option th:each="track : ${tracks}"
-                    th:value="${track.id}"
-                    th:text="${track.name}"
-                    th:selected="${track.id == selectedId}">
-            </option>
-        </select>
-
-        <label for="statusFilter">Status:</label>
-        <select name="status" id="statusFilter">
-            <option value="">Alla</option>
-            <option th:each="s : ${T(se.scouttavling.gokapp.patrol.Status).values()}"
-                    th:value="${s}"
-                    th:text="${s}"
-                    th:selected="${s == selectedStatus}">
-            </option>
-        </select>
-
-        <button type="submit" class="btn btn-primary btn-sm">Filtrera</button>
-    </form>
-
     <!-- Patrol table -->
     <table class="table table-striped">
         <thead>
         <tr>
-            <th><a th:href="@{/admin/patrol(sort='patrolName')}">Patrullnamn</a></th>
-            <th><a th:href="@{/admin/patrol(sort='track')}">Klass</a></th>
-            <th><a th:href="@{/admin/patrol(sort='troop')}">Scoutkår</a></th>
-            <th><a th:href="@{/admin/patrol(sort='status')}">Status</a></th>
-            <th><a th:href="@{/admin/patrol(sort='totalScore')}">Poäng</a></th>
+            <th>Patrullnamn <a th:href="@{/admin/patrol(sort='patrolName', dir=${dir == 'asc' ? 'desc' : 'asc'})}"><img th:src="@{/css/arrow-down.png}" alt="sort"></a></th>
+            <th>Klass <a th:href="@{/admin/patrol(sort='track.name', dir=${dir == 'asc' ? 'desc' : 'asc'})}"><img th:src="@{/css/arrow-down.png}" alt="sort"></Spåra></th>
+            <th>Kår <a th:href="@{/admin/patrol(sort='troop', dir=${dir == 'asc' ? 'desc' : 'asc'})}"><img th:src="@{/css/arrow-down.png}" alt="sort"></a></th>
+            <th>Status <a th:href="@{/admin/patrol(sort='status', dir=${dir == 'asc' ? 'desc' : 'asc'})}"><img th:src="@{/css/arrow-down.png}" alt="sort"></a></th>
             <th>Betald</th>
             <th>Åtgärder</th>
         </tr>
@@ -82,7 +56,6 @@
             <td th:text="${patrol.track.name}"></td>
             <td th:text="${patrol.troop}"></td>
             <td th:text="${patrol.status}"></td>
-            <td th:text="${patrol.totalScore}"></td>
             <td>
                 <span class="paid-action"
                       th:data-id="${patrol.patrolId}"

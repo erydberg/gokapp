@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import se.scouttavling.gokapp.configuration.Config;
 import se.scouttavling.gokapp.configuration.ConfigService;
@@ -22,7 +21,6 @@ import se.scouttavling.gokapp.track.Track;
 import se.scouttavling.gokapp.track.TrackService;
 
 import java.io.ByteArrayInputStream;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;

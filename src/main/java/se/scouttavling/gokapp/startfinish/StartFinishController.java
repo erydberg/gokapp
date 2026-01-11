@@ -88,7 +88,6 @@ public class StartFinishController {
                 .orElseThrow(() -> new IllegalArgumentException("Score not found"));
 
         model.addAttribute("score", score);
-        //model.addAttribute("stations", stationService.getAll());
         return "startfinish_correct_score";
     }
 
