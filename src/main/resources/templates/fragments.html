@@ -29,10 +29,10 @@
 <!-- Message fragment -->
 <div th:fragment="messages(errormsg, confirmmsg)">
     <div th:if="${errormsg != null}" class="ingress_background">
-        <div class="ingress"><div class="errorblock" th:text="${errormsg}"></div></div>
+        <div class="ingress"><div class="errorblock" th:utext="${errormsg}"></div></div>
     </div>
     <div th:if="${confirmmsg != null}" class="ingress_background">
-        <div class="ingress"><div class="confirmblock" th:text="${confirmmsg}"></div></div>
+        <div class="ingress"><div class="confirmblock" th:utext="${confirmmsg}"></div></div>
     </div>
 </div>
 

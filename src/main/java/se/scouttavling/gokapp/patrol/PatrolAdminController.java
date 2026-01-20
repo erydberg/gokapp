@@ -45,30 +45,13 @@ public class PatrolAdminController {
     }
 
 
-    /*
-
-    @GetMapping
-    public String loadStartAndFinish(@RequestParam(required = false) String sort,
-                                     @RequestParam(required = false, defaultValue = "asc") String dir,
-                                     Model model) {
-
-        List<Patrol> patrols = patrolService.findAllSorted(sort, dir);
-        Map<String, Long> statusCounter = StatusCounter.calculateAllStatuses(patrols);
-        model.addAttribute("statusCounter", statusCounter);
-        model.addAttribute("patrols", patrols);
-        model.addAttribute("sort", sort);
-        model.addAttribute("dir", dir);
-
-        return "start_finish";
-    }
-     */
-
     @GetMapping("/new")
     public String newPatrolForm(Model model) {
         model.addAttribute("patrol", new Patrol());
         model.addAttribute("statuslist", Status.values());
         return "patrol_admin_edit";  // Thymeleaf form
     }
+
 
     /**
      * Go to edit mode of a patrol loaded from backend database

@@ -37,6 +37,17 @@ public class PatrolService {
         return patrolRepository.save(patrol);
     }
 
+
+    /**
+     * Save all patrols in the list
+     * @param patrols
+     * @return
+     */
+    public List<Patrol> saveAll(List<Patrol> patrols) {
+        return patrolRepository.saveAll(patrols);
+    }
+
+
     public List<Patrol> findAllSorted(String sort, String dir) {
         List<Patrol> patrols = patrolRepository.findAllWithScoresSorted();
 

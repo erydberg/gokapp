@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${config.name + ' Fördela patruller'}">Fördela patruller</title>
+    <th:block th:replace="~{fragments :: metadata}"></th:block>
+</head>
+<body>
+
+<div class="page-head">
+    <h1 th:text="${config.name + ' Fördela patruller'}">Fördela patruller</h1>
+    <p>Tänk på att varje gång du gör något av nedanstående slumpas patrullerna ut så eventuella tidigare angivna
+        startkontroller skrivs över. </p>
+</div>
+
+<!-- Include messages -->
+<div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+
+<div class="nav-box">
+    <ul>
+        <li class="nav-item"><a th:href="@{/admin/distribute/all}">Slumpa ut alla patruller över alla
+            kontroller</a></li>
+        <li class="nav-item"><a th:href="@{/admin/distribute/basedontrack}">Fördela varje klass över alla
+            kontroller</a></li>
+        <li class="nav-item"><a th:href="@{/admin}">Till admin-menyn</a></li>
+    </ul>
+</div>
+
+
+</body>
+</html>
