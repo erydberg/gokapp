@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import se.scouttavling.gokapp.configuration.Config;
+import se.scouttavling.gokapp.configuration.ConfigService;
 import se.scouttavling.gokapp.patrol.Patrol;
 import se.scouttavling.gokapp.patrol.PatrolService;
 import se.scouttavling.gokapp.station.Station;
@@ -23,6 +25,13 @@ public class ScoreController {
     private final PatrolService patrolService;
     private final StationService stationService;
     private final ScoreService scoreService;
+    private final ConfigService configService;
+
+
+    @ModelAttribute("config")
+    public Config loadConfig() {
+        return configService.getCurrentConfig();
+    }
 
     /**
      * Start page for adding a score
@@ -32,6 +41,7 @@ public class ScoreController {
     public String startScore(Model model) {
         model.addAttribute("stationSelectionForm", new StationSelectionForm(null));
         model.addAttribute("stations", stationService.getAll()); //TODO based on access
+
         return "score_select_station";
     }
 

@@ -25,7 +25,7 @@
     <p>Vald kontroll: <span th:text="${station.stationName}"></span></p>
 
     <!-- QR Scanner Section -->
-    <div class="form-box qr-scanner-section">
+    <div th:if=${config.useQr} class="form-box qr-scanner-section">
         <button type="button" id="scanQrButton" class="btn-scan">
             📷 Scanna QR-kod för att välja patrull
         </button>

@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import se.scouttavling.gokapp.configuration.Config;
+import se.scouttavling.gokapp.configuration.ConfigService;
 import se.scouttavling.gokapp.patrol.Patrol;
 import se.scouttavling.gokapp.patrol.PatrolService;
 import se.scouttavling.gokapp.station.Station;

@@ -20,9 +20,17 @@ public class PatrolComparator {
     public static final Comparator<Patrol> BY_TRACK =
             Comparator.comparing(p -> p.getTrack().getName(), Comparator.nullsLast(String::compareToIgnoreCase));
 
+    // Sort by start station
+    public static final Comparator<Patrol> BY_STARTSTATION =
+            Comparator.comparing(p -> p.getStartStation().getStationName(), Comparator.nullsLast(String::compareToIgnoreCase));
+
     // Sort by troop
     public static final Comparator<Patrol> BY_TROOP =
             Comparator.comparing(Patrol::getTroop, Comparator.nullsLast(String::compareToIgnoreCase));
+
+    // Sort by status
+    public static final Comparator<Patrol> BY_STATUS =
+            Comparator.comparing(p -> p.getStatus().name(), Comparator.nullsLast(String::compareToIgnoreCase));
 
     // Sort by latestScore
     public static final Comparator<Patrol> BY_LATEST_SCORE =

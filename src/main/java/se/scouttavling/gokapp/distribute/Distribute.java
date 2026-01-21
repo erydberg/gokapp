@@ -3,8 +3,6 @@ package se.scouttavling.gokapp.distribute;
 import se.scouttavling.gokapp.patrol.Patrol;
 import se.scouttavling.gokapp.station.Station;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Distribute {
@@ -14,29 +12,36 @@ public class Distribute {
     List<Station> stations;
     String trackName = "";
 
-    public Distribute(List<Patrol> patrols, List<Station> stations){
+    public Distribute(List<Patrol> patrols, List<Station> stations) {
         this.patrols = patrols;
         this.stations = stations;
     }
 
-    public Distribute(List<Patrol> patrols, List<Station> stations, String trackName){
+    public Distribute(List<Patrol> patrols, List<Station> stations, String trackName) {
         this.patrols = patrols;
         this.stations = stations;
         this.trackName = trackName;
     }
 
 
-    public String distributePatrols(){
-        if((patrols.isEmpty() || stations.isEmpty()) && trackName.isEmpty()) {
-            //TODO skriva ut om det inte finns några patruller till en viss klass
-            return "Det behöver finnas både patruller och kontroller för att kunna använda den här funktionen.";
+    public String distributePatrols() {
+        if (stations.isEmpty()) {
+            return "Det behöver finnas kontroller för att kunna använda den här funktionen.";
+        }
+
+        if (patrols.isEmpty() && !trackName.isEmpty()) {
+            return String.format("Det finns inga patruller för %s", trackName);
+        }
+
+        if (patrols.isEmpty()) {
+            return "Det finns inga patruller att fördela.";
         }
 
         int noOfStations = stations.size();
         int noOfPatrols = patrols.size();
         lastUsedStation = 0;
 
-        for(Patrol patrol:patrols){
+        for (Patrol patrol : patrols) {
             System.out.println("lastUsedStation " + lastUsedStation);
             patrol.setStartStation(stations.get(lastUsedStation));
             calculateLastUsedStation(stations);
@@ -50,9 +55,9 @@ public class Distribute {
     }
 
     private void calculateLastUsedStation(List<Station> stations) {
-        if(lastUsedStation<stations.size()-1){
+        if (lastUsedStation < stations.size() - 1) {
             lastUsedStation++;
-        }else{
+        } else {
             lastUsedStation = 0;
         }
     }

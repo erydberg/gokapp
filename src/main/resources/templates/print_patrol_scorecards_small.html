@@ -15,7 +15,7 @@
             <div th:if="${patrol.startStation != null}" class="patrol-number">
                 <span th:text="'Start: ' + ${patrol.startStation.stationName}"></span>
             </div>
-            <div class="qr-section">
+            <div th:if=${config.useQr} class="qr-section">
                 <img th:src="${patrol.qrCodeDataUrl}"
                      th:alt="'QR Code för ' + ${patrol.patrolName}"
                      class="qr-code" />

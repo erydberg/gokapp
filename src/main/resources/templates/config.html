@@ -28,7 +28,10 @@
                     <label for="phone">Telefon till start/mål:</label>
                     <input type="text" th:field="*{phone}" id="phone" />
                 </div>
-
+                <div>
+                    <label>Använd QR koder på startkort och vid poängregistrering:</label>
+                    <input type="checkbox" th:field="*{useQr}" id="useQr" />
+                </div>
                 <div>
                     <label>Tillåt publik resultatsida (visar också länk från inloggningssidan):</label>
                     <input type="checkbox" th:field="*{allowPublicResult}" id="allowPublicResult" />

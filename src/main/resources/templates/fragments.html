@@ -26,13 +26,31 @@
 </th:block>
 
 <body>
-<!-- Message fragment -->
+<!-- Message fragment - handles both String and List automatically -->
 <div th:fragment="messages(errormsg, confirmmsg)">
     <div th:if="${errormsg != null}" class="ingress_background">
-        <div class="ingress"><div class="errorblock" th:utext="${errormsg}"></div></div>
+        <div class="ingress">
+            <div class="errorblock">
+                <!-- If it's a String, just display it -->
+                <div th:if="${errormsg instanceof T(java.lang.String)}" th:text="${errormsg}"></div>
+                <!-- If it's a List, iterate over it -->
+                <th:block th:if="${errormsg instanceof T(java.util.List)}">
+                    <div th:each="msg : ${errormsg}" th:text="${msg}"></div>
+                </th:block>
+            </div>
+        </div>
     </div>
     <div th:if="${confirmmsg != null}" class="ingress_background">
-        <div class="ingress"><div class="confirmblock" th:utext="${confirmmsg}"></div></div>
+        <div class="ingress">
+            <div class="confirmblock">
+                <!-- If it's a String, just display it -->
+                <div th:if="${confirmmsg instanceof T(java.lang.String)}" th:text="${confirmmsg}"></div>
+                <!-- If it's a List, iterate over it -->
+                <th:block th:if="${confirmmsg instanceof T(java.util.List)}">
+                    <div th:each="msg : ${confirmmsg}" th:text="${msg}"></div>
+                </th:block>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -20,5 +20,7 @@ public class Config {
     private Boolean allowPublicResult;
 
     private String phone;
+
+    private boolean useQr;
 }
 

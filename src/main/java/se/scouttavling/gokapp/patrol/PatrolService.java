@@ -64,6 +64,8 @@ public class PatrolService {
             case "troop" -> PatrolComparator.BY_TROOP;
             case "totalScore" -> PatrolComparator.BY_SCORE;
             case "latestScore" -> PatrolComparator.BY_LATEST_SCORE;
+            case "startStation" -> PatrolComparator.BY_STARTSTATION;
+            case "status" -> PatrolComparator.BY_STATUS;
             default -> PatrolComparator.BY_NAME; // fallback
         };
 

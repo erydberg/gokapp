@@ -17,6 +17,7 @@ import se.scouttavling.gokapp.station.StationService;
 import se.scouttavling.gokapp.track.Track;
 import se.scouttavling.gokapp.track.TrackService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -63,18 +64,17 @@ public class DistributeController {
         List<Station> stations = stationService.getAll();
         List<Track> tracks = trackService.findAllTracks();
 
-        StringBuilder  stringBuilder = new StringBuilder();
+        List<String> messages = new ArrayList<>();
 
         for (Track track : tracks) {
             List<Patrol> patrols = patrolService.getAllPatrolsByTrack(track);
             Distribute distribute = new Distribute(patrols, stations, track.getName());
-            stringBuilder.append(distribute.distributePatrols());
-            stringBuilder.append("<br/>");
+            messages.add(distribute.distributePatrols());
             patrolService.saveAll(patrols);
         }
 
 
-        redirectAttributes.addFlashAttribute("confirmmsg", stringBuilder.toString());
+        redirectAttributes.addFlashAttribute("confirmmsg", messages);
         return "redirect:/admin/distribute";
     }
 
