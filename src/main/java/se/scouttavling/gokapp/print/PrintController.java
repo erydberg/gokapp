@@ -13,12 +13,13 @@ import se.scouttavling.gokapp.patrol.PatrolService;
 import se.scouttavling.gokapp.station.Station;
 import se.scouttavling.gokapp.station.StationService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/admin/print")
 @RequiredArgsConstructor
-public class PrintScorecardController {
+public class PrintController {
 
     private final PatrolService patrolService;
     private final ConfigService configService;
@@ -52,5 +53,19 @@ public class PrintScorecardController {
         model.addAttribute("stations", stations);
 
         return "print_patrol_scorecards_small";
+    }
+
+    @GetMapping("/startstations")
+    public String printStartStationsAndPatrols(Model model) {
+        List<Station> stations = stationService.getAll();
+        List<StartStation> startStations = new ArrayList<>();
+        for (Station station : stations) {
+            List<Patrol> patrols = patrolService.getAllPatrolsByStartStation(station);
+            StartStation startStation = new StartStation(station.getStationNumber(), station.getStationName(), patrols);
+            startStations.add(startStation);
+        }
+
+        model.addAttribute("startstations", startStations);
+        return "print_startstations_patrols";
     }
 }

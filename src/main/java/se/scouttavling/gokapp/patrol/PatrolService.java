@@ -3,6 +3,7 @@ package se.scouttavling.gokapp.patrol;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import se.scouttavling.gokapp.station.Station;
 import se.scouttavling.gokapp.track.Track;
 
 import java.time.LocalDateTime;
@@ -128,5 +129,9 @@ public class PatrolService {
         Patrol patrol = getPatrolById(id).orElseThrow(() -> new IllegalArgumentException("Patrullen hittades inte"));
         patrol.setStatus(status);
         patrolRepository.save(patrol);
+    }
+
+    public List<Patrol> getAllPatrolsByStartStation(Station station) {
+        return patrolRepository.findByStartStation(station.getId());
     }
 }

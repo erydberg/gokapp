@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title>Skriv ut startkontroller och dess patruller</title>
+
+    <style>
+        .no-print {
+           margin-left: 10px;
+           margin-bottom: 50px;
+          }
+
+        .startstation {
+            page-break-after: always;
+            margin-left: 10px;
+            margin-bottom: 50px;
+        }
+
+        /* Prevent page break after the last startstation */
+        .startstation:last-child {
+            page-break-after: auto;
+        }
+
+        @media print {
+            .no-print {
+             display: none !important;
+            }
+
+            .startstation {
+                page-break-after: always;
+            }
+
+            .startstation:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+<p class="no-print">
+<h3 class="no-print">När du skriver ut sidan så kommer det bli en sidbrytning efter varje listan av patruller så varje kontroll får en egen sida, eller fler beroende på antal patruller.</h3>
+</p>
+
+<div th:if="${startstations != null}">
+    <div th:each="startstation : ${startstations}" class="startstation">
+        <h3 th:text="${startstation.stationNumber} + '. ' + ${startstation.name}"></h3>
+        <div th:if="${startstation.patrols != null}">
+            <div th:each="patrol : ${startstation.patrols}" class="scoreitem">
+                <h3 th:text="${patrol.patrolName}"></h3>
+                <span th:text="${patrol.track.name}"></span><br/>
+                <span th:text="${patrol.troop}"></span><br/>
+                <span th:text="${patrol.leaderContact}"></span><br/>
+                <span th:text="${patrol.leaderContactPhone}"></span><br/>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
