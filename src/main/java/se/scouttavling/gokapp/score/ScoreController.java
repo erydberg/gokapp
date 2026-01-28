@@ -2,6 +2,7 @@ package se.scouttavling.gokapp.score;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,12 +11,18 @@ import se.scouttavling.gokapp.configuration.Config;
 import se.scouttavling.gokapp.configuration.ConfigService;
 import se.scouttavling.gokapp.patrol.Patrol;
 import se.scouttavling.gokapp.patrol.PatrolService;
+import se.scouttavling.gokapp.security.Role;
+import se.scouttavling.gokapp.security.User;
+import se.scouttavling.gokapp.security.UserService;
 import se.scouttavling.gokapp.station.Station;
 import se.scouttavling.gokapp.station.StationSelectionForm;
 import se.scouttavling.gokapp.station.StationService;
 
 
+import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/score")
@@ -26,6 +33,7 @@ public class ScoreController {
     private final StationService stationService;
     private final ScoreService scoreService;
     private final ConfigService configService;
+    private final UserService userService;
 
 
     @ModelAttribute("config")
@@ -38,34 +46,59 @@ public class ScoreController {
      * loads the station list
      */
     @GetMapping
-    public String startScore(Model model) {
+    public String startScore(Principal principal, Model model) {
+        System.out.println("user " + principal.getName());
+        Optional<User> currentUser = userService.findUserByUsername(principal.getName());
+        List<Station> stations;
+        if (currentUser.isPresent()) {
+            if (currentUser.get().getRoles().contains(Role.ROLE_ADMIN)) {
+                stations = stationService.getAll();
+            } else {
+                stations = stationService.getForUser(currentUser.get());
+            }
+        } else {
+            stations = Collections.emptyList();
+        }
+
+        if (stations.size() == 1) {
+            return "redirect:/score/selectstation?stationId=" + stations.getFirst().getId();
+        }
+
         model.addAttribute("stationSelectionForm", new StationSelectionForm(null));
-        model.addAttribute("stations", stationService.getAll()); //TODO based on access
+        model.addAttribute("stations", stations);
 
         return "score_select_station";
     }
 
-    /**
-     * Select station, then show patrols left on this station
-     */
-    @PostMapping("/selectstation")
-    public String selectStation(@ModelAttribute("stationSelectionForm") StationSelectionForm form,
-                                BindingResult result,
-                                Model model) {
+    @GetMapping("/selectstation")
+    public String selectStationGet(@RequestParam Integer stationId, Model model) {
+        return loadStationPage(stationId, model);
+    }
 
+    @PostMapping("/selectstation")
+    public String selectStationPost(@ModelAttribute("stationSelectionForm") StationSelectionForm form,
+                                    BindingResult result,
+                                    Model model) {
         if(form.stationId() == null) {
             model.addAttribute("errormsg", "Du måste välja en kontroll");
             model.addAttribute("stations", stationService.getAll());
             return "score_select_station";
         }
 
-        Station station = stationService.getStationById(form.stationId()).orElseThrow(() -> new IllegalArgumentException("Station not found"));
+        return loadStationPage(form.stationId(), model);
+    }
+
+    private String loadStationPage(Integer stationId, Model model) {
+        Station station = stationService.getStationById(stationId)
+                .orElseThrow(() -> new IllegalArgumentException("Station not found"));
+
         Score score = Score.builder().station(station).build();
         model.addAttribute("score", score);
         model.addAttribute("station", station);
         model.addAttribute("patrols", patrolService.allPatrolsLeftOnStation(station.getId()));
         return "score_report";
     }
+
 
     /**
      * Save a score
@@ -78,7 +111,7 @@ public class ScoreController {
         Station station = stationService.getStationById(score.getStation().getId()).orElseThrow(() -> new IllegalArgumentException("Station not found"));
 
         if (score.getPatrol() == null) {
-            model.addAttribute("station",station);
+            model.addAttribute("station", station);
             model.addAttribute("errormsg", "Du måste välja en patrull innan du sparar poängen.");
             score.setStation(station);
             model.addAttribute("score", score);

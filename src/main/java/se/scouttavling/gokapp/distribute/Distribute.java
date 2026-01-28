@@ -25,15 +25,15 @@ public class Distribute {
 
 
     public String distributePatrols() {
-        if (stations.isEmpty()) {
+        if (stations == null || stations.isEmpty()) {
             return "Det behöver finnas kontroller för att kunna använda den här funktionen.";
         }
 
-        if (patrols.isEmpty() && !trackName.isEmpty()) {
+        if ((patrols == null || patrols.isEmpty()) && !trackName.isEmpty()) {
             return String.format("Det finns inga patruller för %s", trackName);
         }
 
-        if (patrols.isEmpty()) {
+        if (patrols == null || patrols.isEmpty()) {
             return "Det finns inga patruller att fördela.";
         }
 
@@ -42,7 +42,6 @@ public class Distribute {
         lastUsedStation = 0;
 
         for (Patrol patrol : patrols) {
-            System.out.println("lastUsedStation " + lastUsedStation);
             patrol.setStartStation(stations.get(lastUsedStation));
             calculateLastUsedStation(stations);
         }

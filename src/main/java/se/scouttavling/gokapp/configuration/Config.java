@@ -21,6 +21,6 @@ public class Config {
 
     private String phone;
 
-    private boolean useQr;
+    private boolean useQr = true;
 }
 

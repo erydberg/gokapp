@@ -44,6 +44,11 @@ public class DistributeController {
     }
 
 
+    /**
+     * Takes all patrols and distribute them evenly over all stations
+     * @param redirectAttributes
+     * @return
+     */
     @GetMapping("/all")
     public String allPatrolsOnStations(RedirectAttributes redirectAttributes) {
         List<Patrol> patrols = patrolService.getAllPatrols();
@@ -59,6 +64,12 @@ public class DistributeController {
     }
 
 
+    /**
+     * This method fetches all patrols on a specific track and distribute them over all stations and
+     * does this for each track to help in situations where there are many patrols on some tracks but much less on other tracks
+     * @param redirectAttributes
+     * @return
+     */
     @GetMapping("/basedontrack")
     public String distributePatrolsBasedOnTrack(RedirectAttributes redirectAttributes) {
         List<Station> stations = stationService.getAll();
@@ -73,13 +84,8 @@ public class DistributeController {
             patrolService.saveAll(patrols);
         }
 
-
         redirectAttributes.addFlashAttribute("confirmmsg", messages);
         return "redirect:/admin/distribute";
     }
-
-
-
-
 
 }

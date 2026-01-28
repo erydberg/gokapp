@@ -3,6 +3,7 @@ package se.scouttavling.gokapp.station;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import se.scouttavling.gokapp.security.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,11 @@ public class StationService {
 
     public List<Station> getAll() {
         return stationRepository.findAll(Sort.by(Sort.Direction.ASC, "stationNumber"));
+    }
+
+    public List<Station> getForUser(User user) {
+
+        return stationRepository.findByStationUser(user);
     }
 
     public Station save(Station station) {
