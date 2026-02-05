@@ -14,7 +14,7 @@ services:
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true"
 
   traefik:
-    image: traefik:v3.2
+    image: traefik:v3.6.7
     container_name: gokapp-traefik-prod
     command:
       - "--api.dashboard=true"
@@ -39,11 +39,11 @@ services:
     restart: unless-stopped
     labels:
       # Secure Traefik dashboard (optional)
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
-      - "traefik.http.routers.traefik.entrypoints=websecure"
-      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.traefik.service=api@internal"
-      # Add basic auth (generate with: htpasswd -nb admin password)
-      - "traefik.http.routers.traefik.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_DASHBOARD_AUTH:-admin:$$apr1$$8evjzp4m$$VjzYzJ5eUz7gXQbJMzQjn1}"
+      #- "traefik.enable=true"
+      #- "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
+      #- "traefik.http.routers.traefik.entrypoints=websecure"
+      #- "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      #- "traefik.http.routers.traefik.service=api@internal"
+      ## Add basic auth (generate with: htpasswd -nb admin password)
+      #- "traefik.http.routers.traefik.middlewares=auth"
+      #- "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_DASHBOARD_AUTH:-admin:$$apr1$$8evjzp4m$$VjzYzJ5eUz7gXQbJMzQjn1}"
