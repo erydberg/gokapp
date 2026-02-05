@@ -14,7 +14,7 @@ services:
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true"
 
   traefik:
-    image: traefik:v2.10
+    image: traefik:v3.2
     container_name: gokapp-traefik-prod
     command:
       - "--api.dashboard=true"
