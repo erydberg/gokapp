@@ -10,9 +10,17 @@ import se.scouttavling.gokapp.configuration.Config;
 import se.scouttavling.gokapp.configuration.ConfigService;
 import se.scouttavling.gokapp.patrol.Patrol;
 import se.scouttavling.gokapp.patrol.PatrolService;
+import se.scouttavling.gokapp.security.Role;
+import se.scouttavling.gokapp.security.User;
+import se.scouttavling.gokapp.security.UserService;
 import se.scouttavling.gokapp.station.Station;
 import se.scouttavling.gokapp.station.StationSelectionForm;
 import se.scouttavling.gokapp.station.StationService;
+
+import java.security.Principal;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/correct")
@@ -22,9 +30,27 @@ public class CorrectScoreController {
     private final StationService stationService;
     private final ScoreService scoreService;
     private final PatrolService patrolService;
+    private final UserService userService;
 
     @GetMapping
-    public String startCorrectScore(Model model) {
+    public String startCorrectScore(Principal principal, Model model) {
+        System.out.println("user " + principal.getName());
+        Optional<User> currentUser = userService.findUserByUsername(principal.getName());
+        List<Station> stations;
+        if (currentUser.isPresent()) {
+            if (currentUser.get().getRoles().contains(Role.ROLE_ADMIN)) {
+                stations = stationService.getAll();
+            } else {
+                stations = stationService.getForUser(currentUser.get());
+            }
+        } else {
+            stations = Collections.emptyList();
+        }
+
+        if (stations.size() == 1) {
+            return "redirect:/correct/selectstation?stationId=" + stations.getFirst().getId();
+        }
+
         model.addAttribute("stationSelectionForm", new StationSelectionForm(null));
         model.addAttribute("stations", stationService.getAll());
         return "correct_score_select_station";
@@ -46,6 +72,19 @@ public class CorrectScoreController {
 
         return renderScoresForStation(form.stationId(), model);
     }
+
+
+    /**
+     * Used by redirect from startCorrectScore if the user has access to only one station
+     * @param stationId
+     * @param model
+     * @return
+     */
+    @GetMapping("/selectstation")
+    public String selectStationGet(@RequestParam Integer stationId, Model model) {
+        return renderScoresForStation(stationId, model);
+    }
+
 
 
     @GetMapping("/selectstation/{stationId}")
