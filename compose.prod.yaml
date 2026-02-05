@@ -37,7 +37,7 @@ services:
     networks:
       - gokapp
     restart: unless-stopped
-    labels:
+    #labels:
       # Secure Traefik dashboard (optional)
       #- "traefik.enable=true"
       #- "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
