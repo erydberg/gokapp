@@ -29,17 +29,13 @@
                     <div class="errortext" th:errors="*{password}"></div>
                     <small th:if="${user.id != null}">Lämna blankt för att behålla nuvarande lösenord</small>
 
-                    <label for="role">Roll:</label>
-                    <select th:field="*{role}" id="role">
-                        <option th:value="ROLE_ADMIN" th:text="'admin'"
-                                th:selected="${user.role} == T(se.scouttavling.gokapp.model.Role).ROLE_ADMIN"></option>
-                        <option th:value="ROLE_USER" th:text="'kontrollant'"
-                                th:selected="${user.role} == T(se.scouttavling.gokapp.model.Role).ROLE_USER"></option>
-                        <option th:value="ROLE_STARTFINISH_ADMIN" th:text="'start- måladmin'"
-                                th:selected="${user.role} == T(se.scouttavling.gokapp.model.Role).ROLE_STARTFINISH_ADMIN"></option>
+                    <label for="roles">Roll:</label>
+                    <select th:field="*{roles}" id="roles">
+                        <option th:value="ROLE_ADMIN" th:text="'admin'"></option>
+                        <option th:value="ROLE_USER" th:text="'kontrollant'"></option>
+                        <option th:value="ROLE_STARTFINISH" th:text="'start- måladmin'"></option>
                     </select>
-                    <div class="errortext" th:errors="*{role}"></div>
-
+                    <div class="errortext" th:errors="*{roles}"></div>
                 </div>
             </fieldset>
 
