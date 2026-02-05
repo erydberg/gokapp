@@ -43,7 +43,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("errormsg", "Användaren hittades inte");
             return "redirect:/admin/user";
         }
-        model.addAttribute("user", user);
+        model.addAttribute("user", user.get());
         return "user_admin_edit";
     }
 
