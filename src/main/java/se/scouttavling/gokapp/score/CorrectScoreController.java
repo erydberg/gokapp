@@ -52,7 +52,7 @@ public class CorrectScoreController {
         }
 
         model.addAttribute("stationSelectionForm", new StationSelectionForm(null));
-        model.addAttribute("stations", stationService.getAll());
+        model.addAttribute("stations", stations);
         return "correct_score_select_station";
     }
 
