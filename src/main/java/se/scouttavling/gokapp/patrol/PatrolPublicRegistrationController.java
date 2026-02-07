@@ -34,11 +34,13 @@ public class PatrolPublicRegistrationController {
     @GetMapping
     public String showForm(Model model) {
         RegistrationConfig registrationConfig = registrationConfigService.getCurrentConfig();
-        if (RegistrationChecker.isOpenForRegistration(registrationConfig, patrolService.getAllPatrols().size())) {
+        int noOfPatrols = patrolService.getAllPatrols().size();
+        if (RegistrationChecker.isOpenForRegistration(registrationConfig, noOfPatrols)) {
             model.addAttribute("config", configService.getCurrentConfig());
             model.addAttribute("patrolPublicDto", new PatrolPublicDto());
             model.addAttribute("tracks", trackService.findAllTracks());
             model.addAttribute("registrationconfig", registrationConfig);
+            model.addAttribute("registeredpatrols", noOfPatrols);
             return "patrol_public_registration";
         } else {
             model.addAttribute("config", configService.getCurrentConfig());

@@ -25,7 +25,7 @@ public class StartController {
         return configService.getCurrentConfig();
     }
 
-    @GetMapping
+    @GetMapping("/")
     public String Start(Model model) {
         RegistrationConfig registrationConfig = registrationConfigService.getCurrentConfig();
         try {
