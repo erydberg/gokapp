@@ -16,9 +16,7 @@
 
 <div th:if="${patrols != null}">
     <div th:each="patrol, iterStat : ${patrols}" class="scoreitem">
-        <a th:href="@{/patrol/viewpatrolfromlisttrack/{patrolId}/track/{trackId}(patrolId=${patrol.patrolId}, trackId=${selectedTrack.id})}"
-           th:text="${iterStat.count + '. ' + patrol.patrolName}"></a><br/>
-
+        <h3 th:text="${iterStat.count + '. ' + patrol.patrolName}"></h3>
         <span th:text="${patrol.troop}"></span><br/>
         <strong th:text="'Totalt: ' + ${patrol.totalScore}"></strong><br/>
         <span th:text="'(' + ${patrol.totalScorePoint} + ' poäng + ' + ${patrol.totalStylePoint} + ' stilpoäng)'"></span><br/>
