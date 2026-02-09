@@ -27,7 +27,7 @@
     <!-- QR Scanner Section -->
     <div th:if=${config.useQr} class="form-box qr-scanner-section">
         <button type="button" id="scanQrButton" class="btn-scan">
-            📷 Scanna QR-kod för att välja patrull
+            📷 Scanna QR-kod
         </button>
         <div id="qrReader" style="display:none;"></div>
         <div id="qrStatus" style="display:none; margin-top: 10px; padding: 10px; background: #e8f5e9; border-radius: 4px;">
@@ -48,7 +48,7 @@
                         <option value="">-- Välj patrull --</option>
                         <option th:each="patrol : ${patrols}"
                                 th:value="${patrol.patrolId}"
-                                th:text="${patrol.patrolName}">
+                                th:text="|${#strings.abbreviate(patrol.patrolName, 24)} (${patrol.patrolId}) ${patrol.track.name} ${patrol.troop}|">
                         </option>
                     </select>
                 </fieldset>

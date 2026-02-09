@@ -114,7 +114,7 @@
             <!-- Latest report -->
             <td>
                 <span th:if="${patrol.latestScore != null and patrol.latestScore.lastSaved != null}">
-                    <span th:text="${#temporals.format(patrol.latestScore.lastSaved, 'HH:mm (d/M)')}"></span>
+                    <span th:text="${#temporals.format(patrol.latestScore.lastSaved, 'HH:mm (d/M)', 'Europe/Stockholm')}"></span>
                     <span th:text="' ' + ${patrol.latestScore.station.stationName}"></span>
                 </span>
             </td>

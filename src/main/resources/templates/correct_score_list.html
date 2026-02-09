@@ -27,14 +27,14 @@
 
         <div th:if="${score.visitedWaypoint}">
             Passerat:
-            <span th:text="${#temporals.format(score.lastSaved, 'yyyy-MM-dd HH:mm')}"></span><br>
+            <span th:text="${#temporals.format(score.lastSaved, 'yyyy-MM-dd HH:mm', 'Europe/Stockholm')}"></span><br>
         </div>
 
         <div th:if="${!score.visitedWaypoint}">
             Poäng: <span th:text="${score.scorePoint}"></span><br>
             Stilpoäng: <span th:text="${score.stylePoint}"></span><br>
             Sparat:
-            <span th:text="${#temporals.format(score.lastSaved, 'yyyy-MM-dd HH:mm')}"></span><br>
+            <span th:text="${#temporals.format(score.lastSaved, 'yyyy-MM-dd HH:mm', 'Europe/Stockholm')}"></span><br>
         </div>
     </div>
 </div>

@@ -18,7 +18,7 @@
         Scoutkår: <span th:text="${patrol.troop}"></span><br/>
         Ledare: <span th:text="${patrol.leaderContact}"></span><br/>
         Telefon till ledare: <span th:text="${patrol.leaderContactPhone}"></span><br/>
-        Senaste kontrollen: <span th:text="${#temporals.format(patrol.getLatestScore?.lastSaved, 'yyyy-MM-dd HH:mm')}">Ingen kontroll har passerats</span>
+        Senaste kontrollen: <span th:text="${#temporals.format(patrol.getLatestScore?.lastSaved, 'yyyy-MM-dd HH:mm', 'Europe/Stockholm')}">Ingen kontroll har passerats</span>
         <span th:text="${patrol.getLatestScore?.station?.stationName}"></span><br/>
     <!-- score table -->
         <table class="table table-striped">

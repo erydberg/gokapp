@@ -210,6 +210,21 @@ fieldset {
   align-items: center;
 }
 
+/* ADD THIS SECTION AT THE END */
+@media (max-width: 768px) {
+  .station-container {
+    flex-direction: column;
+  }
+
+  .dropdown-area {
+    width: 100%;
+  }
+
+  .numpad-area {
+    width: 100%;
+  }
+}
+
 .numpad-display {
   display: block;
   margin-bottom: 10px;

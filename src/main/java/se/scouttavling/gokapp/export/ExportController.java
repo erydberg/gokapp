@@ -62,8 +62,8 @@ public class ExportController {
         ByteArrayInputStream stream = exportService.exportMultipleTracksToCsv(results);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=competition_results.csv")
-                .contentType(MediaType.parseMediaType("text/csv"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=resultatlista_sammanställning.csv")
+                .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
                 .body(new InputStreamResource(stream));
     }
 
@@ -85,8 +85,8 @@ public class ExportController {
         ByteArrayInputStream stream = exportService.exportMultipleTracksToCsvComplete(results, stations);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=competition_results.csv")
-                .contentType(MediaType.parseMediaType("text/csv"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=resultatlista_med_alla_kontroller.csv")
+                .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
                 .body(new InputStreamResource(stream));
     }
 }

@@ -16,34 +16,45 @@ public class ExportCsvService {
     public static final String DELIMITER = ",";
 
     public ByteArrayInputStream exportMultipleTracksToCsv(Map<Track, List<Patrol>> trackResults) {
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream();
-             PrintWriter writer = new PrintWriter(out)) {
 
-            for (Map.Entry<Track, List<Patrol>> entry : trackResults.entrySet()) {
-                Track track = entry.getKey();
-                List<Patrol> patrols = entry.getValue();
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
-                // Track header
-                writer.println();
-                writer.println(track.getName());
-                addPatrolInfoHeadlineTo(writer);
-                addScoreHeadlines(writer);
+            // Write UTF-8 BOM first - crucial for Excel to recognize UTF-8
+            out.write(0xEF);
+            out.write(0xBB);
+            out.write(0xBF);
 
-                // Patrol data
-                int rank = 1;
-                for (Patrol patrol : patrols) {
-                    writer.printf("%d,%s,%s,%d,%d,%d%n",
-                            rank++,
-                            escapeCsv(patrol.getPatrolName()),
-                            escapeCsv(patrol.getTroop()),
-                            patrol.getTotalScorePoint(),
-                            patrol.getTotalStylePoint(),
-                            patrol.getTotalScore()
-                    );
+            // Use OutputStreamWriter with explicit UTF-8 encoding instead of PrintWriter
+            try (OutputStreamWriter osw = new OutputStreamWriter(out, StandardCharsets.UTF_8);
+                 PrintWriter writer = new PrintWriter(osw)) {
+
+                for (Map.Entry<Track, List<Patrol>> entry : trackResults.entrySet()) {
+                    Track track = entry.getKey();
+                    List<Patrol> patrols = entry.getValue();
+
+                    // Track header
+                    writer.println();
+                    writer.println(track.getName());
+                    addPatrolInfoHeadlineTo(writer);
+                    addScoreHeadlines(writer);
+
+                    // Patrol data
+                    int rank = 1;
+                    for (Patrol patrol : patrols) {
+                        writer.printf("%d,%s,%s,%d,%d,%d%n",
+                                rank++,
+                                escapeCsv(patrol.getPatrolName()),
+                                escapeCsv(patrol.getTroop()),
+                                patrol.getTotalScorePoint(),
+                                patrol.getTotalStylePoint(),
+                                patrol.getTotalScore()
+                        );
+                    }
                 }
+
+                writer.flush();
             }
 
-            writer.flush();
             return new ByteArrayInputStream(out.toByteArray());
         } catch (IOException e) {
             throw new RuntimeException("Failed to export CSV", e);
@@ -52,61 +63,68 @@ public class ExportCsvService {
 
 
     public ByteArrayInputStream exportMultipleTracksToCsvComplete(Map<Track, List<Patrol>> results, List<Station> stations) {
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream();
-             PrintWriter writer = new PrintWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8))) {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
-            for (Map.Entry<Track, List<Patrol>> entry : results.entrySet()) {
-                Track track = entry.getKey();
-                List<Patrol> patrols = entry.getValue();
+            // Write UTF-8 BOM first
+            out.write(0xEF);
+            out.write(0xBB);
+            out.write(0xBF);
 
-                // Track header
-                writer.println();
-                writer.println(track.getName());
+            try (OutputStreamWriter osw = new OutputStreamWriter(out, StandardCharsets.UTF_8);
+                 PrintWriter writer = new PrintWriter(osw)) {
 
-                //Headers for scores
-                addPatrolInfoHeadlineTo(writer);
-                addHeadlinesFromStations(stations, writer);
-                addScoreHeadlines(writer);
+                for (Map.Entry<Track, List<Patrol>> entry : results.entrySet()) {
+                    Track track = entry.getKey();
+                    List<Patrol> patrols = entry.getValue();
 
-                // scores
-                int rank = 1;
-                for (Patrol patrol : patrols) {
-                    writer.printf("%d,%s,%s,",
-                            rank++,
-                            escapeCsv(patrol.getPatrolName()),
-                            escapeCsv(patrol.getTroop())
-                    );
+                    // Track header
+                    writer.println();
+                    writer.println(track.getName());
 
-                    for (Station station : stations) {
-                        writer.printf("%s", getScoreForPatrolOnStation(patrol, station));
+                    //Headers for scores
+                    addPatrolInfoHeadlineTo(writer);
+                    addHeadlinesFromStations(stations, writer);
+                    addScoreHeadlines(writer);
+
+                    // scores
+                    int rank = 1;
+                    for (Patrol patrol : patrols) {
+                        writer.printf("%d,%s,%s,",
+                                rank++,
+                                escapeCsv(patrol.getPatrolName()),
+                                escapeCsv(patrol.getTroop())
+                        );
+
+                        for (Station station : stations) {
+                            writer.printf("%s", getScoreForPatrolOnStation(patrol, station));
+                        }
+
+                        writer.printf("%d,%d,%d%n",
+                                patrol.getTotalScorePoint(),
+                                patrol.getTotalStylePoint(),
+                                patrol.getTotalScore()
+                        );
                     }
-
-
-                    writer.printf("%d,%d,%d%n",
-                            patrol.getTotalScorePoint(),
-                            patrol.getTotalStylePoint(),
-                            patrol.getTotalScore()
-                    );
                 }
+
+                //Add station info
+                writer.println();
+                writer.println("Kontrollinformation");
+                for (Station station : stations) {
+                    writer.printf("%d %s%n",
+                            station.getStationNumber(),
+                            station.getStationName());
+                }
+
+                writer.flush();
             }
 
-            //Add station info
-            writer.println();
-            writer.println("Kontrollinformation");
-            for (Station station : stations) {
-                writer.printf("%d %s%n",
-                        station.getStationNumber(),
-                        station.getStationName());
-            }
-
-            writer.flush();
             return new ByteArrayInputStream(out.toByteArray());
         } catch (IOException e) {
             throw new RuntimeException("Failed to export CSV", e);
         }
-
-
     }
+
 
     private String getScoreForPatrolOnStation(Patrol patrol, Station station) {
         StringBuilder stationScore = new StringBuilder();

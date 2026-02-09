@@ -23,10 +23,16 @@ function applyFilter(resetToFirst = true) {
   });
 
   if (resetToFirst) {
+
     const first = options.find(o => !o.disabled && !o.hidden && o.value !== '');
-    if (first) select.value = first.value;
+    if (first) {
+      select.value = first.value;
+    } else {
+      select.value = '';
+    }
   }
 }
+
 
 function filterPatrol(digit) {
   currentFilter += String(digit);
