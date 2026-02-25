@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title>Skriv ut poänglappar till kontrollerna</title>
+
+    <style>
+        .no-print {
+           margin-left: 10px;
+           margin-bottom: 50px;
+          }
+
+        .startstation {
+            page-break-after: always;
+            margin-left: 10px;
+            margin-bottom: 50px;
+        }
+
+        /* Prevent page break after the last startstation */
+        .startstation:last-child {
+            page-break-after: auto;
+        }
+
+        @media print {
+            .no-print {
+             display: none !important;
+            }
+
+            .startstation {
+                page-break-after: always;
+            }
+
+            .startstation:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+
+</head>
+<body>
+<p class="no-print">
+<h3 class="no-print">När du skriver ut sidan så läggs en sidbrytning till efter varje lista av patruller så varje kontroll får en egen sida, eller fler beroende på antal patruller.</h3>
+</p>
+<div th:if="${stations != null}" class="print">
+    <div th:each="station : ${stations}" class="">
+        <h2 th:text="${station.stationNumber} + '. ' + ${station.stationName}">Stationens namn</h2>
+        <div th:each="entry : ${patrolsOnTrack}">
+            <h3 th:text="${entry.key.name}">Track Name</h3>
+            <table>
+                <tr>
+                  <th>Patrull</th>
+                  <th class="printtd">Poäng</th>
+                  <th class="printtd">Stilp.</th>
+                  <th class="printtd">Totalt</th>
+                  <th class="printtd">In i app</th>
+                </tr>
+                <tr th:each="patrol : ${entry.value}">
+                    <td th:utext="${patrol.patrolName} + '<br><small>Patrullnr: ' + ${patrol.patrolId} + '</small><br><small>' + ${patrol.troop} + '</small>'"></td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

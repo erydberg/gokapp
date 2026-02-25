@@ -12,9 +12,10 @@ import se.scouttavling.gokapp.patrol.Patrol;
 import se.scouttavling.gokapp.patrol.PatrolService;
 import se.scouttavling.gokapp.station.Station;
 import se.scouttavling.gokapp.station.StationService;
+import se.scouttavling.gokapp.track.Track;
+import se.scouttavling.gokapp.track.TrackService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin/print")
@@ -25,6 +26,7 @@ public class PrintController {
     private final ConfigService configService;
     private final StationService stationService;
     private final QRCodeService qrCodeService;
+    private final TrackService trackService;
 
     @ModelAttribute("config")
     public Config loadConfig() {
@@ -67,5 +69,26 @@ public class PrintController {
 
         model.addAttribute("startstations", startStations);
         return "print_startstations_patrols";
+    }
+
+
+    @GetMapping("/stations")
+    public String printStationScorePaper(Model model) {
+        List<Station> stations = stationService.getAll();
+
+        List<Track> tracks = trackService.findAllTracks();
+        Map<Track, List<Patrol>> patrols = new LinkedHashMap<>();
+
+        for (Track track:tracks) {
+            List<Patrol> patrolsOnTrack = patrolService.getAllPatrolsByTrack(track);
+            patrols.put(track, patrolsOnTrack);
+        }
+
+        model.addAttribute("stations", stations);
+        model.addAttribute("patrolsOnTrack", patrols);
+
+        return "print_station_score_paper";
+
+
     }
 }

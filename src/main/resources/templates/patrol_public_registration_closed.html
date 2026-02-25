@@ -24,7 +24,7 @@
 
 <div class="ingress">
     <div th:if="${registrationconfig.registrationNotOpen}">
-        <p th:text="${registrationconfig.registrationNotOpen}"></p>
+        <p th:text="${registrationconfig.registrationNotOpen}" style="white-space: pre-wrap;"></p>
     </div>
     <div th:if="${registrationconfig.registrationNotOpen == null}">
         <p>

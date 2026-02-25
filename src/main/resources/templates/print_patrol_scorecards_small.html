@@ -13,7 +13,7 @@
             <h2 class="card-title" th:text="${#strings.abbreviate(patrol.patrolName, 40)}">Patrolnamn</h2>
             <div class="patrol-number" th:text="'Patrullnr ' + ${patrol.patrolId}"></div>
             <div th:if="${patrol.startStation != null}" class="patrol-number">
-                <span th:text="'Start: ' + ${patrol.startStation.stationName}"></span>
+                <span th:text="'Start: ' + ${patrol.startStation.stationNumber} + '. ' + ${patrol.startStation.stationName}"></span>
             </div>
             <div th:if=${config.useQr} class="qr-section">
                 <img th:src="${patrol.qrCodeDataUrl}"

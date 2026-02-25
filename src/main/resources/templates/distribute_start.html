@@ -3,6 +3,17 @@
 <head>
     <title th:text="${config.name + ' Fördela patruller'}">Fördela patruller</title>
     <th:block th:replace="~{fragments :: metadata}"></th:block>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function confirmDistribute() {
+            if (confirm("Vill du fördela patrullerna? Tidigare fördelning, automatisk som manuell, tas bort.")) {
+              return true;
+            }
+            return false;
+        }
+        /*]]>*/
+    </script>
 </head>
 <body>
 
@@ -17,10 +28,8 @@
 
 <div class="nav-box">
     <ul>
-        <li class="nav-item"><a th:href="@{/admin/distribute/all}">Slumpa ut alla patruller över alla
-            kontroller</a></li>
-        <li class="nav-item"><a th:href="@{/admin/distribute/basedontrack}">Fördela varje klass över alla
-            kontroller</a></li>
+        <li class="nav-item"><a th:href="@{/admin/distribute/all}" th:onclick="'return confirmDistribute();'">Fördela alla patruller på kontrollerna</a><br>Tar alla patruller och fördelar så jämt som möjligt över alla kontroller.</li>
+        <li class="nav-item"><a th:href="@{/admin/distribute/basedontrack}" th:onclick="'return confirmDistribute();'">Fördela patrullerna för varje gren på kontrollerna. </a><br> Tar alla patruller från första grenen och fördelar ut på alla patruller, tar sedan alla patruller för nästa gren och fördelar på alla patruller osv.</li>
         <li class="nav-item"><a th:href="@{/admin}">Till admin-menyn</a></li>
     </ul>
 </div>

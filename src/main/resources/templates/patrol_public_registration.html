@@ -17,7 +17,7 @@
         <!-- Include messages -->
         <div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
 
-        <p th:text="${registrationconfig.registerInfo}"></p>
+        <p th:text="${registrationconfig.registerInfo}" style="white-space: pre-wrap;"></p>
 
         <div th:if="${registrationconfig.lastRegisterDay != null}">
             Sista anmälningsdag: <span th:text="${registrationconfig.lastRegisterDay}"></span><br>

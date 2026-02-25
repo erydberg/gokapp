@@ -10,7 +10,7 @@ public class PatrolComparator {
 
     // Sort by patrol name
     public static final Comparator<Patrol> BY_NAME =
-            Comparator.comparing(Patrol::getPatrolName, Comparator.nullsLast(String::compareToIgnoreCase));
+            Comparator.comparing(p -> p.getPatrolName() != null ? p.getPatrolName() : null, Comparator.nullsLast(String::compareToIgnoreCase));
 
     // Sort by score (descending, higher first)
     public static final Comparator<Patrol> BY_SCORE =
@@ -18,19 +18,23 @@ public class PatrolComparator {
 
     // Sort by track name
     public static final Comparator<Patrol> BY_TRACK =
-            Comparator.comparing(p -> p.getTrack().getName(), Comparator.nullsLast(String::compareToIgnoreCase));
+            Comparator.comparing(p -> p.getTrack() != null ? p.getTrack().getName() : null, Comparator.nullsLast(String::compareToIgnoreCase));
 
     // Sort by start station
     public static final Comparator<Patrol> BY_STARTSTATION =
-            Comparator.comparing(p -> p.getStartStation().getStationName(), Comparator.nullsLast(String::compareToIgnoreCase));
+            Comparator.comparing(p -> p.getStartStation() != null ? p.getStartStation().getStationName() : null, Comparator.nullsLast(String::compareToIgnoreCase));
+
+    // Sort by number of scores ie. visited stations
+    public static final Comparator<Patrol> BY_NO_OF_STATIONS =
+            Comparator.comparing(p -> p.getScores() != null ? p.getScores().size() : null, Comparator.nullsLast(Integer::compareTo));
 
     // Sort by troop
     public static final Comparator<Patrol> BY_TROOP =
-            Comparator.comparing(Patrol::getTroop, Comparator.nullsLast(String::compareToIgnoreCase));
+            Comparator.comparing(p -> p.getTroop() != null ? p.getTroop() : null, Comparator.nullsLast(String::compareToIgnoreCase));
 
     // Sort by status
     public static final Comparator<Patrol> BY_STATUS =
-            Comparator.comparing(p -> p.getStatus().name(), Comparator.nullsLast(String::compareToIgnoreCase));
+            Comparator.comparing(p -> p.getStatus() != null ? p.getStatus().name() : null, Comparator.nullsLast(String::compareToIgnoreCase));
 
     // Sort by latestScore
     public static final Comparator<Patrol> BY_LATEST_SCORE =
@@ -38,4 +42,6 @@ public class PatrolComparator {
                 Score score = p.getLatestScore();
                 return score != null ? score.getLastSaved() : null;
             }, Comparator.nullsLast(LocalDateTime::compareTo));
+
+
 }

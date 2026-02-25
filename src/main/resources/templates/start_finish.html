@@ -49,7 +49,7 @@
                 </a>
                 </th>
             <th>Klass
-                <a th:href="@{/startfinish(sort='track.name', dir=${dir == 'asc' ? 'desc' : 'asc'})}">
+                <a th:href="@{/startfinish(sort='track', dir=${dir == 'asc' ? 'desc' : 'asc'})}">
                     <img th:src="@{/css/arrow-down.png}" alt="sort">
                 </a>
                 </th>
@@ -59,7 +59,7 @@
                 </a>
             </th>
             <th>Antal kontroller
-                <a th:href="@{/startfinish(sort='station', dir=${dir == 'asc' ? 'desc' : 'asc'})}">
+                <a th:href="@{/startfinish(sort='noofstations', dir=${dir == 'asc' ? 'desc' : 'asc'})}">
                     <img th:src="@{/css/arrow-down.png}" alt="sort">
                 </a>
             </th>
