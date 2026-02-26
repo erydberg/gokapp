@@ -5,19 +5,25 @@
     <title>Skriv ut poänglappar till kontrollerna</title>
 
     <style>
+        table {
+          width: 800px;
+        }
+        .patrolinfo {
+          width: 400px;
+        }
         .no-print {
            margin-left: 10px;
            margin-bottom: 50px;
           }
 
-        .startstation {
+        .station {
             page-break-after: always;
             margin-left: 10px;
             margin-bottom: 50px;
         }
 
-        /* Prevent page break after the last startstation */
-        .startstation:last-child {
+        /* Prevent page break after the last station */
+        .station:last-child {
             page-break-after: auto;
         }
 
@@ -26,11 +32,11 @@
              display: none !important;
             }
 
-            .startstation {
+            .station {
                 page-break-after: always;
             }
 
-            .startstation:last-child {
+            .station:last-child {
                 page-break-after: auto;
             }
         }
@@ -42,20 +48,20 @@
 <h3 class="no-print">När du skriver ut sidan så läggs en sidbrytning till efter varje lista av patruller så varje kontroll får en egen sida, eller fler beroende på antal patruller.</h3>
 </p>
 <div th:if="${stations != null}" class="print">
-    <div th:each="station : ${stations}" class="">
+    <div th:each="station : ${stations}" class="station">
         <h2 th:text="${station.stationNumber} + '. ' + ${station.stationName}">Stationens namn</h2>
         <div th:each="entry : ${patrolsOnTrack}">
             <h3 th:text="${entry.key.name}">Track Name</h3>
             <table>
                 <tr>
-                  <th>Patrull</th>
+                  <th class="patrolinfo">Patrull</th>
                   <th class="printtd">Poäng</th>
                   <th class="printtd">Stilp.</th>
                   <th class="printtd">Totalt</th>
                   <th class="printtd">In i app</th>
                 </tr>
                 <tr th:each="patrol : ${entry.value}">
-                    <td th:utext="${patrol.patrolName} + '<br><small>Patrullnr: ' + ${patrol.patrolId} + '</small><br><small>' + ${patrol.troop} + '</small>'"></td>
+                    <td th:utext="${patrol.patrolName} + '<br><small>Patrullnr: ' + ${patrol.patrolId} + '</small><br><small>' + ${patrol.troop} + '</small>'" class="patrolinfo"></td>
                     <td> </td>
                     <td> </td>
                     <td> </td>

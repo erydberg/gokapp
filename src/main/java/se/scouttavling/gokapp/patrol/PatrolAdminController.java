@@ -115,7 +115,7 @@ public class PatrolAdminController {
     public String delete(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
 
         patrolService.deletePatrolById(id);
-        redirectAttributes.addFlashAttribute("confirmmsg", "Kontrollen borttagen");
+        redirectAttributes.addFlashAttribute("confirmmsg", "Patrullen borttagen");
 
         return "redirect:/admin/patrol";
     }
