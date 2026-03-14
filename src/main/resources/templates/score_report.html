@@ -88,7 +88,15 @@
     </div>
 </form>
 <script>
+    document.querySelector('form.form-general').addEventListener('submit', function() {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            console.log("sparar");
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sparar...';
+    });
+
     // QR Scanner functionality
+
     const scanButton = document.getElementById('scanQrButton');
     const qrReaderDiv = document.getElementById('qrReader');
     const qrStatus = document.getElementById('qrStatus');

@@ -2,7 +2,7 @@ package se.scouttavling.gokapp.score;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,7 +17,6 @@ import se.scouttavling.gokapp.security.UserService;
 import se.scouttavling.gokapp.station.Station;
 import se.scouttavling.gokapp.station.StationSelectionForm;
 import se.scouttavling.gokapp.station.StationService;
-
 
 import java.security.Principal;
 import java.util.Collections;
@@ -79,7 +78,7 @@ public class ScoreController {
     public String selectStationPost(@ModelAttribute("stationSelectionForm") StationSelectionForm form,
                                     BindingResult result,
                                     Model model) {
-        if(form.stationId() == null) {
+        if (form.stationId() == null) {
             model.addAttribute("errormsg", "Du måste välja en kontroll");
             model.addAttribute("stations", stationService.getAll());
             return "score_select_station";
@@ -121,18 +120,26 @@ public class ScoreController {
             return "score_report";
         }
 
-        scoreService.save(score);
+        try {
+            scoreService.save(score);
 
-        Patrol patrol = patrolService.getPatrolById(score.getPatrol().getPatrolId()).orElseThrow(() -> new IllegalArgumentException("Patrol not found"));
+            Patrol patrol = patrolService.getPatrolById(score.getPatrol().getPatrolId()).orElseThrow(() -> new IllegalArgumentException("Patrol not found"));
 
-        if (score.isVisitedWaypoint()) {
-            model.addAttribute("alertmsg",
-                    "Sparat att patrull " + score.getPatrol().getPatrolName() + " har passerat kontrollen.");
-        } else {
-            model.addAttribute("alertmsg",
-                    "Sparat " + score.getScorePoint() + " poäng och " + score.getStylePoint() +
-                            " stilpoäng till " + patrol.getPatrolName() +
-                            " från " + patrol.getTroop() + ".");
+            if (score.isVisitedWaypoint()) {
+                model.addAttribute("alertmsg",
+                        "Sparat att patrull " + score.getPatrol().getPatrolName() + " har passerat kontrollen.");
+            } else {
+                model.addAttribute("alertmsg",
+                        "Sparat " + score.getScorePoint() + " poäng och " + score.getStylePoint() +
+                                " stilpoäng till " + patrol.getPatrolName() +
+                                " från " + patrol.getTroop() + ".");
+            }
+
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("errormsg", "Patrull "
+                    + score.getPatrol().getPatrolName() + " har redan fått "
+                    + score.getScorePoint() + " + " + score.getStylePoint()
+                    + " poäng på den här kontrollen. Redo att registrera nästa patrulls poäng.");
         }
 
         // Reset form for new input
@@ -144,7 +151,6 @@ public class ScoreController {
         model.addAttribute("score", newScore);
         model.addAttribute("patrols", patrols);
 
-        System.out.println("no of saved scores: " + scoreService.findAll().size());
         return "score_report";
     }
 }

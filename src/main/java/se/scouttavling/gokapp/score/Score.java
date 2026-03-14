@@ -8,7 +8,14 @@ import se.scouttavling.gokapp.station.Station;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "score")
+@Table(name = "score",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uq_score_station_patrol",
+                        columnNames = {"station_id", "patrol_id"}
+                )
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,4 +44,3 @@ public class Score {
 
     private LocalDateTime lastSaved;
 }
-
