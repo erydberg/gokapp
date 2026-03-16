@@ -17,6 +17,7 @@
 <div th:if="${patrols != null}">
     <div th:each="patrol, iterStat : ${patrols}" class="scoreitem">
         <h3 th:text="${patrol.patrolName}">Namn</h3>
+        <span th:text="'Patrullnummer: ' + ${patrol.patrolId}"></span><br/>
         <span th:text="${patrol.troop}"></span><br/>
         <span th:text="${patrol.leaderContact}"></span><br/>
         <span th:text="${patrol.leaderContactPhone}"></span><br/>
