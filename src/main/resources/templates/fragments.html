@@ -3,10 +3,10 @@
 <th:block th:fragment="metadata">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
-    <link rel="apple-touch-icon" th:href="@{/css/apple-touch-icon.png}" />
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
-    <link rel="shortcut icon" th:href="@{/css/active.png}" />
-    <link rel="icon" th:href="@{/css/active.png}" />
+    <link rel="apple-touch-icon" th:href="@{/css/apple-touch-icon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="shortcut icon" th:href="@{/css/active.png}"/>
+    <link rel="icon" th:href="@{/css/active.png}"/>
     <script th:inline="javascript">
         if (('standalone' in window.navigator) && window.navigator.standalone) {
             var noddy, remotes = false;
@@ -22,6 +22,26 @@
                 }
             }, false);
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form.form-general');
+            if (form) {
+            form.addEventListener('submit', function() {
+                const submitBtn = this.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    setTimeout(() => {
+                        submitBtn.disabled = true;
+                        if (submitBtn.textContent === 'Spara') {
+                            submitBtn.textContent = 'Sparar ...';
+                        }
+                        if (submitBtn.textContent ==='Logga in') {
+                            submitBtn.textContent = 'Loggar in ...';
+                        }
+                    }, 0);
+                }
+            });
+            }
+        });
     </script>
 </th:block>
 
