@@ -100,7 +100,7 @@ public class PatrolService {
 
     public List<Patrol> allPatrolsLeftOnStation(Integer stationId) {
 
-        return patrolRepository.findAllWithoutScoreOnStation(stationId);
+        return patrolRepository.findAllWithoutScoreOnStationNoResigned(stationId);
     }
 
 
