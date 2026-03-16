@@ -286,7 +286,7 @@ fieldset {
 .submit-area {
 	background: none repeat scroll 0 0 transparent;
 	border: 0 none;
-	margin-bottom: 0;
+	margin-bottom: 100px;
 	margin-top: 0;
 	padding: 8px;
 }
