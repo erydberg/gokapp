@@ -283,12 +283,59 @@ fieldset {
 	width: 350px;
 	font-size:80%;
 }
+
 .submit-area {
-	background: none repeat scroll 0 0 transparent;
-	border: 0 none;
-	margin-bottom: 100px;
-	margin-top: 0;
-	padding: 8px;
+    background: none;
+    border: 0;
+    margin-bottom: 100px;
+    margin-top: 0;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Primary action button */
+.btn-primary {
+    background-color: #1B3B94;
+    color: #ffffff;
+    border: none;
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #142d72;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.btn-primary:active {
+    background-color: #0f2255;
+}
+
+/* Back/secondary link styled as a button */
+.btn-secondary {
+    display: inline-block;
+    background-color: #F6F3EC;
+    color: #1B3B94;
+    border: 1px solid #E0D8C1;
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: #eceae0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    color: #000055;
 }
 
 .text, .radio, .checkbox, .select {

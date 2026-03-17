@@ -83,8 +83,8 @@
     <div th:replace="~{fragments_edit_score :: editScore(${score})}"></div>
 
     <div class="submit-area">
-        <button type="submit">Spara</button>
-        | <a th:href="@{/startmenu}">Avbryt</a>
+        <button type="submit" class="btn-primary">Spara</button>
+        | <a th:href="@{/startmenu}" class="btn-secondary">Avbryt</a>
     </div>
 </form>
 <script>
