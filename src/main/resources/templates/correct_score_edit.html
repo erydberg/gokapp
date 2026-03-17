@@ -37,9 +37,9 @@
             </p>
 
             <div class="submit-area">
-                <button type="submit" name="action" value="save">Spara</button>
-                <button type="submit" name="action" value="delete">Ta bort</button>
-                <a th:href="@{/correct/selectstation/{stationId}(stationId=${score.station.id})}">
+                <button type="submit" name="action" value="save" class="btn-primary">Spara</button>
+                <button type="submit" name="action" value="delete" class="btn-primary">Ta bort</button>
+                <a th:href="@{/correct/selectstation/{stationId}(stationId=${score.station.id})}" class="btn-secondary">
                     Avbryt
                 </a>
             </div>
