@@ -9,6 +9,7 @@ import se.scouttavling.gokapp.score.Score;
 import se.scouttavling.gokapp.patrol.Patrol;
 import se.scouttavling.gokapp.patrol.PatrolRepository;
 import se.scouttavling.gokapp.patrol.PatrolService;
+import se.scouttavling.gokapp.score.ScoreRepository;
 import se.scouttavling.gokapp.station.Station;
 import se.scouttavling.gokapp.station.StationRepository;
 import se.scouttavling.gokapp.track.Track;
@@ -36,21 +37,27 @@ public class GokAppTest {
     @Autowired
     private StationRepository stationRepository;
 
+
     private Track testTrack;
     private Station station1;
 
     @BeforeEach
     void setUp() {
+        System.out.println("Setup - delete all");
         patrolRepository.deleteAll();
         trackRepository.deleteAll();
         stationRepository.deleteAll();
 
+
+
         // Create a test track
+        System.out.println("Create Test track");
         testTrack = new Track();
         testTrack.setName("Test Track");
         trackRepository.save(testTrack);
 
         // Create a station
+        System.out.println("Create teststation");
         station1 = new Station();
         station1.setStationName("Station 1");
         station1.setStationNumber(1);
@@ -113,12 +120,15 @@ public class GokAppTest {
         patrol.setLeaderContactMail("charlie@example.com");
         patrol.setLeaderContactPhone("333333333");
 
+        Station station;
         // Add multiple scores
         for (int i = 1; i <= 3; i++) {
             Score score = new Score();
             score.setScorePoint(i * 2);
             score.setStylePoint(i);
-            score.setStation(station1);
+            station = Station.builder().stationName("Test1").stationNumber(i).build();
+            stationRepository.save(station);
+            score.setStation(station);
             score.setPatrol(patrol);
             patrol.getScores().add(score);
         }
