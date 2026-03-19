@@ -10,7 +10,7 @@
     </parent>
     <groupId>se.scouttavling</groupId>
     <artifactId>gokapp</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.2</version>
     <name>gokapp</name>
     <description>Managing scout or other competitions</description>
     <url/>
