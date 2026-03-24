@@ -10,7 +10,7 @@
     </parent>
     <groupId>se.scouttavling</groupId>
     <artifactId>gokapp</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <name>gokapp</name>
     <description>Managing scout or other competitions</description>
     <url/>
@@ -121,7 +121,7 @@
                         </exclude>
                     </excludes>
                     <image>
-                        <name>ghcr.io/erydberg/gokapp:latest</name>
+                        <name>ghcr.io/erydberg/gokapp:${version}</name>
                     </image>
                 </configuration>
             </plugin>
