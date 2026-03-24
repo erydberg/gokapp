@@ -3,6 +3,7 @@ services:
     restart: always
     image: 'mysql:latest'
     container_name: gokapp-mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_sv_0900_ai_ci
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE:-gokapp}
       - MYSQL_USER=${MYSQL_USER:-gokapp}
@@ -20,7 +21,7 @@ services:
 
   gokapp:
     restart: always
-    image: ghcr.io/erydberg/gokapp:1.0.5
+    image: ghcr.io/erydberg/gokapp:1.0.6
     container_name: gokapp
     depends_on:
       mysql:
@@ -28,7 +29,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILE:-prod}
       # Use the SAME variables as MySQL container
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-gokapp}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-gokapp}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8mb4
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:-gokapp}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:-changeme}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
