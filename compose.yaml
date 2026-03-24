@@ -1,5 +1,6 @@
 services:
   mysql:
+    restart: always
     image: 'mysql:latest'
     container_name: gokapp-mysql
     environment:
@@ -18,6 +19,7 @@ services:
       retries: 10
 
   gokapp:
+    restart: always
     image: ghcr.io/erydberg/gokapp:latest
     container_name: gokapp
     depends_on:
