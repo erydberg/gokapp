@@ -29,7 +29,7 @@ public class RegistrationConfigController {
     @PostMapping
     public String save(@ModelAttribute("registrationconfig") RegistrationConfig registrationConfig, Model model, RedirectAttributes redirectAttributes) {
         service.save(registrationConfig);
-        model.addAttribute("confirmmsg", "Konfigurationen för publik registrering är sparad");
+        redirectAttributes.addFlashAttribute("confirmmsg", "Konfigurationen för publik registrering är sparad");
         return "redirect:/admin";
     }
 }
