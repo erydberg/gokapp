@@ -24,6 +24,9 @@ public class StationService {
     }
 
     public Station save(Station station) {
+        if (station.isAllTracks() && station.getTracks() != null) {
+            station.getTracks().clear();
+        }
         return stationRepository.save(station);
     }
 

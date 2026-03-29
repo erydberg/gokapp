@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import se.scouttavling.gokapp.security.User;
+import se.scouttavling.gokapp.track.Track;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "station")
@@ -27,6 +31,13 @@ public class Station {
     @NotEmpty(message = "Fyll i ett namn på kontrollen")
     @Column(name = "stationname", length = 100)
     private String stationName;
+
+    @Column(name = "alltracks")
+    private boolean allTracks = true;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "station_track")
+    private Set<Track> tracks = new HashSet<>();
 
     @Column(name = "minscore", length = 4)
     private int minScore;
@@ -52,4 +63,9 @@ public class Station {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User stationUser; // the user allowed to score this station
+
+    @Transient
+    public boolean isVisibleToTrack(Track track) {
+        return allTracks || tracks.contains(track);
+    }
 }
