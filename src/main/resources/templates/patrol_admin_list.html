@@ -20,7 +20,7 @@
             const troop       = element.getAttribute('data-troop');
             const track       = element.getAttribute('data-track');
 
-            if (confirm('Ta bort ' + patrolName + '(' + track + ' - ' + troop + ')?')) {
+            if (confirm('Ta bort ' + patrolName + ' (' + track + ' - ' + troop + ')?')) {
                 document.getElementById(formId).submit();
                 return true;
             }
