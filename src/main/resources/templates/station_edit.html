@@ -26,6 +26,41 @@
                     <input type="text" th:field="*{stationName}" id="stationName"/>
                     <div class="errortext" th:errors="*{stationName}"></div>
 
+                    <div class="size-3">
+                        <label>
+                            <input type="checkbox" th:field="*{allTracks}"/>
+                            Alla klasser
+                        </label>
+                    </div>
+
+                    <div class="size-3" id="trackSelection">
+                        <label>Klasser:</label>
+                        <div th:each="track : ${tracks}">
+                            <label>
+                                <input type="checkbox"
+                                       th:field="*{tracks}"
+                                       th:value="${track.id}"/>
+                                <span th:text="${track.name}"></span>
+                            </label>
+                        </div>
+                        <div class="errortext" th:errors="*{tracks}"></div>
+                    </div>
+
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
+                                const allTracksCheckbox = document.querySelector('[name="allTracks"]');
+                                const trackSelection = document.getElementById('trackSelection');
+
+                                function toggleTrackSelection() {
+                                    trackSelection.style.display = allTracksCheckbox.checked ? 'none' : 'block';
+                                }
+
+                                allTracksCheckbox.addEventListener('change', toggleTrackSelection);
+                                toggleTrackSelection();
+                        /*]]>*/
+                    </script>
+
+
                     <p>
                         <label for="waypoint">Milstolpe</label>
                         <span>För kontroller där patrullen bara anmäler sig och inte får några poäng, t.ex. lunch, övernattning etc.</span>

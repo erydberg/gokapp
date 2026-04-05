@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import se.scouttavling.gokapp.security.User;
 import se.scouttavling.gokapp.security.UserService;
+import se.scouttavling.gokapp.track.TrackService;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class StationController {
 
     private final StationService stationService;
     private final UserService userService;
+    private final TrackService trackService;
 
 
     @GetMapping
@@ -34,6 +36,7 @@ public class StationController {
     public String displayForm(Model model) {
         model.addAttribute("station", new Station());
         model.addAttribute("users", userService.findAllUsers());
+        model.addAttribute("tracks", trackService.findAllTracks());
 
         return "station_edit";
     }
@@ -45,6 +48,7 @@ public class StationController {
                 orElseThrow(() -> new IllegalArgumentException("Invalid station Id:" + id));
         model.addAttribute("station", station);
         model.addAttribute("users", userService.findAllUsers());
+        model.addAttribute("tracks", trackService.findAllTracks());
 
         return "station_edit";
     }
