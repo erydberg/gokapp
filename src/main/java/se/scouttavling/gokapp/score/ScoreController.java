@@ -88,7 +88,7 @@ public class ScoreController {
     }
 
     private String loadStationPage(Integer stationId, Model model) {
-        Station station = stationService.getStationById(stationId)
+        Station station = stationService.getStationByIdWithTracks(stationId)
                 .orElseThrow(() -> new IllegalArgumentException("Station not found"));
 
         Score score = Score.builder().station(station).build();
@@ -107,7 +107,7 @@ public class ScoreController {
                             BindingResult result,
                             Model model) {
 
-        Station station = stationService.getStationById(score.getStation().getId()).orElseThrow(() -> new IllegalArgumentException("Station not found"));
+        Station station = stationService.getStationByIdWithTracks(score.getStation().getId()).orElseThrow(() -> new IllegalArgumentException("Station not found"));
 
         if (score.getPatrol() == null) {
             model.addAttribute("station", station);

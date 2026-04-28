@@ -22,7 +22,10 @@
     <input type="hidden" th:field="*{id}"/>
     <input type="hidden" th:field="*{station.id}"/>
 
-    <p>Vald kontroll: <span th:text="${station.stationName}"></span></p>
+    <p>Vald kontroll: <span th:text="${station.stationName}"></span>
+        <br th:if="${!station.allTracks}"/>
+        <small th:if="${!station.allTracks}">För: <th:block th:each="track, iter : ${station.tracks}" th:with="n=${iter.first ? track.name : track.name.substring(0,1).toLowerCase() + track.name.substring(1)}"><span th:text="${iter.first ? n : (iter.last ? ' och ' + n : ', ' + n)}"></span></th:block></small>
+    </p>
 
     <!-- QR Scanner Section -->
     <div th:if=${config.useQr} class="form-box qr-scanner-section">

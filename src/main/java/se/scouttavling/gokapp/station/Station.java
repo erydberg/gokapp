@@ -33,10 +33,12 @@ public class Station {
     private String stationName;
 
     @Column(name = "alltracks")
+    @Builder.Default
     private boolean allTracks = true;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "station_track")
+    @Builder.Default
     private Set<Track> tracks = new HashSet<>();
 
     @Column(name = "minscore", length = 4)
@@ -58,6 +60,7 @@ public class Station {
     private String stationPhonenumber;
 
     @Column(name = "waypoint")
+    @Builder.Default
     private Boolean waypoint = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
