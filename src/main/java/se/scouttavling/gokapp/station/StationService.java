@@ -34,6 +34,10 @@ public class StationService {
         return stationRepository.findById(id);
     }
 
+    public Optional<Station> getStationByIdWithTracks(Integer id) {
+        return stationRepository.findByIdWithTracks(id);
+    }
+
     public void delete(Integer id) {
         stationRepository.deleteById(id);
     }

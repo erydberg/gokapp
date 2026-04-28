@@ -45,10 +45,7 @@ public class GokAppTest {
     void setUp() {
         System.out.println("Setup - delete all");
         patrolRepository.deleteAll();
-        trackRepository.deleteAll();
         stationRepository.deleteAll();
-
-
 
         // Create a test track
         System.out.println("Create Test track");

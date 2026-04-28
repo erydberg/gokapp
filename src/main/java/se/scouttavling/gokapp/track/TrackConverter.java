@@ -14,6 +14,7 @@ public class TrackConverter implements Converter<String, Track> {
 
     @Override
     public Track convert(String id) {
+        if (id == null || id.isBlank()) return null;
         return trackRepository.findById(Integer.parseInt(id)).orElse(null);
     }
 }
