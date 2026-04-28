@@ -62,6 +62,7 @@ public class Patrol implements Comparable<Patrol> {
 
     @OneToMany(mappedBy = "patrol", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("lastSaved desc")
+    @Builder.Default
     private Set<Score> scores = new LinkedHashSet<>();
 
     @NotEmpty(message = "Missa inte att fylla i kontaktperson")
@@ -85,6 +86,7 @@ public class Patrol implements Comparable<Patrol> {
     private LocalDateTime dateRegistered;
 
     @Column(name = "paid")
+    @Builder.Default
     private Boolean paid = false;
 
     @ManyToOne

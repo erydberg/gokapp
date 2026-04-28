@@ -20,6 +20,10 @@ import se.scouttavling.gokapp.station.StationService;
 import se.scouttavling.gokapp.track.Track;
 import se.scouttavling.gokapp.track.TrackService;
 
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 @Component
 @RequiredArgsConstructor
 @Profile("dev") // Only active in the "dev" profile
@@ -68,15 +72,20 @@ public class DevDataInitializer {
     private void initStations() {
         if (stationService.getAll().isEmpty()) {
             System.out.println("Save stations");
-            createStation(1, "Livlina", 0, 10, 0, 1, "Erik", "12121212");
-            createStation(2, "Sjukvård", 0, 10, 0, 1, "Erik", "12121212");
-            createStation(3, "Knopar", 0, 10, 0, 1, "Erik", "12121212");
-            createStation(4, "Hinderbana", 0, 10, 0, 1, "Erik", "12121212");
-            createStation(5, "Kims spel", 0, 10, 0, 1, "Erik", "12121212");
-            createStation(6, "Eldning", 0, 10, 0, 1, "Erik", "12121212");
-            createStation(7, "Woodcraft", 0, 10, 0, 1, "Erik", "12121212");
-            createStation(8, "Orientering", 0, 10, 0, 1, "Erik", "12121212");
-            createStation(9, "Suduku", 0, 10, 0, 1, "Erik", "12121212");
+            Set<Track> tracks = new LinkedHashSet<>();
+            List<Track> arrayTracks = trackService.findAllTracks();
+            tracks.add(arrayTracks.getFirst());
+            tracks.add(arrayTracks.getLast());
+
+            createStation(1, "Livlina", 0, 10, 0, 1, "Erik", "12121212", true, null);
+            createStation(2, "Sjukvård", 0, 10, 0, 1, "Erik", "12121212", true, null);
+            createStation(3, "Knopar", 0, 10, 0, 1, "Erik", "12121212", true, null);
+            createStation(4, "Hinderbana", 0, 10, 0, 1, "Erik", "12121212", true, null);
+            createStation(5, "Kims spel", 0, 10, 0, 1, "Erik", "12121212", true, null);
+            createStation(6, "Eldning", 0, 10, 0, 1, "Erik", "12121212", true, null);
+            createStation(7, "Woodcraft", 0, 10, 0, 1, "Erik", "12121212", true, null);
+            createStation(8, "Orientering", 0, 10, 0, 1, "Erik", "12121212", false, tracks);
+            createStation(9, "Suduku", 0, 10, 0, 1, "Erik", "12121212", true, null);
             System.out.println("Done saving stations");
         }
     }
@@ -87,6 +96,8 @@ public class DevDataInitializer {
 
             Track trackFirst = trackService.findAllTracks().getFirst();
             Track trackLast = trackService.findAllTracks().getLast();
+            Track trackUpptackare = trackService.findAllTracks().stream().filter(track -> track.getName().equalsIgnoreCase("Upptäckare")).findFirst().orElse(null);
+            System.out.println("Hittat " + trackUpptackare.getName());
 
             Patrol p1 = createPatrol("Patrol 1 - spårare", "Nisse", "nisse@mail.se", "12121212", Status.REGISTERED, "Scoutkår A", trackFirst);
             createScoreTo(p1, stationService.getAll().getFirst(), 8, 1);
@@ -98,7 +109,7 @@ public class DevDataInitializer {
             createScoreTo(p2, stationService.getAll().getLast(), 4, 1);
             createScoreTo(p2, stationService.getAll().get(2), 10, 1);
 
-            Patrol p3 = createPatrol("Patrol 3 - utmanare", "Beata", "beataagneta@mail.se", "3331552", Status.ACTIVE, "Scoutkår C", trackLast);
+            Patrol p3 = createPatrol("Patrol 3 - upptäckare", "Beata", "beataagneta@mail.se", "3331552", Status.ACTIVE, "Scoutkår C", trackUpptackare);
             createScoreTo(p3, stationService.getAll().getFirst(), 1, 0);
             createScoreTo(p3, stationService.getAll().getLast(), 7, 1);
             createScoreTo(p3, stationService.getAll().get(2), 4, 1);
@@ -108,7 +119,7 @@ public class DevDataInitializer {
             createScoreTo(p4, stationService.getAll().getLast(), 4, 1);
             createScoreTo(p4, stationService.getAll().get(2), 10, 1);
 
-            Patrol p5 = createPatrol("Patrol 5 - on the move", "Stina", "stina@mail.se", "3331212", Status.REGISTERED, "Scoutkår A", trackLast);
+            Patrol p5 = createPatrol("Patrol 5 - on the move", "Stina", "stina@mail.se", "3331212", Status.REGISTERED, "Scoutkår A", trackUpptackare);
             createScoreTo(p5, stationService.getAll().getFirst(), 5, 0);
             createScoreTo(p5, stationService.getAll().getLast(), 7, 1);
             createScoreTo(p5, stationService.getAll().get(2), 7, 1);
@@ -117,7 +128,7 @@ public class DevDataInitializer {
             Patrol p7 = createPatrol("Patrol 7 - no points", "Hedvig", "stina@mail.se", "3331212", Status.REGISTERED, "Scoutkår A", trackLast);
             Patrol p8 = createPatrol("Patrol 8 - no points", "Hedvig", "stina@mail.se", "3331212", Status.REGISTERED, "Scoutkår A", trackLast);
             Patrol p9 = createPatrol("Patrol 9 - no points", "Hedvig", "stina@mail.se", "3331212", Status.REGISTERED, "Scoutkår A", trackLast);
-            Patrol p10 = createPatrol("Patrol 10 - no points", "Hedvig", "stina@mail.se", "3331212", Status.REGISTERED, "Scoutkår A", trackLast);
+            Patrol p10 = createPatrol("Patrol 10 - no points", "Hedvig", "stina@mail.se", "3331212", Status.REGISTERED, "Scoutkår A", trackUpptackare);
         }
     }
 
@@ -132,7 +143,7 @@ public class DevDataInitializer {
         System.out.println("User created: username=k1, password=losen_test");
     }
 
-    private void createStation(int stationNumber, String stationName, int minScore, int maxScore, int minStyleScore, int maxStyleScore, String contact, String mobile) {
+    private void createStation(int stationNumber, String stationName, int minScore, int maxScore, int minStyleScore, int maxStyleScore, String contact, String mobile, boolean allTracks, Set<Track> tracks) {
         Station station = new Station();
         station.setStationName(stationName);
         station.setStationNumber(stationNumber);
@@ -142,6 +153,11 @@ public class DevDataInitializer {
         station.setMaxStyleScore(maxStyleScore);
         station.setStationContact(contact);
         station.setStationPhonenumber(mobile);
+        if (!allTracks) {
+            station.setAllTracks(false);
+            station.setTracks(tracks);
+        }
+        station.setTracks(tracks);
         stationService.save(station);
         System.out.println("Saved station " + stationName);
     }
