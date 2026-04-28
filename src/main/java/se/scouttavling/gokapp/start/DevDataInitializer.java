@@ -44,14 +44,24 @@ public class DevDataInitializer {
         System.out.println("initTracks in dev");
         if (trackService.findAllTracks().isEmpty()) {
             Track t1 = new Track();
-            t1.setName("Track A");
+            t1.setName("Spårare");
             trackService.saveTrack(t1);
             System.out.println("saved track 1");
 
             Track t2 = new Track();
-            t2.setName("Track B");
+            t2.setName("Upptäckare");
             trackService.saveTrack(t2);
             System.out.println("saved track 2");
+
+            Track t3 = new Track();
+            t3.setName("Äventyrare");
+            trackService.saveTrack(t3);
+            System.out.println("saved track 3");
+
+            Track t4 = new Track();
+            t4.setName("Utmanare");
+            trackService.saveTrack(t4);
+            System.out.println("saved track 4 - utmanare");
         }
     }
 
@@ -68,7 +78,6 @@ public class DevDataInitializer {
             createStation(8, "Orientering", 0, 10, 0, 1, "Erik", "12121212");
             createStation(9, "Suduku", 0, 10, 0, 1, "Erik", "12121212");
             System.out.println("Done saving stations");
-
         }
     }
 
@@ -79,17 +88,17 @@ public class DevDataInitializer {
             Track trackFirst = trackService.findAllTracks().getFirst();
             Track trackLast = trackService.findAllTracks().getLast();
 
-            Patrol p1 = createPatrol("Patrol 1 - track A", "Nisse", "nisse@mail.se", "12121212", Status.REGISTERED, "Scoutkår A", trackFirst);
+            Patrol p1 = createPatrol("Patrol 1 - spårare", "Nisse", "nisse@mail.se", "12121212", Status.REGISTERED, "Scoutkår A", trackFirst);
             createScoreTo(p1, stationService.getAll().getFirst(), 8, 1);
             createScoreTo(p1, stationService.getAll().getLast(), 3, 0);
             createScoreTo(p1, stationService.getAll().get(2), 2, 1);
 
-            Patrol p2 = createPatrol("Patrol 2 - track B", "Agneta", "agneta@mail.se", "3331212", Status.REGISTERED, "Scoutkår A", trackLast);
+            Patrol p2 = createPatrol("Patrol 2 - utmanare", "Agneta", "agneta@mail.se", "3331212", Status.REGISTERED, "Scoutkår A", trackLast);
             createScoreTo(p2, stationService.getAll().getFirst(), 5, 0);
             createScoreTo(p2, stationService.getAll().getLast(), 4, 1);
             createScoreTo(p2, stationService.getAll().get(2), 10, 1);
 
-            Patrol p3 = createPatrol("Patrol 3 - track A", "Beata", "beataagneta@mail.se", "3331552", Status.ACTIVE, "Scoutkår C", trackLast);
+            Patrol p3 = createPatrol("Patrol 3 - utmanare", "Beata", "beataagneta@mail.se", "3331552", Status.ACTIVE, "Scoutkår C", trackLast);
             createScoreTo(p3, stationService.getAll().getFirst(), 1, 0);
             createScoreTo(p3, stationService.getAll().getLast(), 7, 1);
             createScoreTo(p3, stationService.getAll().get(2), 4, 1);

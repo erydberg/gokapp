@@ -44,7 +44,7 @@ public class StationController {
     @GetMapping("/{id}")
     public String edit(@PathVariable("id") Integer id, Model model) {
 
-        Station station = stationService.getStationById(id).
+        Station station = stationService.getStationByIdWithTracks(id).
                 orElseThrow(() -> new IllegalArgumentException("Invalid station Id:" + id));
         model.addAttribute("station", station);
         model.addAttribute("users", userService.findAllUsers());

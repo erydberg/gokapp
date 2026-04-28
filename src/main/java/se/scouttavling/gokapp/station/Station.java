@@ -35,7 +35,7 @@ public class Station {
     @Column(name = "alltracks")
     private boolean allTracks = true;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "station_track")
     private Set<Track> tracks = new HashSet<>();
 
