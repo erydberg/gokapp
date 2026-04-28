@@ -25,16 +25,20 @@
                     <label for="stationName">Namn:</label>
                     <input type="text" th:field="*{stationName}" id="stationName"/>
                     <div class="errortext" th:errors="*{stationName}"></div>
-
-                    <div class="size-3">
+                </div>
+            </fieldset>
+            <fieldset>
+                    <div>
+                        <h3>Kontrollen ska finnas för:</h3>
+                        <p>Du kan välja om alla klasser gör den här kontrollen eller om den bara finns för en eller några klasser.</p>
                         <label>
                             <input type="checkbox" th:field="*{allTracks}"/>
                             Alla klasser
                         </label>
                     </div>
 
-                    <div class="size-3" id="trackSelection">
-                        <label>Klasser:</label>
+                    <div id="trackSelection">
+                        <label>Välj klass(er):</label>
                         <div th:each="track : ${tracks}">
                             <label>
                                 <input type="checkbox"
@@ -59,33 +63,33 @@
                                 toggleTrackSelection();
                         /*]]>*/
                     </script>
+            </fieldset>
+            <fieldset>
 
+                <label for="waypoint">Milstolpe</label>
+                <span>För kontroller där patrullen bara anmäler sig och inte får några poäng, t.ex. lunch, övernattning etc.</span>
+                <input type="checkbox" th:field="*{waypoint}" id="waypoint"/>
+            </fieldset>
+            <fieldset>
+                <label for="minScore">Minsta poäng:</label>
+                <input type="number" th:field="*{minScore}" id="minScore"/>
+                <label for="maxScore">Max poäng:</label>
+                <input type="number" th:field="*{maxScore}" id="maxScore"/>
 
-                    <p>
-                        <label for="waypoint">Milstolpe</label>
-                        <span>För kontroller där patrullen bara anmäler sig och inte får några poäng, t.ex. lunch, övernattning etc.</span>
-                        <input type="checkbox" th:field="*{waypoint}" id="waypoint"/>
-                    </p>
+                <label for="minStyleScore">Minsta stilpoäng:</label>
+                <input type="number" th:field="*{minStyleScore}" id="minStyleScore"/>
 
-                    <label for="minScore">Minsta poäng:</label>
-                    <input type="number" th:field="*{minScore}" id="minScore"/>
+                <label for="maxStyleScore">Max stilpoäng:</label>
+                <input type="number" th:field="*{maxStyleScore}" id="maxStyleScore"/>
+            </fieldset>
+            <fieldset>
+                <label for="stationContact">Ansvarig på kontrollen:</label>
+                <input type="text" th:field="*{stationContact}" id="stationContact"/>
 
-                    <label for="maxScore">Max poäng:</label>
-                    <input type="number" th:field="*{maxScore}" id="maxScore"/>
-
-                    <label for="minStyleScore">Minsta stilpoäng:</label>
-                    <input type="number" th:field="*{minStyleScore}" id="minStyleScore"/>
-
-                    <label for="maxStyleScore">Max stilpoäng:</label>
-                    <input type="number" th:field="*{maxStyleScore}" id="maxStyleScore"/>
-
-                    <label for="stationContact">Ansvarig på kontrollen:</label>
-                    <input type="text" th:field="*{stationContact}" id="stationContact"/>
-
-                    <label for="stationPhonenumber">Telefonnummer till ansvarig:</label>
-                    <input type="text" th:field="*{stationPhonenumber}" id="stationPhonenumber"/>
-
-
+                <label for="stationPhonenumber">Telefonnummer till ansvarig:</label>
+                <input type="text" th:field="*{stationPhonenumber}" id="stationPhonenumber"/>
+            </fieldset>
+            <fieldset>
                     <label for="stationUser">Användare som får lägga till poäng (utöver admin-konton):</label>
                     <select id="stationUser" th:field="*{stationUser.id}">
                         <option value="">-- Välj användare --</option>
@@ -94,8 +98,9 @@
                                 th:text="${user.username}">
                         </option>
                     </select>
-                </div>
             </fieldset>
+        </div>
+
 
             <div class="submit-area">
                 <button type="submit" name="saveStation" class="btn-secondary">Spara</button>
