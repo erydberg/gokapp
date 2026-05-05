@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="sv">
+<head>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title>Förstagångsinställning</title>
+</head>
+<body>
+<h1>Välkommen</h1>
+<p>Ingen administratör finns ännu. Fyll i uppgifterna nedan för att komma igång.</p>
+
+<div th:if="${errormsg}" class="ingress_background">
+    <div class="ingress">
+        <div class="errorblock" th:text="${errormsg}"></div>
+    </div>
+</div>
+
+<form th:action="@{/setup}" method="post" th:object="${setupForm}" class="form-general">
+
+    <fieldset>
+        <legend>Administratörskonto</legend>
+        <div>
+            <label for="username">Användarnamn</label>
+            <input type="text" id="username" th:field="*{username}" autocomplete="username" autofocus required/>
+        </div>
+        <div>
+            <label for="password">Lösenord (minst 8 tecken)</label>
+            <input type="password" id="password" th:field="*{password}" autocomplete="new-password" required/>
+        </div>
+        <div>
+            <label for="confirmPassword">Bekräfta lösenord</label>
+            <input type="password" id="confirmPassword" th:field="*{confirmPassword}" autocomplete="new-password" required/>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Tävlingsinställningar</legend>
+        <div>
+            <label for="systemName">Tävlingens namn</label>
+            <input type="text" id="systemName" th:field="*{systemName}" required/>
+        </div>
+        <div>
+            <label for="phone">Kontakttelefon (valfritt)</label>
+            <input type="text" id="phone" th:field="*{phone}"/>
+        </div>
+        <div class="checkbox-row">
+            <input type="checkbox" id="allowPublicResult" th:field="*{allowPublicResult}"/>
+            <label for="allowPublicResult">Visa resultat publikt</label>
+        </div>
+        <div class="checkbox-row">
+            <input type="checkbox" id="useQr" th:field="*{useQr}"/>
+            <label for="useQr">Aktivera QR-koder</label>
+        </div>
+    </fieldset>
+
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+    <div class="submit-area">
+        <button type="submit" class="btn-primary">Skapa och starta systemet</button>
+    </div>
+
+</form>
+</body>
+</html>
