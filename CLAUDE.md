@@ -26,9 +26,10 @@ Access at https://gokapp.local (requires `/etc/hosts` entry and self-signed cert
 
 ### Build container image
 ```bash
-mvn spring-boot:build-image
+mvn jib:build          # build and push directly to ghcr.io (no Docker daemon needed)
+mvn jib:dockerBuild    # build to local Docker daemon instead
 ```
-Produces `ghcr.io/erydberg/gokapp:<version>`.
+Produces `ghcr.io/erydberg/gokapp:<version>` (Alpine JRE, multi-platform arm64+amd64).
 
 ### Production
 ```bash
