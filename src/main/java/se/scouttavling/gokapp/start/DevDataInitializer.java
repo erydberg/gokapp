@@ -134,6 +134,14 @@ public class DevDataInitializer {
 
 
     private void initUsers() {
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setPassword("admin"); // Make sure UserService encodes the password
+        admin.addRole(Role.ROLE_ADMIN);
+        admin.setEnabled(true);
+        userService.save(admin);
+        System.out.println("User created: username=admin, password=admin");
+
         User user = new User();
         user.setUsername("k1");
         user.setPassword("losen_test"); // Make sure UserService encodes the password

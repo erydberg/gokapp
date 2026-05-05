@@ -40,6 +40,9 @@ docker compose -f compose.yaml -f compose.prod.yaml up -d
 Access at https://your-domain.com
 
 
+###¤ Configuration of the application
+When you access the application for the first time, you get a setup screen and you add the first admin user, set a name for the competition and some other basic settings.
+
 ### Development
 ```bash
 ./setup-dev-certs.sh

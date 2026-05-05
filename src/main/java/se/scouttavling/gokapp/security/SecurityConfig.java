@@ -32,7 +32,7 @@ public class SecurityConfig {
         http
                 //.csrf(csrf -> csrf.disable()) // you might want CSRF enabled depending on forms
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/public/register", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/", "/login", "/public/register", "/setup", "/setup/**", "/css/**", "/js/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/startfinish/**").hasAnyRole("STARTFINISH", "ADMIN")
                         .anyRequest().authenticated()

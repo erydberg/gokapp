@@ -14,6 +14,9 @@
 <div th:if="${param.logout}" class="confirmblock">
     Du har loggats ut
 </div>
+<div th:if="${param.setup}" class="confirmblock">
+    Systemet är konfigurerat. Logga in med ditt nya administratörskonto.
+</div>
 
 <form th:action="@{/login}" method="post" class="form-general">
     <fieldset>
