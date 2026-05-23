@@ -23,12 +23,18 @@ public class SetupController {
 
     @GetMapping
     public String setupPage(Model model) {
+        if (userService.countUsers() > 0) {
+            return "redirect:/login";
+        }
         model.addAttribute("setupForm", new SetupForm());
         return "setup";
     }
 
     @PostMapping
     public String processSetup(@ModelAttribute("setupForm") SetupForm form, Model model) {
+        if (userService.countUsers() > 0) {
+            return "redirect:/login";
+        }
         String error = validate(form);
         if (error != null) {
             model.addAttribute("errormsg", error);
