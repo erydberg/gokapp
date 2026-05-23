@@ -10,6 +10,7 @@ import se.scouttavling.gokapp.configuration.Config;
 import se.scouttavling.gokapp.configuration.ConfigService;
 import se.scouttavling.gokapp.configuration.RegistrationConfig;
 import se.scouttavling.gokapp.configuration.RegistrationConfigService;
+import se.scouttavling.gokapp.security.UserService;
 
 @RequestMapping("/")
 @Controller
@@ -18,7 +19,7 @@ public class StartController {
 
     private final ConfigService configService;
     private final RegistrationConfigService registrationConfigService;
-
+    private final UserService userService;
 
     @ModelAttribute("config")
     public Config loadConfig() {
@@ -27,6 +28,9 @@ public class StartController {
 
     @GetMapping("/")
     public String Start(Model model) {
+        if (userService.countUsers() == 0) {
+            return "redirect:/setup";
+        }
         RegistrationConfig registrationConfig = registrationConfigService.getCurrentConfig();
         try {
             if (Boolean.TRUE.equals(registrationConfig.getAllowPublicRegistration()) && RegistrationChecker.isOpenToday(registrationConfig.getFirstRegisterDay(), registrationConfig.getLastRegisterDay())){
