@@ -168,12 +168,13 @@ public class ExportCsvService {
     }
 
     private void addScoreHeadlines(PrintWriter writer) {
-        writer.println("Poäng,Stilpäng,Totalt");
+        writer.println("Poäng,Stilpoäng,Totalt");
     }
 
 
     private String escapeCsv(String value) {
-        if (value.contains(",") || value.contains("\"")) {
+        if (value == null) return "";
+        if (value.contains(DELIMITER) || value.contains("\"") || value.contains("\n") || value.contains("\r")) {
             return "\"" + value.replace("\"", "\"\"") + "\"";
         }
         return value;

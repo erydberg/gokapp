@@ -21,7 +21,7 @@ services:
 
   gokapp:
     restart: always
-    image: ghcr.io/erydberg/gokapp:1.1.1
+    image: ghcr.io/erydberg/gokapp:1.1.2
     container_name: gokapp
     depends_on:
       mysql:
