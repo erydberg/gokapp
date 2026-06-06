@@ -1,6 +1,7 @@
 package se.scouttavling.gokapp.export;
 
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +15,6 @@ import se.scouttavling.gokapp.configuration.Config;
 import se.scouttavling.gokapp.configuration.ConfigService;
 import se.scouttavling.gokapp.patrol.Patrol;
 import se.scouttavling.gokapp.patrol.PatrolService;
-import se.scouttavling.gokapp.print.QRCodeService;
 import se.scouttavling.gokapp.station.Station;
 import se.scouttavling.gokapp.station.StationService;
 import se.scouttavling.gokapp.track.Track;
@@ -34,7 +34,6 @@ public class ExportController {
     private final StationService stationService;
     private final TrackService trackService;
     private final ExportCsvService exportService;
-    private final QRCodeService qrCodeService;
 
     @ModelAttribute("config")
     public Config loadConfig() {
@@ -50,14 +49,7 @@ public class ExportController {
 
     @GetMapping("/results-short")
     public ResponseEntity<Resource> exportShort() {
-        List<Track> tracks = trackService.findAllTracks();
-        Map<Track, List<Patrol>> results = new LinkedHashMap<>();
-
-
-        for (Track track:tracks) {
-            List<Patrol> patrolsOnTrack = patrolService.getAllPatrolsByTrackSortedByScore(track);
-            results.put(track, patrolsOnTrack);
-        }
+        Map<Track, List<Patrol>> results = getTrackListMap();
 
         ByteArrayInputStream stream = exportService.exportMultipleTracksToCsv(results);
 
@@ -70,14 +62,7 @@ public class ExportController {
 
     @GetMapping("/results-complete")
     public ResponseEntity<Resource> exportCsvComplete() {
-        List<Track> tracks = trackService.findAllTracks();
-        Map<Track, List<Patrol>> results = new LinkedHashMap<>();
-
-
-        for (Track track:tracks) {
-            List<Patrol> patrolsOnTrack = patrolService.getAllPatrolsByTrackSortedByScore(track);
-            results.put(track, patrolsOnTrack);
-        }
+        Map<Track, List<Patrol>> results = getTrackListMap();
 
         List<Station> stations = stationService.getAll();
 
@@ -88,5 +73,17 @@ public class ExportController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=resultatlista_med_alla_kontroller.csv")
                 .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
                 .body(new InputStreamResource(stream));
+    }
+
+
+    private @NonNull Map<Track, List<Patrol>> getTrackListMap() {
+        List<Track> tracks = trackService.findAllTracks();
+        Map<Track, List<Patrol>> results = new LinkedHashMap<>();
+
+        for (Track track : tracks) {
+            List<Patrol> patrolsOnTrack = patrolService.getAllPatrolsByTrackSortedByScore(track);
+            results.put(track, patrolsOnTrack);
+        }
+        return results;
     }
 }
