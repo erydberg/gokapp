@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lästa meddelanden</title>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+</head>
+<body>
+<div th:replace="~{fragments :: usermessages(${unreadMessages}, ${currentUrl})}"></div>
+
+<div class="nav-box">
+    <div class="page-head">
+        <h1 th:text="${message.title}">Rubrik</h1>
+    </div>
+    <a th:href="@{/admin/message}">Tillbaka till meddelanden</a>
+</div>
+
+<!-- Include messages -->
+<div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+
+<div class="notepad">
+    <h3>Har läst meddelandet</h3>
+    <p th:if="${readers.isEmpty()}">Ingen har läst meddelandet än.</p>
+
+    <table th:unless="${readers.isEmpty()}">
+        <tr>
+            <th>Användare</th>
+            <th>Läste meddelandet</th>
+        </tr>
+        <tr th:each="messageRead : ${readers}">
+            <td th:text="${messageRead.user.username}">Användarnamn</td>
+            <td th:text="${#temporals.format(messageRead.readAt, 'yyyy-MM-dd HH:mm', 'Europe/Stockholm')}">Datum</td>
+        </tr>
+    </table>
+
+    <h3>Har inte läst meddelandet</h3>
+    <p th:if="${notReadYet.isEmpty()}">Alla användare har läst meddelandet.</p>
+
+    <ul class="list" th:unless="${notReadYet.isEmpty()}">
+        <li th:each="user : ${notReadYet}" th:text="${user.username}">Användarnamn</li>
+    </ul>
+</div>
+</body>
+</html>

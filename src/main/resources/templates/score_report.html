@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 </head>
 <body>
+<div th:replace="~{fragments :: usermessages(${unreadMessages}, ${currentUrl})}"></div>
 <div class="nav-box">
     <h1>Rapportera poäng</h1>
 </div>

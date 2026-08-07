@@ -5,6 +5,7 @@
     <title>Patrull</title>
 </head>
 <body>
+<div th:replace="~{fragments :: usermessages(${unreadMessages}, ${currentUrl})}"></div>
 <div class="nav-box">
     <a th:href="@{/startfinish}">Tillbaka</a>
     <!-- Include messages -->

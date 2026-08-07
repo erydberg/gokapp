@@ -5,6 +5,7 @@
     <th:insert th:replace="~{fragments :: metadata}"></th:insert>
 </head>
 <body>
+<div th:replace="~{fragments :: usermessages(${unreadMessages}, ${currentUrl})}"></div>
 <div th:if="${msg}" class="statusrow" th:text="${msg}"></div>
 
 <div class="nav-box">

@@ -5,6 +5,7 @@
     <title>Rapporterade poäng på kontrollen</title>
 </head>
 <body>
+<div th:replace="~{fragments :: usermessages(${unreadMessages}, ${currentUrl})}"></div>
 <div class="nav-box">
     <a th:href="@{/startmenu}">Tillbaka till menyn</a>
     <!-- Include messages -->

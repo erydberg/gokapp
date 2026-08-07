@@ -5,6 +5,7 @@
     <th:insert th:replace="~{fragments :: metadata}"></th:insert>
 </head>
 <body>
+<div th:replace="~{fragments :: usermessages(${unreadMessages}, ${currentUrl})}"></div>
 <div class="nav-box">
     <h1>Rapportera poäng - välj kontroll</h1>
 </div>

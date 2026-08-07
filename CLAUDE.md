@@ -39,7 +39,7 @@ Produces `ghcr.io/erydberg/gokapp:<version>` (Alpine JRE, multi-platform arm64+a
 ## Architecture
 
 ### Stack
-Spring Boot 3.5.9 · Java 21 · Thymeleaf (server-side rendering) · Spring Data JPA · Spring Security · Lombok · H2 (dev/test) · MySQL (docker/prod) · ZXing (QR codes) · Traefik (reverse proxy + TLS).
+Spring Boot 4.1.0 · Java 21 · Thymeleaf (server-side rendering) · Spring Data JPA · Spring Security · Lombok · H2 (dev/test) · MySQL (docker/prod) · ZXing (QR codes) · Traefik (reverse proxy + TLS).
 
 ### Domain model
 The app manages scout (or similar) orienteering competitions.
@@ -53,7 +53,7 @@ The app manages scout (or similar) orienteering competitions.
 
 ### Package structure
 Each domain concept has its own package under `se.scouttavling.gokapp`:
-`configuration`, `distribute`, `patrol`, `print`, `score`, `security`, `start`, `startfinish`, `station`, `track`, `viewresults`.
+`configuration`, `distribute`, `export`, `message`, `patrol`, `print`, `score`, `security`, `start`, `startfinish`, `station`, `track`, `viewresults`.
 Each package follows the pattern: Entity → Repository → Service → Controller (and DTOs/mappers where needed).
 
 ### Profiles
@@ -64,7 +64,6 @@ Each package follows the pattern: Entity → Repository → Service → Controll
 | `prod` | MySQL (env vars) | — |
 | `test` | H2 in-memory | — |
 
-`AdminUserInitializer` runs on every startup (order 1) and creates an admin user if none exists.
 
 ### Security
 Three roles: `ROLE_ADMIN`, `ROLE_USER`, `ROLE_STARTFINISH`.
