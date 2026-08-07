@@ -12,6 +12,7 @@
     <script th:src="@{/js/start_finish.js}" defer></script>
 </head>
 <body>
+<div th:replace="~{fragments :: usermessages(${unreadMessages}, ${currentUrl})}"></div>
 <div class="nav-box">
     <span class="toolbar">
         <a th:href="@{/startmenu}"><img th:src="@{/css/back2.png}" alt="Tillbaka"></a>

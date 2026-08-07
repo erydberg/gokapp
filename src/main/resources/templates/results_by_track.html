@@ -5,6 +5,7 @@
     <title>Resultatlista</title>
 </head>
 <body>
+<div th:replace="~{fragments :: usermessages(${unreadMessages}, ${currentUrl})}"></div>
 <div class="nav-box">
     <a th:href="@{/results/bytrack}">Tillbaka till klasser</a>
 </div>

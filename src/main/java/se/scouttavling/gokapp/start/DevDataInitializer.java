@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import se.scouttavling.gokapp.message.UserMessage;
+import se.scouttavling.gokapp.message.UserMessageService;
 import se.scouttavling.gokapp.patrol.Patrol;
 import se.scouttavling.gokapp.patrol.PatrolService;
 import se.scouttavling.gokapp.patrol.Status;
@@ -34,6 +36,7 @@ public class DevDataInitializer {
     private final PatrolService patrolService;
     private final UserService userService;
     private final ScoreService scoreService;
+    private final UserMessageService userMessageService;
 
     @EventListener(ApplicationReadyEvent.class)
     @Order(2)
@@ -42,6 +45,18 @@ public class DevDataInitializer {
         initStations();
         initPatrols();
         initUsers();
+        initMessages();
+    }
+
+    private void initMessages() {
+        System.out.println("initMessages in dev");
+        if (userMessageService.getAll().isEmpty()) {
+            UserMessage message = new UserMessage();
+            message.setTitle("Kontroll 4 är flyttad");
+            message.setBody("På grund av regnet har kontroll 4 flyttats till andra sidan bäcken.\n\nFölj skyltarna från stigkorsningen.");
+            message.setActive(true);
+            userMessageService.save(message, "admin");
+        }
     }
 
     private void initTracks() {

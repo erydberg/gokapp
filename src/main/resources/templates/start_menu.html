@@ -6,6 +6,7 @@
     <th:block th:replace="~{fragments :: metadata}"></th:block>
 </head>
 <body>
+<div th:replace="~{fragments :: usermessages(${unreadMessages}, ${currentUrl})}"></div>
 <div class="nav-box">
 
     <!-- Include messages -->

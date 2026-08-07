@@ -5,6 +5,7 @@
     <th:block th:replace="~{fragments :: metadata}"></th:block>
 </head>
 <body>
+<div th:replace="~{fragments :: usermessages(${unreadMessages}, ${currentUrl})}"></div>
 
 <div class="page-head">
     <h1 th:text="${config.name + ' administration'}">Administration</h1>
@@ -21,6 +22,7 @@
         <li class="nav-item"><a th:href="@{/admin/distribute}">Fördela patruller på startkontroller</a></li>
         <li class="nav-item"><a th:href="@{/admin/track}">Klasser</a></li>
         <li class="nav-item"><a th:href="@{/admin/user}">Användare</a></li>
+        <li class="nav-item"><a th:href="@{/admin/message}">Meddelanden</a></li>
         <li class="nav-item"><a th:href="@{/admin/print}">Skriv ut listor</a></li>
         <li class="nav-item"><a th:href="@{/admin/registrationconfig}">Självregistrering</a></li>
         <li class="nav-item"><a th:href="@{/admin/config}">Konfiguration</a></li>

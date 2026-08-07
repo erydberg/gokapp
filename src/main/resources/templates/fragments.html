@@ -74,5 +74,27 @@
     </div>
 </div>
 
+<!-- Unread messages from the administrator - a title bar plus one dialog per message -->
+<th:block th:fragment="usermessages(unreadMessages, currentUrl)">
+    <div th:if="${unreadMessages != null and !unreadMessages.isEmpty()}">
+        <div class="msgbar">
+            <a href="#" class="msgbar-link" th:each="message : ${unreadMessages}"
+               th:attr="data-dialog='msgdlg-' + ${message.id}"
+               th:text="${message.title}">Rubrik</a>
+        </div>
+
+        <dialog th:each="message : ${unreadMessages}" th:id="'msgdlg-' + ${message.id}" class="msgdialog">
+            <h2 th:text="${message.title}">Rubrik</h2>
+            <div class="msgbody" th:text="${message.body}">Meddelandetext</div>
+            <form th:action="@{/messages/{id}/read(id=${message.id})}" method="post" class="msgform">
+                <input type="hidden" name="returnUrl" th:value="${currentUrl}"/>
+                <button type="submit" class="btn-primary">Ok</button>
+            </form>
+        </dialog>
+
+        <script th:src="@{/js/usermessages.js}" defer></script>
+    </div>
+</th:block>
+
 </body>
 </html>

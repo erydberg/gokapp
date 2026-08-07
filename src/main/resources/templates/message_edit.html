@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="'Meddelande - ' + (${message.title} != null ? ${message.title} : 'Nytt')">Meddelande</title>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+</head>
+<body>
+<div th:replace="~{fragments :: usermessages(${unreadMessages}, ${currentUrl})}"></div>
+
+<div class="nav-box">
+    <div class="page-head">
+        <h1>Meddelande</h1>
+    </div>
+
+    <!-- Include messages -->
+    <div th:insert="~{fragments :: messages(${errormsg}, ${confirmmsg})}"></div>
+</div>
+
+<form th:action="@{/admin/message}" th:object="${message}" method="post" class="form-general">
+    <input type="hidden" th:field="*{id}"/>
+
+    <div class="form-box">
+        <fieldset class="form-box">
+            <div class="text size-3">
+                <label th:for="*{title}">Rubrik (visas högst upp på användarnas sidor)</label>
+                <input type="text" th:field="*{title}" maxlength="100" required/>
+                <div class="errortext" th:errors="*{title}"></div>
+            </div>
+
+            <div class="text size-3">
+                <label th:for="*{body}">Meddelande</label>
+                <textarea th:field="*{body}" rows="7" cols="30" maxlength="2000"></textarea>
+                <div class="errortext" th:errors="*{body}"></div>
+            </div>
+
+            <div>
+                <label th:for="*{active}">Aktivt (visas för användare som inte läst det)</label>
+                <input type="checkbox" th:field="*{active}"/>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="submit-area">
+        <button type="submit" class="btn-primary">Spara</button> |
+        <a th:href="@{/admin/message}" class="btn-secondary">Tillbaka</a>
+    </div>
+</form>
+</body>
+</html>

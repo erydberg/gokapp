@@ -518,3 +518,46 @@ fieldset {
 	cursor:pointer;
 	text-decoration:underline;
 }
+
+/* Message bar with unread messages from the administrator */
+.msgbar {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	background-color: #FFF8DC;
+	border-bottom: 2px solid #E0D8C1;
+	padding: 6px 10px;
+	font-size: 70%;
+	line-height: 1.4;
+}
+
+.msgbar-link {
+	display: block;
+	color: #1B3B94;
+	text-decoration: underline;
+	padding: 2px 0;
+}
+
+.msgdialog {
+	max-width: 90vw;
+	width: 32em;
+	border: 3px solid #196619;
+	border-radius: 4px;
+	background-color: #ffffff;
+	color: #333333;
+	padding: 16px;
+	font-size: 75%;
+}
+
+.msgdialog::backdrop {
+	background: rgba(0, 0, 0, 0.5);
+}
+
+.msgdialog h2 {
+	margin-bottom: 12px;
+}
+
+.msgbody {
+	white-space: pre-line;
+	margin-bottom: 20px;
+}
