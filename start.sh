@@ -33,7 +33,7 @@ case $ENV in
         fi
 
         cp .env.dev .env
-        docker compose -f compose.yaml -f compose.dev.yaml up -d
+        docker compose -f compose.yaml -f compose.dev.yaml up -d --pull always
 
         echo ""
         echo "✅ Development environment started!"
@@ -53,7 +53,7 @@ case $ENV in
         cp .env.prod .env
         mkdir -p letsencrypt
         chmod 600 letsencrypt
-        docker compose -f compose.yaml -f compose.prod.yaml up -d
+        docker compose -f compose.yaml -f compose.prod.yaml up -d --pull always
 
         echo ""
         echo "✅ Production environment started!"
