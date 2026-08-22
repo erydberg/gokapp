@@ -1,0 +1,214 @@
+:root {
+  --sticker-width: 70mm;
+  --sticker-height: 37mm;
+  --sticker-cols: 3;
+  --sticker-rows: 8;
+  --sticker-gap-x: 0mm;
+  --sticker-gap-y: 0mm;
+  --sticker-margin-top: 0mm;
+  --sticker-margin-left: 0mm;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.print-container {
+  display: none;
+}
+
+.settings-panel {
+  max-width: 480px;
+  margin: 16px auto;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: sans-serif;
+}
+
+.settings-panel h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 16px;
+}
+
+.settings-grid label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8rem;
+  color: #444;
+}
+
+.settings-grid input {
+  margin-top: 2px;
+  padding: 4px;
+  font-size: 0.9rem;
+}
+
+.settings-hint {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 8px;
+}
+
+.settings-reset {
+  margin-top: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+/* Print styles */
+@media print {
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-container,
+  .print-container * {
+    visibility: visible;
+  }
+
+  .print-container {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  .sticker-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--sticker-cols), var(--sticker-width));
+    grid-template-rows: repeat(var(--sticker-rows), var(--sticker-height));
+    gap: var(--sticker-gap-y) var(--sticker-gap-x);
+    padding-top: var(--sticker-margin-top);
+    padding-left: var(--sticker-margin-left);
+  }
+
+  .sticker {
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+    padding: 1.5mm;
+    box-sizing: border-box;
+    overflow: hidden;
+    page-break-inside: avoid;
+  }
+
+  .sticker-qr {
+    flex: 0 0 auto;
+    width: 30mm;
+    height: 30mm;
+    display: block;
+  }
+
+  .sticker-info {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.15;
+  }
+
+  .sticker-name {
+    font-size: 9pt;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sticker-track,
+  .sticker-troop {
+    font-size: 7.5pt;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sticker-id {
+    font-size: 7.5pt;
+    color: #333;
+  }
+}
+
+/* Screen preview styles */
+@media screen {
+  .print-container {
+    display: block;
+    margin: 20px auto;
+    max-width: 900px;
+    padding: 20px;
+  }
+
+  .sticker-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--sticker-cols), 1fr);
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .sticker {
+    border: 1px dashed #999;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    aspect-ratio: var(--sticker-width) / var(--sticker-height);
+    box-sizing: border-box;
+    overflow: hidden;
+    background: white;
+  }
+
+  .sticker-qr {
+    flex: 0 0 auto;
+    width: 40%;
+    height: auto;
+    display: block;
+  }
+
+  .sticker-info {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.2;
+  }
+
+  .sticker-name {
+    font-size: 0.8rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sticker-track,
+  .sticker-troop {
+    font-size: 0.7rem;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sticker-id {
+    font-size: 0.7rem;
+    color: #666;
+  }
+}

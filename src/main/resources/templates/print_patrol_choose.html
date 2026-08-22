@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title th:text="'Skriv ut - ' + ${patrol.patrolName}">Skriv ut poängkort</title>
+</head>
+<body>
+
+<div class="page-head">
+    <h1>Skriv ut poängkort</h1>
+</div>
+
+<div class="nav-box">
+    <p>
+        Patrull: <strong th:text="${patrol.patrolName}">Patrullnamn</strong>
+        (<span th:text="${patrol.track.name}">Klass</span> - <span th:text="${patrol.troop}">Kår</span>,
+        nr <span th:text="${patrol.patrolId}"></span>)
+    </p>
+    <p>Välj vilken typ av utskrift du vill göra för den här patrullen:</p>
+    <ul>
+        <li class="nav-item">
+            <a th:href="@{/admin/print/small(patrolId=${patrol.patrolId})}">Startkort litet</a><br/>
+            Visitkortsstort poängkort med QR-kod och fält för varje kontroll.
+        </li>
+        <li class="nav-item">
+            <a th:href="@{/admin/print/stickers(patrolId=${patrol.patrolId})}">Klisteretikett</a><br/>
+            Klisteretikett med QR-kod, patrullnamn, klass, kår och patrullnr - att sätta på ett eget poängkort.
+        </li>
+    </ul>
+    <a th:href="@{/admin/patrol}">Tillbaka till patrullistan</a>
+</div>
+
+</body>
+</html>
