@@ -5,7 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import se.scouttavling.gokapp.configuration.Config;
 import se.scouttavling.gokapp.configuration.ConfigService;
 import se.scouttavling.gokapp.patrol.Patrol;
@@ -41,9 +43,9 @@ public class PrintController {
 
 
     @GetMapping("/small")
-    public String printSmallScoreccards(Model model) {
+    public String printSmallScoreccards(@RequestParam(required = false) Integer patrolId, Model model) {
 
-        List<Patrol> patrols = patrolService.getAllPatrols();
+        List<Patrol> patrols = patrolsToPrint(patrolId);
         patrols.forEach(patrol -> {
             String qrDataUrl = qrCodeService.generateQRCodeDataUrl(patrol.getPatrolId());
             patrol.setQrCodeDataUrl(qrDataUrl);
@@ -55,6 +57,41 @@ public class PrintController {
         model.addAttribute("stations", stations);
 
         return "print_patrol_scorecards_small";
+    }
+
+    @GetMapping("/stickers")
+    public String printStickers(@RequestParam(required = false) Integer patrolId, Model model) {
+
+        List<Patrol> patrols = patrolsToPrint(patrolId);
+        patrols.forEach(patrol -> {
+            String qrDataUrl = qrCodeService.generateQRCodeDataUrl(patrol.getPatrolId());
+            patrol.setQrCodeDataUrl(qrDataUrl);
+        });
+
+        model.addAttribute("patrols", patrols);
+
+        return "print_patrol_stickers";
+    }
+
+    /**
+     * Chooser page for printing a single patrol: pick which of the supported
+     * patrol print templates (small scorecard, sticker, ...) to print.
+     */
+    @GetMapping("/patrol/{id}")
+    public String choosePatrolPrint(@PathVariable("id") Integer id, Model model) {
+        Patrol patrol = patrolService.getPatrolById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid patrol Id:" + id));
+        model.addAttribute("patrol", patrol);
+        return "print_patrol_choose";
+    }
+
+    private List<Patrol> patrolsToPrint(Integer patrolId) {
+        if (patrolId == null) {
+            return patrolService.getAllPatrols();
+        }
+        return patrolService.getPatrolById(patrolId)
+                .map(List::of)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid patrol Id:" + patrolId));
     }
 
     @GetMapping("/startstations")

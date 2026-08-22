@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:insert th:replace="~{fragments :: metadata}"></th:insert>
+    <title>Skriv ut klisteretiketter</title>
+    <link rel="stylesheet" th:href="@{/css/print_stickers.css}" />
+</head>
+<body>
+<div class="no-print">
+    <p>Klisteretiketter med QR-kod, patrullnamn, klass, kår och patrullnr. Tänkt att klistras på egna poängkort som
+        systemet inte har mallar för. Justera etikettmått och antal rader/kolumner nedan så att de matchar
+        etikettarket, tryck sedan ctrl + P för att skriva ut. Inställningarna sparas i webbläsaren till nästa gång.</p>
+
+    <div class="settings-panel">
+        <h2>Etikettinställningar</h2>
+        <div class="settings-grid">
+            <label>Bredd (mm)
+                <input type="number" id="sticker-width" step="0.5" min="10" value="70" />
+            </label>
+            <label>Höjd (mm)
+                <input type="number" id="sticker-height" step="0.5" min="10" value="37" />
+            </label>
+            <label>Kolumner
+                <input type="number" id="sticker-cols" step="1" min="1" value="3" />
+            </label>
+            <label>Rader
+                <input type="number" id="sticker-rows" step="1" min="1" value="8" />
+            </label>
+            <label>Marginal topp (mm)
+                <input type="number" id="sticker-margin-top" step="0.5" min="0" value="0" />
+            </label>
+            <label>Marginal vänster (mm)
+                <input type="number" id="sticker-margin-left" step="0.5" min="0" value="0" />
+            </label>
+            <label>Mellanrum vågrätt (mm)
+                <input type="number" id="sticker-gap-x" step="0.5" min="0" value="0" />
+            </label>
+            <label>Mellanrum lodrätt (mm)
+                <input type="number" id="sticker-gap-y" step="0.5" min="0" value="0" />
+            </label>
+        </div>
+        <div class="settings-hint">Standard passar ett A4-ark med 3 kolumner x 8 rader, 70 x 37 mm etiketter.</div>
+        <button type="button" class="settings-reset" id="sticker-reset">Återställ till standard</button>
+    </div>
+</div>
+
+<div class="print-container">
+    <div class="sticker-grid" id="sticker-grid">
+        <div th:each="patrol : ${patrols}" class="sticker">
+            <img th:if="${config.useQr}" th:src="${patrol.qrCodeDataUrl}"
+                 th:alt="'QR Code för ' + ${patrol.patrolName}"
+                 class="sticker-qr" />
+            <div class="sticker-info">
+                <div class="sticker-name" th:text="${#strings.abbreviate(patrol.patrolName, 40)}">Patrullnamn</div>
+                <div class="sticker-track" th:text="${patrol.track.name}">Klass</div>
+                <div class="sticker-troop" th:text="${patrol.troop}">Kår</div>
+                <div class="sticker-id" th:text="'Nr ' + ${patrol.patrolId}"></div>
+                <div th:if="${patrol.startStation != null}" class="sticker-id">
+                    <span th:text="'Start: ' + ${patrol.startStation.stationNumber} + '. ' + ${patrol.startStation.stationName}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    const fields = [
+        ['sticker-width', '--sticker-width', 'mm'],
+        ['sticker-height', '--sticker-height', 'mm'],
+        ['sticker-cols', '--sticker-cols', ''],
+        ['sticker-rows', '--sticker-rows', ''],
+        ['sticker-margin-top', '--sticker-margin-top', 'mm'],
+        ['sticker-margin-left', '--sticker-margin-left', 'mm'],
+        ['sticker-gap-x', '--sticker-gap-x', 'mm'],
+        ['sticker-gap-y', '--sticker-gap-y', 'mm']
+    ];
+    const storageKey = 'gokapp-sticker-settings';
+    const root = document.documentElement;
+
+    function applyAndStore(id, cssVar, unit) {
+        const input = document.getElementById(id);
+        const value = input.value;
+        root.style.setProperty(cssVar, value + unit);
+        const stored = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        stored[id] = value;
+        localStorage.setItem(storageKey, JSON.stringify(stored));
+    }
+
+    function loadSettings() {
+        const stored = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        fields.forEach(([id, cssVar, unit]) => {
+            const input = document.getElementById(id);
+            if (stored[id] !== undefined) {
+                input.value = stored[id];
+            }
+            root.style.setProperty(cssVar, input.value + unit);
+            input.addEventListener('input', () => applyAndStore(id, cssVar, unit));
+        });
+    }
+
+    document.getElementById('sticker-reset').addEventListener('click', () => {
+        localStorage.removeItem(storageKey);
+        location.reload();
+    });
+
+    loadSettings();
+</script>
+</body>
+</html>
