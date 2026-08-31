@@ -7,6 +7,7 @@ import se.scouttavling.gokapp.security.User;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,14 @@ public class StationService {
     public Station save(Station station) {
         if (station.isAllTracks() && station.getTracks() != null) {
             station.getTracks().clear();
+        }
+        if (Boolean.TRUE.equals(station.getUseDistinctScores())) {
+            List<Integer> values = station.getDistinctScoreList();
+            if (!values.isEmpty()) {
+                station.setDistinctScores(values.stream().map(String::valueOf).collect(Collectors.joining(",")));
+                station.setMinScore(values.getFirst());
+                station.setMaxScore(values.getLast());
+            }
         }
         return stationRepository.save(station);
     }

@@ -92,15 +92,15 @@ public class DevDataInitializer {
             tracks.add(arrayTracks.getFirst());
             tracks.add(arrayTracks.getLast());
 
-            createStation(1, "Livlina", 0, 10, 0, 1, "Erik", "12121212", true, null);
-            createStation(2, "Sjukvård", 0, 10, 0, 1, "Erik", "12121212", true, null);
-            createStation(3, "Knopar", 0, 10, 0, 1, "Erik", "12121212", true, null);
-            createStation(4, "Hinderbana", 0, 10, 0, 1, "Erik", "12121212", true, null);
-            createStation(5, "Kims spel", 0, 10, 0, 1, "Erik", "12121212", true, null);
-            createStation(6, "Eldning", 0, 10, 0, 1, "Erik", "12121212", true, null);
-            createStation(7, "Woodcraft", 0, 10, 0, 1, "Erik", "12121212", true, null);
-            createStation(8, "Orientering", 0, 10, 0, 1, "Erik", "12121212", false, tracks);
-            createStation(9, "Suduku", 0, 10, 0, 1, "Erik", "12121212", true, null);
+            createStation(1, "Livlina", 0, 10, 0, 1, "Erik", "12121212", true, null,false,null);
+            createStation(2, "Sjukvård", 0, 10, 0, 1, "Erik", "12121212", true, null,false,null);
+            createStation(3, "Knopar", 0, 10, 0, 1, "Erik", "12121212", true, null,false,null);
+            createStation(4, "Hinderbana", 0, 10, 0, 1, "Erik", "12121212", true, null,false,null);
+            createStation(5, "Kims spel", 0, 10, 0, 1, "Erik", "12121212", true, null,false,null);
+            createStation(6, "Eldning", 0, 10, 0, 1, "Erik", "12121212", true, null,false,null);
+            createStation(7, "Woodcraft", 0, 10, 0, 1, "Erik", "12121212", true, null,false,null);
+            createStation(8, "Suduku-diskreta poäng", 0, 20, 0, 1, "Erik", "12121212", true, null, true, "0, 5, 10, 15, 20");
+            createStation(9, "Orientering", 0, 10, 0, 1, "Erik", "12121212", false, tracks,false,null);
             System.out.println("Done saving stations");
         }
     }
@@ -166,7 +166,7 @@ public class DevDataInitializer {
         System.out.println("User created: username=k1, password=losen_test");
     }
 
-    private void createStation(int stationNumber, String stationName, int minScore, int maxScore, int minStyleScore, int maxStyleScore, String contact, String mobile, boolean allTracks, Set<Track> tracks) {
+    private void createStation(int stationNumber, String stationName, int minScore, int maxScore, int minStyleScore, int maxStyleScore, String contact, String mobile, boolean allTracks, Set<Track> tracks, boolean useDistinctScores, String distinctScores) {
         Station station = new Station();
         station.setStationName(stationName);
         station.setStationNumber(stationNumber);
@@ -179,6 +179,10 @@ public class DevDataInitializer {
         if (!allTracks) {
             station.setAllTracks(false);
             station.setTracks(tracks);
+        }
+        if(useDistinctScores) {
+            station.setMode("DISTINCT");
+            station.setDistinctScores(distinctScores);
         }
         station.setTracks(tracks);
         stationService.save(station);
