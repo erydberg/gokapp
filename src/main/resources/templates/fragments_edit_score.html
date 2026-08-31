@@ -19,7 +19,7 @@
             <fieldset>
                 <h3>Poäng</h3>
                 <div class="radio-score">
-                    <th:block th:each="j : ${#numbers.sequence(score.station.minScore, score.station.maxScore)}">
+                    <th:block th:each="j : ${score.station.useDistinctScores ? score.station.distinctScoreList : #numbers.sequence(score.station.minScore, score.station.maxScore)}">
                         <input type="radio"
                                th:field="*{scorePoint}"
                                th:value="${j}"

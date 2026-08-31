@@ -65,23 +65,57 @@
                     </script>
             </fieldset>
             <fieldset>
-
-                <label for="waypoint">Milstolpe</label>
-                <span>För kontroller där patrullen bara anmäler sig och inte får några poäng, t.ex. lunch, övernattning etc.</span>
-                <input type="checkbox" th:field="*{waypoint}" id="waypoint"/>
+                <h3>Poängtyp på kontrollen</h3>
+                <label>
+                    <input type="radio" th:field="*{mode}" value="RANGE"/>
+                    Poängintervall — patrullen får ett poäng mellan ett min- och maxvärde
+                </label>
+                <label>
+                    <input type="radio" th:field="*{mode}" value="DISTINCT"/>
+                    Distinkta poäng — bara vissa specifika poängvärden är tillåtna
+                </label>
+                <label>
+                    <input type="radio" th:field="*{mode}" value="WAYPOINT"/>
+                    Checkpoint — patrullen anmäler sig bara, inga poäng (t.ex. lunch, övernattning)
+                </label>
             </fieldset>
-            <fieldset>
+            <fieldset id="rangeScoreFields">
                 <label for="minScore">Minsta poäng:</label>
                 <input type="number" th:field="*{minScore}" id="minScore"/>
                 <label for="maxScore">Max poäng:</label>
                 <input type="number" th:field="*{maxScore}" id="maxScore"/>
-
+            </fieldset>
+            <fieldset id="distinctScoreFields">
+                <label for="distinctScores">Tillåtna poäng (kommaseparerat, t.ex. 0,5,10,15,20):</label>
+                <input type="text" th:field="*{distinctScores}" id="distinctScores" placeholder="0,5,10,15,20"/>
+            </fieldset>
+            <fieldset>
                 <label for="minStyleScore">Minsta stilpoäng:</label>
                 <input type="number" th:field="*{minStyleScore}" id="minStyleScore"/>
 
                 <label for="maxStyleScore">Max stilpoäng:</label>
                 <input type="number" th:field="*{maxStyleScore}" id="maxStyleScore"/>
             </fieldset>
+
+            <script th:inline="javascript">
+                /*<![CDATA[*/
+                        const modeRadios = document.querySelectorAll('input[name="mode"]');
+                        const rangeScoreFields = document.getElementById('rangeScoreFields');
+                        const distinctScoreFields = document.getElementById('distinctScoreFields');
+
+                        function toggleScoreFields() {
+                            const checked = document.querySelector('input[name="mode"]:checked');
+                            const mode = checked ? checked.value : 'RANGE';
+                            rangeScoreFields.style.display = mode === 'RANGE' ? 'block' : 'none';
+                            distinctScoreFields.style.display = mode === 'DISTINCT' ? 'block' : 'none';
+                        }
+
+                        modeRadios.forEach(function (radio) {
+                            radio.addEventListener('change', toggleScoreFields);
+                        });
+                        toggleScoreFields();
+                /*]]>*/
+            </script>
             <fieldset>
                 <label for="stationContact">Ansvarig på kontrollen:</label>
                 <input type="text" th:field="*{stationContact}" id="stationContact"/>

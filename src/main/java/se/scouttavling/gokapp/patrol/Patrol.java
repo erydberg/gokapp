@@ -149,9 +149,8 @@ public class Patrol implements Comparable<Patrol> {
                     if (currentStation.getWaypoint() == null) {
                         currentStation.setWaypoint(false);
                     }
-                    int maxScoreOnStation = currentStation.getMaxScore() - x;
-                    return !currentStation.getWaypoint() && maxScoreOnStation > 0
-                            && score.getScorePoint() == maxScoreOnStation;
+                    return !currentStation.getWaypoint() && score.getScorePoint() > 0
+                            && currentStation.rankOfScore(score.getScorePoint()) == x;
                 })
                 .count();
     }
