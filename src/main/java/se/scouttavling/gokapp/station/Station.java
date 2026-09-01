@@ -125,6 +125,31 @@ public class Station {
     }
 
     /**
+     * Whether scorePoint is a value this station can actually award: for a waypoint,
+     * only 0 (waypoints don't carry a numeric score); for distinct-score mode, one of the
+     * configured values; otherwise anywhere in [minScore, maxScore]. Server-side gate against
+     * a tampered request submitting a score the UI would never offer.
+     */
+    @Transient
+    public boolean isValidScorePoint(int scorePoint) {
+        if (Boolean.TRUE.equals(waypoint)) {
+            return scorePoint == 0;
+        }
+        if (Boolean.TRUE.equals(useDistinctScores)) {
+            return getDistinctScoreList().contains(scorePoint);
+        }
+        return scorePoint >= minScore && scorePoint <= maxScore;
+    }
+
+    /**
+     * Whether stylePoint is within this station's configured style-point range.
+     */
+    @Transient
+    public boolean isValidStylePoint(int stylePoint) {
+        return stylePoint >= minStyleScore && stylePoint <= maxStyleScore;
+    }
+
+    /**
      * Virtual selector used by the station edit form's radio group to drive the
      * mutually exclusive waypoint / useDistinctScores flags without adding a
      * separate persisted enum column (and the data migration that would require).

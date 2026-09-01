@@ -109,7 +109,8 @@ public class CorrectScoreController {
      * Update or delete a score
      */
     @PostMapping("/score")
-    public String updateOrDelete(@ModelAttribute("score") Score score, @RequestParam String action, RedirectAttributes redirectAttributes) {
+    public String updateOrDelete(@ModelAttribute("score") Score score, @RequestParam String action,
+                                 Model model, RedirectAttributes redirectAttributes) {
 
         Score scoreFromDb = scoreService.findByIdWithPatrolAndStation(score.getId()).orElseThrow(() -> new IllegalArgumentException("Score not found"));
 
@@ -125,7 +126,16 @@ public class CorrectScoreController {
             return "redirect:/correct/selectstation/" + scoreFromDb.getStation().getId();
         }
 
-        scoreService.save(score);
+        try {
+            scoreService.save(score);
+        } catch (InvalidScoreException e) {
+            scoreFromDb.setScorePoint(score.getScorePoint());
+            scoreFromDb.setStylePoint(score.getStylePoint());
+            scoreFromDb.setVisitedWaypoint(score.isVisitedWaypoint());
+            model.addAttribute("score", scoreFromDb);
+            model.addAttribute("errormsg", e.getMessage());
+            return "correct_score_edit";
+        }
 
         if (score.isVisitedWaypoint()) {
             redirectAttributes.addFlashAttribute("confirmmsg",
