@@ -10,6 +10,7 @@ import se.scouttavling.gokapp.patrol.Patrol;
 import se.scouttavling.gokapp.patrol.PatrolService;
 import se.scouttavling.gokapp.patrol.Status;
 import se.scouttavling.gokapp.patrol.StatusCounter;
+import se.scouttavling.gokapp.score.InvalidScoreException;
 import se.scouttavling.gokapp.score.Score;
 import se.scouttavling.gokapp.score.ScoreService;
 
@@ -96,7 +97,8 @@ public class StartFinishController {
      * Update or delete a score
      */
     @PostMapping("/score")
-    public String updateOrDelete(@ModelAttribute("score") Score score, @RequestParam String action, RedirectAttributes redirectAttributes) {
+    public String updateOrDelete(@ModelAttribute("score") Score score, @RequestParam String action,
+                                 Model model, RedirectAttributes redirectAttributes) {
 
         Score scoreFromDb = scoreService.findByIdWithPatrolAndStation(score.getId()).orElseThrow(() -> new IllegalArgumentException("Score not found"));
 
@@ -112,7 +114,16 @@ public class StartFinishController {
             return "redirect:/startfinish/patrol/" + scoreFromDb.getPatrol().getPatrolId();
         }
 
-        scoreService.save(score);
+        try {
+            scoreService.save(score);
+        } catch (InvalidScoreException e) {
+            scoreFromDb.setScorePoint(score.getScorePoint());
+            scoreFromDb.setStylePoint(score.getStylePoint());
+            scoreFromDb.setVisitedWaypoint(score.isVisitedWaypoint());
+            model.addAttribute("score", scoreFromDb);
+            model.addAttribute("errormsg", e.getMessage());
+            return "startfinish_correct_score";
+        }
 
         if (score.isVisitedWaypoint()) {
             redirectAttributes.addFlashAttribute("confirmmsg",

@@ -97,7 +97,7 @@ public class Patrol implements Comparable<Patrol> {
     private String qrCodeDataUrl;
 
 
-    /* === Derived / helper methods === */
+
     @Transient
     public String getPatrolInfo() {
         return patrolName + " (" + patrolId + ") - "

@@ -140,6 +140,8 @@ public class ScoreController {
                     + score.getPatrol().getPatrolName() + " har redan fått "
                     + score.getScorePoint() + " + " + score.getStylePoint()
                     + " poäng på den här kontrollen. Redo att registrera nästa patrulls poäng.");
+        } catch (InvalidScoreException e) {
+            model.addAttribute("errormsg", e.getMessage());
         }
 
         // Reset form for new input
