@@ -67,12 +67,16 @@ public class PatrolPublicRegistrationController {
         model.addAttribute("patrol", patrol);
 
         redirectAttributes.addFlashAttribute("confirmmsg", "Patrullen är registrerad");
-        redirectAttributes.addAttribute("patrolId", savedPatrol.getPatrolId());
+        redirectAttributes.addFlashAttribute("patrolId", savedPatrol.getPatrolId());
         return "redirect:/public/register/success";
     }
 
     @GetMapping("/success")
-    public String success(@RequestParam("patrolId") Integer patrolId, Model model) {
+    public String success(Model model) {
+        // patrolId arrives as a flash attribute so contact details can't be fetched by guessing ids in a public URL
+        if (!(model.asMap().get("patrolId") instanceof Integer patrolId)) {
+            return "redirect:/public/register";
+        }
 
         Patrol patrol = patrolService.getPatrolById(patrolId)
                 .orElseThrow(() -> new EntityNotFoundException("Patrol not found"));
